@@ -1,0 +1,86 @@
+#comments{
+  width: 66%;
+  margin: 0 auto;
+
+  .comment-wrapper{
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+
+    .avatar{
+      float:left;
+      width: 50px;
+      heigh: 50px;
+      margin-right: 10px;
+
+    }
+
+    .comment{
+      float: left;
+      width: calc(~"100% - 60px");
+
+      .comment-name{
+        font-weight: 400;
+      }
+
+      .comment-time{
+        font-size: 75%;
+        font-style: italic;
+      }
+
+      .comment-tool{
+        float: right;
+        padding: 0 -5px;
+        font-size: 75%;
+
+        a{
+          color: @brand-primary;
+          margin: 0 5px;
+        }
+
+      }
+
+      .comment-reply{
+        font-size:75%;
+        color: @brand-primary;
+        margin: 5px 0;
+      }
+
+      p{
+        margin: 0;
+      }
+
+      form{
+        margin-bottom: 40px;
+      }
+
+    }
+
+    .comment-clear{
+      clear: both;
+    }
+
+    .comment-replies{
+      margin-left: 60px;
+    }
+
+
+    &:before{
+      content: " ";
+      display: table;
+    }
+
+    &:after{
+      clear: both;
+      content: " ";
+      display: table;
+    }
+
+    #comment-add{
+      button{
+        margin-top: 3px;
+        float:right;
+      }
+    }
+  }
+}

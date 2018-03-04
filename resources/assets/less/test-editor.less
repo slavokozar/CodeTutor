@@ -1,0 +1,30 @@
+#test-editor{
+  label{
+    font-weight: 400;
+  }
+
+  .test-lines{
+    margin-top: -2px;
+    margin-bottom: -2px;
+  }
+
+  .test-line{
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: -1px;
+    margin-right: -1px;
+
+    > div{
+      padding-left: 1px;
+      padding-right: 1px;
+
+    }
+    .btn-line-remove{
+      border: 1px solid transparent;
+      height: @input-height-small;
+      padding: @padding-small-vertical @padding-small-horizontal;
+      font-size: @font-size-small;
+      line-height: @line-height-small;
+    }
+  }
+}
