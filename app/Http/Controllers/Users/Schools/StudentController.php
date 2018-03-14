@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Users\Schools;
 
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\UserRequest;
+
 use Facades\App\Services\Users\Schools\SchoolService;
 use Facades\App\Services\Users\Schools\StudentService;
 
@@ -22,10 +24,11 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($code)
+    public function index($school)
     {
-        $schoolObj = SchoolService::getOrFail($code);
-        $users = $schoolObj->students;
+        $schoolObj = SchoolService::getOrFail($school);
+        $users = StudentService::all($schoolObj);
+
         return view('users.schools.students.index', compact(['schoolObj', 'users']));
     }
 
@@ -34,9 +37,11 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+
+        return view('users.schools.students.create', compact(['schoolObj']));
     }
 
     /**
@@ -46,9 +51,13 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request, $school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+
+        $userObj = StudentService::create($schoolObj, $request);
+
+        return redirect(action('Users\Schools\StudentController@show',[$schoolObj->code, $userObj->code]));
     }
 
     /**
@@ -73,9 +82,12 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($school, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = StudentService::getOrFail($schoolObj, $user);
+
+        return view('users.schools.students.show', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -86,10 +98,32 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $school, $user)
     {
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = StudentService::getOrFail($schoolObj, $user);
+
+        $userObj = StudentService::update($userObj, $request);
+
         return redirect(action('Users/UsersController@index'));
     }
+
+
+    /**
+     * Show modal fo destroy confirmation
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteModal($school, $user)
+    {
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = StudentService::getOrFail($schoolObj, $user);
+
+        return view('users.schools.students.delete', compact(['schoolObj', 'userObj']));
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -98,8 +132,9 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($school, $user)
     {
+        $schoolObj = SchoolService::getOrFail($code);
         return redirect(action('Users/UsersController@index'));
     }
 }

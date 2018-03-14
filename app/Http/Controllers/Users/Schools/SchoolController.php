@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Users\Schools;
 
 use App\Http\Controllers\Controller;
 
-use Facades\App\Services\Users\SchoolService;
+use Facades\App\Services\Users\Schools\SchoolService;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller

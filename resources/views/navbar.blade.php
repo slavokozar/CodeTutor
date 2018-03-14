@@ -42,7 +42,7 @@
                             {{Auth::user()->name}}<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{action('Users\ProfileController@edit')}}">Zmeniť heslo</a></li>
+                            <li><a href="{{action('Profile\ProfileController@edit')}}">Zmeniť heslo</a></li>
                             <li><a href="{{action('Auth\LoginController@logout')}}">Odhlásiť</a></li>
                         </ul>
                     </li>

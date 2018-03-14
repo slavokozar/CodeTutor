@@ -1,5 +1,16 @@
 <?php
 return [
-    'edit' => 'Upraviť',
-    'delete' => 'Vymazať'
+    'buttons' => [
+        'edit' => 'Upraviť',
+        'delete' => 'Vymazať',
+        'save' => 'Uložiť',
+        'create' => 'Vytvoriť',
+        'cancel' => 'Zrušiť'
+    ],
+    'headings' => [
+        'edit' => 'Úprava',
+        'create' => 'Vytvorenie',
+    ]
+
+
 ];

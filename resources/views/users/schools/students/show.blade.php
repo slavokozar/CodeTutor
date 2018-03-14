@@ -25,10 +25,15 @@
 
     <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
         <li role="presentation">
-            <a href="{{ action('Users\Schools\StudentController@edit', [$schoolObj->code, $userObj->code]) }}" class="btn">{{ trans('general.edit') }}</a>
+            <a href="{{ action('Users\Schools\StudentController@edit', [$schoolObj->code, $userObj->code]) }}" class="btn">{{ trans('general.buttons.edit') }}</a>
         </li>
         <li role="presentation">
-            <a href="{{ action('Users\Schools\StudentController@deleteModal', [$schoolObj->code, $userObj->code]) }}" class="btn">{{ trans('general.delete') }}</a>
+            <a href="{{ action('Users\Schools\StudentController@deleteModal', [$schoolObj->code, $userObj->code]) }}" class="btn">{{ trans('general.buttons.delete') }}</a>
         </li>
     </ul>
+
+    @include('users.partials.show')
+
+
+
 @endsection

@@ -9,6 +9,7 @@
 namespace App\Services\Users;
 
 use App\Models\Users\User;
+use Illuminate\Support\Facades\Response;
 
 class UserService
 {
@@ -16,16 +17,50 @@ class UserService
         return User::all();
     }
 
-
-    public function attendingGroups($userObj)
+    public function getOrFail($code)
     {
-        return $userObj->groups()->wherePivot('lecturer', '=', 0)->get();
+        $userObj = $this->get($code);
+
+        if ($userObj == null) {
+            $this->fail($code);
+        } else {
+            return $userObj;
+        }
     }
 
-
-    public function lecturingGroups($userObj)
+    private function get($code)
     {
-        return $userObj->groups()->wherePivot('lecturer', '=', 1)->get();
+        return User::where('code', $code)->first();
     }
+
+    private function fail($code)
+    {
+        Response::make('User ' . $code . 'not found!', 404);
+    }
+
+    public function update($userObj, $data){
+        $userObj->name = $data['name'];
+        $userObj->birthdate = $data['birthdate'];
+
+        $userObj->save();
+
+        $userObj = $this->updateEmail($userObj, $data['email']);
+
+        return $userObj;
+    }
+
+    public function updateEmail($userObj, $email){
+        $userObj->email = $email;
+        $userObj->save();
+
+        //todo poslat email a overit ucet
+
+        return $userObj;
+    }
+
+    public function destroy($userObj){
+
+    }
+
 
 }

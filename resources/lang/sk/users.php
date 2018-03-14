@@ -9,14 +9,20 @@ return [
         'roles' => 'roly',
         'school' => 'škola',
         'groups' => 'skupiny',
+        'birthdate' => 'Dátum narodenia',
+    ],
+
+    'delete' => [
+        'heading' => 'Vymazanie užívateľa',
+        'message' => 'Naozaj si želáte vymazať užívateľa <strong>:name</strong> ?'
     ],
 
     'users' => [
         'url' => 'uzivatelia',
         'heading' => 'Užívatelia',
         'link' => 'Užívatelia',
-        'registered' => 'Registrovaní užívatelia'
     ],
+
 
     'groups' => [
         'url' => 'skupiny',

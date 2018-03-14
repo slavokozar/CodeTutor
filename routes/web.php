@@ -10,6 +10,13 @@ Route::get('wanted', 'System\PropagationController@wanted');
 /* USERS */
 Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function () {
     Route::get('/', 'UserController@index');
+    Route::get('/' . trans('routes.create'), 'UserController@create');
+    Route::post('/', 'UserController@store');
+    Route::get('/{user}', 'UserController@show');
+    Route::get('/{user}/' . trans('routes.edit'), 'UserController@edit');
+    Route::put('/{user}/' . trans('routes.edit'), 'UserController@update');
+    Route::get('/{user}/' . trans('routes.delete'), 'UserController@deleteModal');
+    Route::delete('/{user}/' . trans('routes.delete'), 'UserController@destroy');
 
     Route::group(['prefix' => trans('users.schools.url'), 'namespace' => 'Schools'], function () {
         Route::get('/', 'SchoolController@index');
@@ -23,7 +30,7 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
             Route::get('/{user}/' . trans('routes.edit'), 'AdminController@edit');
             Route::put('/{user}/' . trans('routes.edit'), 'AdminController@update');
             Route::get('/{user}/' . trans('routes.delete'), 'AdminController@deleteModal');
-            Route::delete('/{user}/' . trans('routes.delete'), 'AdminController@delete');
+            Route::delete('/{user}/' . trans('routes.delete'), 'AdminController@destroy');
         });
 
         Route::group(['prefix' => '/{school}/' . trans('users.teachers.url')], function () {
@@ -33,8 +40,8 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
             Route::get('/{user}', 'TeacherController@show');
             Route::get('/{user}/' . trans('routes.edit'), 'TeacherController@edit');
             Route::put('/{user}/' . trans('routes.edit'), 'TeacherController@update');
-            Route::get('/{user}/' . trans('routes.delete'), 'TeacherController@deleteModal');
-            Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@delete');
+            Route::get('/{user}/' . trans('routes.delete'), 'TeacherControllers@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
         });
 
         Route::group(['prefix' => '/{school}/' . trans('users.students.url')], function () {
@@ -45,7 +52,7 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
             Route::get('/{user}/' . trans('routes.edit'), 'StudentController@edit');
             Route::put('/{user}/' . trans('routes.edit'), 'StudentController@update');
             Route::get('/{user}/' . trans('routes.delete'), 'StudentController@deleteModal');
-            Route::delete('/{user}/' . trans('routes.delete'), 'StudentController@delete');
+            Route::delete('/{user}/' . trans('routes.delete'), 'StudentController@destroy');
         });
 
     });
@@ -63,10 +70,10 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
 //Route::get(trans('users.url') . '/' . trans('users.groups.url'), 'Users\GroupController@index');
 
 /* PROFILE */
-//Route::get('/uzivatel/skupiny', 'Profile\ProfileController@groups');
-//
-//Route::get('/uzivatel/zmena-hesla', 'Profile\ProfileController@edit');
-//Route::post('/uzivatel/zmena-hesla', 'Profile\ProfileController@update');
+Route::get('/profil/skupiny', 'Profile\ProfileController@groups');
+
+Route::get('/profil/zmena-hesla', 'Profile\ProfileController@edit');
+Route::post('/profil/zmena-hesla', 'Profile\ProfileController@update');
 
 /* GROUPS */
 //Route::resource('skupiny', 'Users\GroupController');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 
 use Facades\App\Services\Users\UserService;
@@ -19,7 +20,7 @@ class UserController extends Controller
     {
         $users = UserService::all();
 
-        return view('users.index', compact(['users']));
+        return view('users.users.index', compact(['users']));
     }
 
     /**
@@ -51,9 +52,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $userObj = UserService::getOrFail($user);
+
+        return view('users.users.show', compact(['userObj']));
     }
 
     /**
@@ -63,9 +66,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $userObj = UserService::getOrFail($user);
+
+        return view('users.users.edit', compact(['userObj']));
     }
 
     /**
@@ -76,9 +81,27 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $userObj = UserService::getOrFail($user);
+
+        $userObj = UserService::update($userObj, $request);
+
+        return redirect(action('Users\UserController@show', $userObj->code));
+    }
+
+    /**
+     * Show modal fo destroy confirmation
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteModal($user)
+    {
+        $userObj = UserService::getOrFail($user);
+
+        return view('users.users.delete', compact(['userObj']));
     }
 
     /**
@@ -88,8 +111,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user)
     {
+        $userObj = UserService::getOrFail($user);
+
+        UserService::destroy($userObj);
+
         return redirect(action('Users/UsersController@index'));
     }
 }

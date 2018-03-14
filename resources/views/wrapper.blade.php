@@ -31,7 +31,29 @@
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
-    })
+    });
+
+    $(function () {
+        //todo loader
+
+        $('a.btn-modal').click(function(e){
+            e.preventDefault();
+
+            $.ajax({
+                'url': $(this).attr('href'),
+                'method': 'get'
+            }).done(function(data){
+                $modal = $(data);
+                $('body').append($modal);
+                $modal.modal('show');
+
+                $modal.on('hidden.bs.modal', function(){
+                    $modal.remove();
+                })
+
+            })
+        });
+    });
 </script>
 @yield('scripts')
 

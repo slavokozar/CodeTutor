@@ -12,11 +12,16 @@
         <li role="presentation">
             <a href="{{ action('Users\Schools\SchoolController@index') }}" class="btn">{{ trans('users.schools.link') }}</a>
         </li>
-        <li role="presentation">
-            <a href="{{ action('Users\GroupController@index') }}" class="btn">{{ trans('users.groups.link') }}</a>
-        </li>
+        {{--<li role="presentation">--}}
+            {{--<a href="{{ action('Users\GroupController@index') }}" class="btn">{{ trans('users.groups.link') }}</a>--}}
+        {{--</li>--}}
     </ul>
 
+    @php
+        $_table_action = function($userObj){
+            return action('Users\UserController@show', [$userObj->code]);
+        };
+    @endphp
     @include('users.partials.index')
 
 @endsection
