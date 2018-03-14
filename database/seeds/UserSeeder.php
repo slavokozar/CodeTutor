@@ -24,16 +24,18 @@ class UserSeeder extends Seeder
     {
 
         $slavo = User::create([
-            'name' => 'Slavomír Kožár',
+            'name' => 'Slavomír',
+            'surname' => 'Kožár',
             'email' => 'slavo.kozar@gmail.com',
             'birthdate' => '1993-03-24',
             'code' => 'a001',
             'role' => UserRoles::admin,
-            'password' => bcrypt('secret')
+            'password' => bcrypt('coloportus')
         ]);
 
         $kamil = User::create([
-            'name' => 'Kamil Triščík',
+            'name' => 'Kamil',
+            'surname' => ' Triščík',
             'email' => 'kamil.triscik@gmail.com',
             'birthdate' => '1993-01-28',
             'code' => 'a002',
@@ -42,7 +44,8 @@ class UserSeeder extends Seeder
         ]);
 
         $lukas = User::create([
-            'name' => 'Lukáš Figura',
+            'name' => 'Lukáš',
+            'surname' => 'Figura',
             'email' => 'figurluk@gmail.com',
             'birthdate' => '1994-06-24',
             'code' => 'a003',
@@ -77,7 +80,9 @@ class UserSeeder extends Seeder
             // create teachers
             for($j = 0; $j < 2; $j++){
                 $teacher = User::create([
-                    'name' => $faker->name,
+                    'title' => $faker->title,
+                    'name' => $faker->firstName,
+                    'surname' => $faker->lastName,
                     'email' => $faker->email,
                     'password' => bcrypt($faker->password),
                     'code' => uniqid(),
@@ -91,7 +96,8 @@ class UserSeeder extends Seeder
             // create students
             for($j = 0; $j < 5; $j++){
                 $student = User::create([
-                    'name' => $faker->name,
+                    'name' => $faker->firstName,
+                    'surname' => $faker->lastName,
                     'email' => $faker->email,
                     'password' => bcrypt($faker->password),
                     'code' => uniqid(),
