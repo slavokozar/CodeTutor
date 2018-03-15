@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Response;
 class UserService
 {
     public function all(){
+
+        //todo scope
+
         return User::all();
     }
 
@@ -38,8 +41,27 @@ class UserService
         Response::make('User ' . $code . 'not found!', 404);
     }
 
+
+    public function blank(){
+        return new User();
+    }
+
+
+    public function create($data){
+        $data['code'] = uniqid();
+        $userObj = User::create($data);
+
+        return $userObj;
+    }
+
+
+
+
     public function update($userObj, $data){
+        $userObj->title = $data['title'];
         $userObj->name = $data['name'];
+        $userObj->surname = $data['surname'];
+
         $userObj->birthdate = $data['birthdate'];
 
         $userObj->save();
@@ -57,6 +79,9 @@ class UserService
 
         return $userObj;
     }
+
+
+
 
     public function destroy($userObj){
 

@@ -25,15 +25,30 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $userObj = UserService::getOrFail($this->route()->parameters['user']);
 
-        return [
-            'name' => 'required|string|min:5',
-            'email' => [
-                'required',
-                Rule::unique('users')->ignore($userObj->id),
-            ],
+        $rules = [
+            'title' => 'nullable|string|regex:/(^([a-zA-z\.\-]+)$)/u',
+            'name' => 'required|string|alpha|min:2',
+            'surname' => 'required|string|alpha|min:2',
             'birthdate' => 'required|date',
         ];
+
+        $parameters = $this->route()->parameters;
+        if(isset($parameters['user'])){
+
+            $userObj = UserService::getOrFail($parameters['user']);
+
+            $rules['email'] = [
+                'required|email',
+                Rule::unique('users')->ignore($userObj->id),
+            ];
+
+        }else{
+
+            $rules['email'] = 'required|email';
+
+        }
+
+        return $rules;
     }
 }

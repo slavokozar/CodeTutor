@@ -13,17 +13,20 @@
 
     <h1>{{ $userObj->name }}</h1>
 
-    <form class="form-horizontal" action="{{action('Users\UserController@update', $userObj->code)}}" method="post">
+    <form class="form-horizontal" action="{{ $userObj->id == null ? action('Users\UserController@store') : action('Users\UserController@update', $userObj->code)}}" method="post">
         {!! csrf_field() !!}
+        @if($userObj->id != null)
         <input type="hidden" name="_method" value="put">
+        @endif
 
         <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-            <li role="presentation">
-                <button class="btn btn-danger" type="submit">{{ trans('general.buttons.save') }}</button>
+            <li class="active" role="presentation">
+                <button class="btn" type="submit">{{ trans('general.buttons.save') }}</button>
             </li>
         </ul>
 
         <main role="main">
+            @if($userObj->id != null)
             <div class="row">
                 <div class="col-md-20">
                     <label for="">#</label>
@@ -32,12 +35,31 @@
                     {{$userObj->code}}
                 </div>
             </div>
+            @endif
+            <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+                <label class="col-md-20" for="">{{ trans('users.labels.title') }}</label>
+                <div class="col-md-40">
+                    <input class="form-control" type="text" name="title" value="{{ old('title', $userObj->title) }}"/>
+                    @if( $errors->has('title') )
+                        <span class="help-block">{{ $errors->first('title') }}</span>
+                    @endif
+                </div>
+            </div>
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <label class="col-md-20" for="">{{ trans('users.labels.name') }}</label>
                 <div class="col-md-40">
                     <input class="form-control" type="text" name="name" value="{{ old('name', $userObj->name) }}"/>
                     @if( $errors->has('name') )
                         <span class="help-block">{{ $errors->first('name') }}</span>
+                    @endif
+                </div>
+            </div>
+            <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }}">
+                <label class="col-md-20" for="">{{ trans('users.labels.surname') }}</label>
+                <div class="col-md-40">
+                    <input class="form-control" type="text" name="surname" value="{{ old('surname', $userObj->surname) }}"/>
+                    @if( $errors->has('surname') )
+                        <span class="help-block">{{ $errors->first('surname') }}</span>
                     @endif
                 </div>
             </div>
@@ -59,7 +81,15 @@
                     @endif
                 </div>
             </div>
+            <div class="form-group{{ $errors->has('schools') ? ' has-error' : '' }}">
+                <label class="col-md-20" for="">{{ trans('users.labels.schools') }}</label>
+                <div class="col-md-40">
 
+                    @if( $errors->has('schools') )
+                        <span class="help-block">{{ $errors->first('schools') }}</span>
+                    @endif
+                </div>
+            </div>
         </main>
 
 

@@ -34,9 +34,9 @@
                 <td>
                     <?php if(!isset($_table_skip['name'])): ?>
                         <?php if(isset($_table_action)): ?>
-                            <a href="<?php echo e($_table_action($userObj)); ?>"><?php echo e($userObj->name); ?></a>
+                            <a href="<?php echo e($_table_action($userObj)); ?>"><?php echo e($userObj->title); ?> <?php echo e($userObj->name); ?> <?php echo e($userObj->surname); ?></a>
                         <?php else: ?>
-                            <?php echo e($userObj->name); ?>
+                            <?php echo e($userObj->title); ?> <?php echo e($userObj->name); ?> <?php echo e($userObj->surname); ?>
 
                         <?php endif; ?>
                     <?php endif; ?>

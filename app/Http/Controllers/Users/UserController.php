@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\UserRequest;
-use Illuminate\Http\Request;
 
 use Facades\App\Services\Users\UserService;
+use Facades\App\Services\Users\Groups\GroupService;
+use Facades\App\Services\Users\Schools\SchoolService;
+
 
 class UserController extends Controller
 {
@@ -30,7 +32,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return redirect(action('Users/UsersController@index'));
+        $userObj = UserService::blank();
+
+        $schools = SchoolService::all();
+
+        return view('users.users.edit', compact(['userObj','schools']));
     }
 
     /**
@@ -40,9 +46,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        return redirect(action('Users/UsersController@index'));
+        $userObj = UserService::create($request->all());
+
+        return redirect('Users\UserController@show', [$userObj->code]);
     }
 
     /**
@@ -70,7 +78,10 @@ class UserController extends Controller
     {
         $userObj = UserService::getOrFail($user);
 
-        return view('users.users.edit', compact(['userObj']));
+        $schools = SchoolService::all();
+        $groups = GroupService::all();
+
+        return view('users.users.edit', compact(['userObj', 'schools', 'groups']));
     }
 
     /**
@@ -85,7 +96,7 @@ class UserController extends Controller
     {
         $userObj = UserService::getOrFail($user);
 
-        $userObj = UserService::update($userObj, $request);
+        $userObj = UserService::update($userObj, $request->all());
 
         return redirect(action('Users\UserController@show', $userObj->code));
     }

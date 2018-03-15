@@ -33,9 +33,9 @@
                 <td>
                     @if(!isset($_table_skip['name']))
                         @if(isset($_table_action))
-                            <a href="{{ $_table_action($userObj) }}">{{$userObj->name}}</a>
+                            <a href="{{ $_table_action($userObj) }}">{{$userObj->title}} {{$userObj->name}} {{$userObj->surname}}</a>
                         @else
-                            {{$userObj->name}}
+                            {{$userObj->title}} {{$userObj->name}} {{$userObj->surname}}
                         @endif
                     @endif
                 </td>

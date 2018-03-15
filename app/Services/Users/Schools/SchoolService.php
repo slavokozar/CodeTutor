@@ -15,6 +15,7 @@ class SchoolService
 {
     public function all()
     {
+        //todo scope
         return School::all();
     }
 

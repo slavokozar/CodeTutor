@@ -9,18 +9,8 @@ Route::get('wanted', 'System\PropagationController@wanted');
 
 /* USERS */
 Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function () {
-    Route::get('/', 'UserController@index');
-    Route::get('/' . trans('routes.create'), 'UserController@create');
-    Route::post('/', 'UserController@store');
-    Route::get('/{user}', 'UserController@show');
-    Route::get('/{user}/' . trans('routes.edit'), 'UserController@edit');
-    Route::put('/{user}/' . trans('routes.edit'), 'UserController@update');
-    Route::get('/{user}/' . trans('routes.delete'), 'UserController@deleteModal');
-    Route::delete('/{user}/' . trans('routes.delete'), 'UserController@destroy');
 
     Route::group(['prefix' => trans('users.schools.url'), 'namespace' => 'Schools'], function () {
-        Route::get('/', 'SchoolController@index');
-        Route::get('/{school}', 'SchoolController@show');
 
         Route::group(['prefix' => '/{school}/' . trans('users.admins.url')], function () {
             Route::get('/', 'AdminController@index');
@@ -55,8 +45,24 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
             Route::delete('/{user}/' . trans('routes.delete'), 'StudentController@destroy');
         });
 
+        Route::get('/', 'SchoolController@index');
+        Route::get('/' . trans('routes.create'), 'SchoolController@create');
+        Route::post('/', 'SchoolController@store');
+        Route::get('/{school}', 'SchoolController@show');
+        Route::get('/{school}/' . trans('routes.edit'), 'SchoolController@edit');
+        Route::put('/{school}/' . trans('routes.edit'), 'SchoolController@update');
+        Route::get('/{school}/' . trans('routes.delete'), 'SchoolController@deleteModal');
+        Route::delete('/{school}/' . trans('routes.delete'), 'SchoolController@destroy');
     });
 
+    Route::get('/', 'UserController@index');
+    Route::get('/' . trans('routes.create'), 'UserController@create');
+    Route::post('/', 'UserController@store');
+    Route::get('/{user}', 'UserController@show');
+    Route::get('/{user}/' . trans('routes.edit'), 'UserController@edit');
+    Route::put('/{user}/' . trans('routes.edit'), 'UserController@update');
+    Route::get('/{user}/' . trans('routes.delete'), 'UserController@deleteModal');
+    Route::delete('/{user}/' . trans('routes.delete'), 'UserController@destroy');
 });
 
 

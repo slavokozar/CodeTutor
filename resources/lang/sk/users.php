@@ -1,13 +1,15 @@
-<?php
+\<?php
 
 return [
     'url' => 'uzivatelia',
 
     'labels' => [
+        'title' => 'titul',
         'name' => 'meno',
+        'surname' => 'priezvisko',
         'email' => 'email',
         'roles' => 'roly',
-        'school' => 'škola',
+        'schools' => 'školy',
         'groups' => 'skupiny',
         'birthdate' => 'Dátum narodenia',
     ],
@@ -21,6 +23,8 @@ return [
         'url' => 'uzivatelia',
         'heading' => 'Užívatelia',
         'link' => 'Užívatelia',
+        'no-groups' => 'Tento užívateľ nie je členom žiadnej skupiny.',
+        'no-schools' => 'Tento užívateľ nie je členom žiadnej školy.'
     ],
 
 
