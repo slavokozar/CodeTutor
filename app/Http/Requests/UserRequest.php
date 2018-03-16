@@ -39,7 +39,8 @@ class UserRequest extends FormRequest
             $userObj = UserService::getOrFail($parameters['user']);
 
             $rules['email'] = [
-                'required|email',
+                'required',
+                'email',
                 Rule::unique('users')->ignore($userObj->id),
             ];
 

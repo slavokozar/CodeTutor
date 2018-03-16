@@ -13,6 +13,5 @@ abstract class GroupRoles
 {
     const admin = 'ADMIN';
     const teacher = 'TEACHER';
-
     const student = null;
 }

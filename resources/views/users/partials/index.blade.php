@@ -43,19 +43,23 @@
                     <td>{{$userObj->email}}</td>
                 @endif
                 @if(!isset($_table_skip['roles']))
-                    <td>{{$userObj->role}}</td>
+                    <td>
+                        @if($userObj->role)
+                            {{ trans('users.users.roles')[$userObj->role] }}
+                        @endif
+                    </td>
                 @endif
                 @if(!isset($_table_skip['school']))
                     <td>
                         @foreach($userObj->schools as $schoolObj)
-                            {{$schoolObj->name}}
+                            {{$schoolObj->name}} @if($schoolObj->pivot->role)({{ trans('users.schools.roles')[$schoolObj->pivot->role] }})@endif
                         @endforeach
                     </td>
                 @endif
                 @if(!isset($_table_skip['groups']))
                     <td>
                         @foreach($userObj->groups as $groupObj)
-                            {{$groupObj->name}}
+                            {{$groupObj->name}} @if($groupObj->pivot->role)({{ trans('users.groups.roles')[$groupObj->pivot->role] }})@endif
                         @endforeach
                     </td>
                 @endif

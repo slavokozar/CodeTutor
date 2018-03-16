@@ -7,6 +7,9 @@ $('.selectpicker').selectpicker({
 	size : 4
 });
 
+$('.js-select').select2();
+
+
 setTimeout(function () {
 	$('#flash div.alert').not('.alert-important').hide("slide", { direction: "right" }, 1000);
 },3000);

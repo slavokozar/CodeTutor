@@ -24,7 +24,12 @@ return [
         'heading' => 'Užívatelia',
         'link' => 'Užívatelia',
         'no-groups' => 'Tento užívateľ nie je členom žiadnej skupiny.',
-        'no-schools' => 'Tento užívateľ nie je členom žiadnej školy.'
+        'no-schools' => 'Tento užívateľ nie je členom žiadnej školy.',
+        'roles' => [
+            'ADMIN' => 'správca',
+            'TEACHER' => 'učiteľ',
+            '' => 'študent',
+        ],
     ],
 
 
@@ -32,6 +37,12 @@ return [
         'url' => 'skupiny',
         'heading' => 'Skupiny',
         'link' => 'Skupiny',
+        'add' => 'Pridať do skupiny',
+        'roles' => [
+            'ADMIN' => 'správca',
+            'TEACHER' => 'učiteľ',
+            '' => 'študent',
+        ],
     ],
 
     'schools' => [
@@ -39,6 +50,7 @@ return [
         'heading' => 'Školy',
         'link' => 'Školy',
         'involved' => 'Zapojené školy',
+        'add' => 'Pridať do školy',
         'labels' => [
             'name' => 'názov',
             'address' => 'adresa',
@@ -46,7 +58,12 @@ return [
             'admins' => 'správcovia',
             'teachers' => 'učitelia',
             'students' => 'študenti',
-        ]
+        ],
+        'roles' => [
+            'ADMIN' => 'správca',
+            'TEACHER' => 'učiteľ',
+            '' => 'študent',
+        ],
     ],
 
     'admins' => [

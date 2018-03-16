@@ -20,36 +20,39 @@
         </li>
     </ul>
 
-    <?php echo $__env->make('users.partials.show', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <main role="main">
 
-    <section id="schools">
-        <h3><?php echo e(trans('users.schools.heading')); ?></h3>
+        <?php echo $__env->make('users.partials.show', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
-        <?php  $schools = $userObj->schools  ?>
-        <?php if($schools->count() > 0): ?>
-            <ul class="list-group">
-            <?php $__currentLoopData = $schools; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schoolObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <li class="list-group-item"><?php echo e($schoolObj->name); ?></li>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
-        <?php else: ?>
-            <div class="alert alert-info" role="alert"><?php echo e(trans('users.users.no-schools')); ?></div>
-        <?php endif; ?>
-    </section>
+        <section id="schools">
+            <h3><?php echo e(trans('users.schools.heading')); ?></h3>
 
-    <section id="groups">
-        <h3><?php echo e(trans('users.groups.heading')); ?></h3>
+            <?php  $schools = $userObj->schools  ?>
+            <?php if($schools->count() > 0): ?>
+                <ul class="list-group">
+                <?php $__currentLoopData = $schools; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schoolObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li class="list-group-item"><?php echo e($schoolObj->name); ?> (<?php echo e(trans('users.schools.roles')[$schoolObj->pivot->role]); ?>)</li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </ul>
+            <?php else: ?>
+                <div class="alert alert-info" role="alert"><?php echo e(trans('users.users.no-schools')); ?></div>
+            <?php endif; ?>
+        </section>
 
-        <?php  $groups = $userObj->groups  ?>
-        <?php if($groups->count() > 0): ?>
-            <ul class="list-group">
-            <?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <li class="list-group-item"><?php echo e($groupObj->name); ?></li>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
-        <?php else: ?>
-            <div class="alert alert-info" role="alert"><?php echo e(trans('users.users.no-groups')); ?></div>
-        <?php endif; ?>
-    </section>
+        <section id="groups">
+            <h3><?php echo e(trans('users.groups.heading')); ?></h3>
+
+            <?php  $groups = $userObj->groups  ?>
+            <?php if($groups->count() > 0): ?>
+                <ul class="list-group">
+                <?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li class="list-group-item"><?php echo e($groupObj->name); ?> (<?php echo e(trans('users.groups.roles')[$groupObj->pivot->role]); ?>)</li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </ul>
+            <?php else: ?>
+                <div class="alert alert-info" role="alert"><?php echo e(trans('users.users.no-groups')); ?></div>
+            <?php endif; ?>
+        </section>
+    </main>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout_full', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
