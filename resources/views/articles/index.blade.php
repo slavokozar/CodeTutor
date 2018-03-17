@@ -38,7 +38,7 @@
                 <a href="{{action('Articles\ArticleController@show',[$articleObj->code])}}">
                     <h2 class="article-name">{{$articleObj->name}}</h2>
                 </a>
-                <p class="assignment-author">{{$articleObj->author->name}} | {{$articleObj->created_at}}</p>
+                {{--<p class="assignment-author">{{$articleObj->author->name}} | {{$articleObj->created_at}}</p>--}}
                 <p>{!! $articleObj->description !!}</p>
                 <a href="{{action('Articles\ArticleController@show',[$articleObj->code])}}">Viac...</a>
             </div>

@@ -55,6 +55,51 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
         Route::delete('/{school}/' . trans('routes.delete'), 'SchoolController@destroy');
     });
 
+    Route::group(['prefix' => trans('users.groups.url'), 'namespace' => 'Groups'], function () {
+
+        Route::group(['prefix' => '/{groups}/' . trans('users.admins.url')], function () {
+            Route::get('/', 'AdminController@index');
+            Route::get('/' . trans('routes.create'), 'AdminController@create');
+            Route::post('/', 'AdminController@store');
+            Route::get('/{user}', 'AdminController@show');
+            Route::get('/{user}/' . trans('routes.edit'), 'AdminController@edit');
+            Route::put('/{user}/' . trans('routes.edit'), 'AdminController@update');
+            Route::get('/{user}/' . trans('routes.delete'), 'AdminController@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'AdminController@destroy');
+        });
+
+        Route::group(['prefix' => '/{groups}/' . trans('users.teachers.url')], function () {
+            Route::get('/', 'TeacherController@index');
+            Route::get('/' . trans('routes.create'), 'TeacherController@create');
+            Route::post('/', 'TeacherController@store');
+            Route::get('/{user}', 'TeacherController@show');
+            Route::get('/{user}/' . trans('routes.edit'), 'TeacherController@edit');
+            Route::put('/{user}/' . trans('routes.edit'), 'TeacherController@update');
+            Route::get('/{user}/' . trans('routes.delete'), 'TeacherControllers@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
+        });
+
+        Route::group(['prefix' => '/{groups}/' . trans('users.students.url')], function () {
+            Route::get('/', 'StudentController@index');
+            Route::get('/' . trans('routes.create'), 'StudentController@create');
+            Route::post('/', 'StudentController@store');
+            Route::get('/{user}', 'StudentController@show');
+            Route::get('/{user}/' . trans('routes.edit'), 'StudentController@edit');
+            Route::put('/{user}/' . trans('routes.edit'), 'StudentController@update');
+            Route::get('/{user}/' . trans('routes.delete'), 'StudentController@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'StudentController@destroy');
+        });
+
+        Route::get('/', 'GroupController@index');
+        Route::get('/' . trans('routes.create'), 'GroupController@create');
+        Route::post('/', 'GroupController@store');
+        Route::get('/{group}', 'GroupController@show');
+        Route::get('/{group}/' . trans('routes.edit'), 'GroupController@edit');
+        Route::put('/{group}/' . trans('routes.edit'), 'GroupController@update');
+        Route::get('/{group}/' . trans('routes.delete'), 'GroupController@deleteModal');
+        Route::delete('/{group}/' . trans('routes.delete'), 'GroupController@destroy');
+    });
+
     Route::get('/', 'UserController@index');
     Route::get('/' . trans('routes.create'), 'UserController@create');
     Route::post('/', 'UserController@store');
@@ -158,4 +203,5 @@ Route::post('clanky/{article}/odstranenie', 'Articles\ArticleController@destroy'
 /* AUTH */
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
+
 

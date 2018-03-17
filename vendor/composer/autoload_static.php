@@ -10,12 +10,12 @@ class ComposerStaticInit9f745648e4805a4aaac3a846836ee04b
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
-        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'e23faeee409e941dc9b4c80386209c39' => __DIR__ . '/..' . '/laracasts/flash/src/Laracasts/Flash/functions.php',
@@ -120,8 +120,8 @@ class ComposerStaticInit9f745648e4805a4aaac3a846836ee04b
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -410,6 +410,7 @@ class ComposerStaticInit9f745648e4805a4aaac3a846836ee04b
         'App\\Http\\Requests\\ArticleRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ArticleRequest.php',
         'App\\Http\\Requests\\AssignmentRequest' => __DIR__ . '/../..' . '/app/Http/Requests/AssignmentRequest.php',
         'App\\Http\\Requests\\Test\\SettingsRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Test/SettingsRequest.php',
+        'App\\Http\\Requests\\UserRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UserRequest.php',
         'App\\Models\\Article' => __DIR__ . '/../..' . '/app/Models/Article.php',
         'App\\Models\\ArticleTag' => __DIR__ . '/../..' . '/app/Models/ArticleTag.php',
         'App\\Models\\Assignment' => __DIR__ . '/../..' . '/app/Models/Assignment.php',
@@ -445,6 +446,7 @@ class ComposerStaticInit9f745648e4805a4aaac3a846836ee04b
         'App\\Services\\Assignments\\TestService' => __DIR__ . '/../..' . '/app/Services/Assignments/TestService.php',
         'App\\Services\\CommentService' => __DIR__ . '/../..' . '/app/Services/CommentService.php',
         'App\\Services\\Users\\GroupService' => __DIR__ . '/../..' . '/app/Services/Users/GroupService.php',
+        'App\\Services\\Users\\Groups\\GroupService' => __DIR__ . '/../..' . '/app/Services/Users/Groups/GroupService.php',
         'App\\Services\\Users\\Schools\\AdminService' => __DIR__ . '/../..' . '/app/Services/Users/Schools/AdminService.php',
         'App\\Services\\Users\\Schools\\SchoolService' => __DIR__ . '/../..' . '/app/Services/Users/Schools/SchoolService.php',
         'App\\Services\\Users\\Schools\\StudentService' => __DIR__ . '/../..' . '/app/Services/Users/Schools/StudentService.php',

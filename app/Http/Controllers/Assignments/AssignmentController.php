@@ -6,15 +6,12 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\AssignmentRequest;
 
-use Facades\App\Services\Assignments\TestService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
-use Facades\App\Services\Users\GroupService;
+use Facades\App\Services\Users\Groups\GroupService;
 use Facades\App\Services\Users\UserService;
-use Facades\App\Services\Assignments\AssignmentService;
-use Facades\App\Services\Assignments\ProgrammingLanguageService;
 
 class AssignmentController extends Controller
 {
@@ -49,7 +46,7 @@ class AssignmentController extends Controller
 
     public function create()
     {
-        $groups = UserService::lecturingGroups(Auth::user());
+        $groups = GroupService::all();
         $languages = ProgrammingLanguageService::all();
 
         return view('assignments.create', compact(['groups', 'languages']));
