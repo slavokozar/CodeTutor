@@ -6,16 +6,16 @@
 
     <h1><?php echo e(trans('users.users.heading')); ?></h1>
 
-    <div class="clearfix">
+    <div id="content-nav-tabs">
 
-        <ul id="content-nav-tabs" class="nav nav-tabs">
+        <ul class="nav nav-tabs">
             <li role="presentation">
                 <a href="<?php echo e(action('Users\Schools\SchoolController@index')); ?>" class="btn"><?php echo e(trans('users.schools.link')); ?></a>
             </li>
 
         </ul>
 
-        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
+        <ul class="nav nav-tabs">
             <li role="presentation">
                 <a href="<?php echo e(action('Users\Schools\SchoolController@index')); ?>" class="btn"><?php echo e(trans('users.schools.link')); ?></a>
             </li>
