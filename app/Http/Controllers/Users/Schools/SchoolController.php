@@ -10,8 +10,10 @@ namespace App\Http\Controllers\Users\Schools;
 
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\Users\SchoolRequest;
+
 use Facades\App\Services\Users\Schools\SchoolService;
-use Illuminate\Http\Request;
+
 
 class SchoolController extends Controller
 {
@@ -34,7 +36,9 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::blank();
+
+        return view('users.schools.edit', compact(['schoolObj']));
     }
 
     /**
@@ -44,9 +48,11 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SchoolRequest $request)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::create($request->all());
+
+        return redirect(action('Users\Schools\SchoolController@show', [$schoolObj->code]));
     }
 
     /**
@@ -56,9 +62,10 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($code)
+    public function show($school)
     {
-        $schoolObj = SchoolService::getOrFail($code);
+        $schoolObj = SchoolService::getOrFail($school);
+
         return view('users.schools.show', compact(['schoolObj']));
     }
 
@@ -69,9 +76,11 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+
+        return view('users.schools.edit', compact(['schoolObj']));
     }
 
     /**
@@ -82,9 +91,27 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SchoolRequest $request, $school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+
+        $schoolObj = SchoolService::update($schoolObj, $request->all());
+
+        return redirect(action('Users\Schools\SchoolController@show', $schoolObj->code));
+    }
+
+    /**
+     * Show modal fo destroy confirmation
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteModal($school)
+    {
+        $schoolObj = SchoolService::getOrFail($school);
+
+        return view('users.schools.delete', compact(['schoolObj']));
     }
 
     /**
@@ -94,8 +121,12 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($school)
     {
+        $schoolObj = SchoolService::getOrFail($school);
+
+        SchoolService::destroy($schoolObj);
+
         return redirect(action('Users/UsersController@index'));
     }
 }

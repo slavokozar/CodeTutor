@@ -69,10 +69,12 @@ class ArticleController extends Controller
     {
         $articleObj = ArticleService::getOrFail($code);
 
-        $content = ArticleService::content($articleObj);
-        $comments = ArticleService::comments($articleObj);
 
-        return view('articles.show',compact(['articleObj','contentObj','comments']));
+//        $content = $articleObj->text;
+        $content = ArticleService::content($articleObj);
+//        $comments = ArticleService::comments($articleObj);
+
+        return view('articles.show',compact(['articleObj','content','comments']));
     }
 
     /**

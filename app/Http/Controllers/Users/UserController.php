@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\Users\UserRequest;
 
 use Facades\App\Services\Users\UserService;
 use Facades\App\Services\Users\Groups\GroupService;
@@ -34,9 +34,7 @@ class UserController extends Controller
     {
         $userObj = UserService::blank();
 
-        $schools = SchoolService::all();
-
-        return view('users.users.edit', compact(['userObj','schools']));
+        return view('users.users.edit', compact(['userObj']));
     }
 
     /**
@@ -50,7 +48,7 @@ class UserController extends Controller
     {
         $userObj = UserService::create($request->all());
 
-        return redirect('Users\UserController@show', [$userObj->code]);
+        return redirect(action('Users\UserController@show', [$userObj->code]));
     }
 
     /**
@@ -78,10 +76,7 @@ class UserController extends Controller
     {
         $userObj = UserService::getOrFail($user);
 
-        $schools = SchoolService::all();
-        $groups = GroupService::all();
-
-        return view('users.users.edit', compact(['userObj', 'schools', 'groups']));
+        return view('users.users.edit', compact(['userObj']));
     }
 
     /**
@@ -111,6 +106,9 @@ class UserController extends Controller
     public function deleteModal($user)
     {
         $userObj = UserService::getOrFail($user);
+
+        return "ferko";
+        return $userObj;
 
         return view('users.users.delete', compact(['userObj']));
     }

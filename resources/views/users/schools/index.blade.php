@@ -13,15 +13,17 @@
 
     <h1>{{ trans('users.schools.heading') }}</h1>
 
-    <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-        <li role="presentation">
-            <a href="{{ action('Users\Schools\SchoolController@create') }}" class="btn">{{ trans('general.buttons.create') }}</a>
-        </li>
-        {{--<li role="presentation">--}}
-        {{--<a href="{{ action('Users\GroupController@index') }}" class="btn">{{ trans('users.groups.link') }}</a>--}}
-        {{--</li>--}}
-    </ul>
-
+    <div class="subnavigation clearfix">
+        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
+            <li role="presentation">
+                <a href="{{ action('Users\Schools\SchoolController@create') }}"
+                   class="btn">{{ trans('general.buttons.create') }}</a>
+            </li>
+            {{--<li role="presentation">--}}
+            {{--<a href="{{ action('Users\GroupController@index') }}" class="btn">{{ trans('users.groups.link') }}</a>--}}
+            {{--</li>--}}
+        </ul>
+    </div>
 
     <table class="table">
         <thead>
@@ -31,8 +33,10 @@
             <th>{{ trans('users.schools.labels.address') }}</th>
             <th>{{ trans('users.schools.labels.url') }}</th>
             <th><i class="fa fa-wrench" aria-hidden="true"></i></th>
-            <th><i class="fa fa-user" data-toggle="tooltip" title="{{ trans('users.schools.labels.teachers') }}" aria-hidden="true"></i></th>
-            <th><i class="fa fa-graduation-cap" data-toggle="tooltip" title="{{ trans('users.schools.labels.students') }}" aria-hidden="true"></i></th>
+            <th><i class="fa fa-user" data-toggle="tooltip" title="{{ trans('users.schools.labels.teachers') }}"
+                   aria-hidden="true"></i></th>
+            <th><i class="fa fa-graduation-cap" data-toggle="tooltip"
+                   title="{{ trans('users.schools.labels.students') }}" aria-hidden="true"></i></th>
 
         </tr>
         </thead>
