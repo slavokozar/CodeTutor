@@ -1404,7 +1404,7 @@
         <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
-              <caret line="124" column="0" lean-forward="true" selection-start-line="119" selection-start-column="4" selection-end-line="124" selection-end-column="0" />
+              <caret line="124" column="0" lean-forward="false" selection-start-line="119" selection-start-column="4" selection-end-line="124" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -2366,7 +2366,7 @@
         <state relative-caret-position="17">
           <caret line="2" column="3" lean-forward="false" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
           <folding>
-            <element signature="e#7#132#0#PHP" expanded="true" />
+            <element signature="e#7#132#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2510,7 +2510,7 @@
     <entry file="file://$PROJECT_DIR$/routes/web.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
-          <caret line="124" column="0" lean-forward="true" selection-start-line="119" selection-start-column="4" selection-end-line="124" selection-end-column="0" />
+          <caret line="124" column="0" lean-forward="false" selection-start-line="119" selection-start-column="4" selection-end-line="124" selection-end-column="0" />
           <folding />
         </state>
       </provider>
