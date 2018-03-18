@@ -53,6 +53,19 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
         Route::put('/{school}/' . trans('routes.edit'), 'SchoolController@update');
         Route::get('/{school}/' . trans('routes.delete'), 'SchoolController@deleteModal');
         Route::delete('/{school}/' . trans('routes.delete'), 'SchoolController@destroy');
+
+    });
+
+
+    Route::group(['prefix' => trans('users.groups.url'), 'namespace' => 'Groups'], function () {
+        Route::get('/', 'GroupController@index');
+        Route::get('/' . trans('routes.create'), 'GroupController@create');
+        Route::post('/', 'GroupController@store');
+        Route::get('/{group}', 'GroupController@show');
+        Route::get('/{group}/' . trans('routes.edit'), 'GroupController@edit');
+        Route::put('/{group}/' . trans('routes.edit'), 'GroupController@update');
+        Route::get('/{group}/' . trans('routes.delete'), 'GroupController@deleteModal');
+        Route::delete('/{group}/' . trans('routes.delete'), 'GroupController@destroy');
     });
 
     Route::get('/', 'UserController@index');
