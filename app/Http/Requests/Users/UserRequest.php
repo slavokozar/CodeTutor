@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Users;
+
+use Illuminate\Foundation\Http\FormRequest;
 
 use Facades\App\Services\Users\UserService;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
