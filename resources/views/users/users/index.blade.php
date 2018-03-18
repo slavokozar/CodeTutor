@@ -1,12 +1,13 @@
 @extends('layout_full')
 
-@section('content')
+
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
         <li class="active">{{ trans('users.users.link') }}</li>
     </ol>
 
     <h1>{{ trans('users.users.heading') }}</h1>
+
 
 
     <div class="subnavigation clearfix">
@@ -24,6 +25,7 @@
         </ul>
     </div>
 
+       
     @php
         $_table_action = function($userObj){
             return action('Users\UserController@show', [$userObj->code]);
