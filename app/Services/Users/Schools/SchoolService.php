@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: slavo
+ * School: slavo
  * Date: 2.3.18
  * Time: 23:44
  */
@@ -39,4 +39,37 @@ class SchoolService
     {
         Response::make('School ' . $code . 'not found!', 404);
     }
+
+    
+    public function blank(){
+        return new School();
+    }
+
+
+    public function create($data){
+        $data['code'] = uniqid();
+        $schoolObj = School::create($data);
+
+        return $schoolObj;
+    }
+
+
+
+
+    public function update($schoolObj, $data){
+        $schoolObj->name = $data['name'];
+        $schoolObj->address = $data['address'];
+
+        $schoolObj->url = $data['url'];
+
+        $schoolObj->save();
+
+        return $schoolObj;
+    }
+    
+
+    public function destroy($schoolObj){
+
+    }
+
 }

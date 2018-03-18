@@ -134,7 +134,10 @@ class StudentController extends Controller
      */
     public function destroy($school, $user)
     {
-        $schoolObj = SchoolService::getOrFail($code);
+        $schoolObj = SchoolService::getOrFail($user);
+
+
+
         return redirect(action('Users/UsersController@index'));
     }
 }

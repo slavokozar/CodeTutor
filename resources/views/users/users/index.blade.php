@@ -8,14 +8,21 @@
 
     <h1>{{ trans('users.users.heading') }}</h1>
 
-    <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-        <li role="presentation">
-            <a href="{{ action('Users\Schools\SchoolController@index') }}" class="btn">{{ trans('users.schools.link') }}</a>
-        </li>
-        {{--<li role="presentation">--}}
+
+    <div class="subnavigation clearfix">
+        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
+
+
+            <li role="presentation">
+                <a href="{{ action('Users\Schools\SchoolController@index') }}"
+                   class="btn">{{ trans('users.schools.link') }}</a>
+            </li>
+            .btn-modal
+            {{--<li role="presentation">--}}
             {{--<a href="{{ action('Users\GroupController@index') }}" class="btn">{{ trans('users.groups.link') }}</a>--}}
-        {{--</li>--}}
-    </ul>
+            {{--</li>--}}
+        </ul>
+    </div>
 
     @php
         $_table_action = function($userObj){

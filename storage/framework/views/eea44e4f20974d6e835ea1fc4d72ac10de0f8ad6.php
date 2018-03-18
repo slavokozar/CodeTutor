@@ -6,14 +6,21 @@
 
     <h1><?php echo e(trans('users.users.heading')); ?></h1>
 
-    <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-        <li role="presentation">
-            <a href="<?php echo e(action('Users\Schools\SchoolController@index')); ?>" class="btn"><?php echo e(trans('users.schools.link')); ?></a>
-        </li>
-        
+
+    <div class="subnavigation clearfix">
+        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
+
+
+            <li role="presentation">
+                <a href="<?php echo e(action('Users\Schools\SchoolController@index')); ?>"
+                   class="btn"><?php echo e(trans('users.schools.link')); ?></a>
+            </li>
+            .btn-modal
             
-        
-    </ul>
+            
+            
+        </ul>
+    </div>
 
     <?php 
         $_table_action = function($userObj){

@@ -1,4 +1,4 @@
-\<?php
+<?php
 
 return [
     'url' => 'uzivatelia',
@@ -12,6 +12,8 @@ return [
         'schools' => 'školy',
         'groups' => 'skupiny',
         'birthdate' => 'Dátum narodenia',
+        'url' => 'Webová stránka',
+        'address' => 'Adresa',
     ],
 
     'delete' => [
@@ -43,6 +45,10 @@ return [
             'TEACHER' => 'učiteľ',
             '' => 'študent',
         ],
+        'delete' => [
+            'heading' => 'Vymazanie skupiny',
+            'message' => 'Naozaj si želáte vymazať skupinu <strong>:name</strong> ?'
+        ],
     ],
 
     'schools' => [
@@ -63,6 +69,10 @@ return [
             'ADMIN' => 'správca',
             'TEACHER' => 'učiteľ',
             '' => 'študent',
+        ],
+        'delete' => [
+            'heading' => 'Vymazanie školy',
+            'message' => 'Naozaj si želáte vymazať školu <strong>:name</strong> ?'
         ],
     ],
 
