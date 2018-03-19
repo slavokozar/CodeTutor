@@ -6,3 +6,4 @@
 /.idea
 /.vagrant
 npm-debug.log
+composer.lock
