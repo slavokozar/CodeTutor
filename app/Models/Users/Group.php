@@ -2,6 +2,8 @@
 
 namespace App\Models\Users;
 
+use App\Classes\GroupRoles;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -30,14 +32,18 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'user_group_user', 'user_id', 'group_id')->withPivot(['role']);
     }
 
-    public function teachers()
+    public function admins()
     {
-        return $this->users()->wherePivot('role','teacher');
+        return $this->users()->wherePivot('role',GroupRoles::admin);
     }
 
     public function students()
     {
-        return $this->users()->wherePivot('role', 'student');
+        return $this->users()->wherePivot('role', GroupRoles::student);
+    }
+
+    public function school(){
+        return $this->belongsTo(School::class, 'school_id');
     }
 
 }

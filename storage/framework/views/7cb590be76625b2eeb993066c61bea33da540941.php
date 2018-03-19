@@ -1,35 +1,28 @@
 <?php $__env->startSection('content'); ?>
-    <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        <li class="active"><?php echo e(trans('users.users.link')); ?></li>
-    </ol>
+    <?php echo BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'label' => trans('users.users.link') ]
+        ]); ?>
+
 
     <h1><?php echo e(trans('users.users.heading')); ?></h1>
 
-    <div class="clearfix">
+    <?php echo ContentNav::render([
+            'left' => [
+                ['label' => trans('users.schools.heading'), 'action' => 'Users\Schools\SchoolController@index'],
+                ['label' => trans('users.groups.heading'), 'action' => 'Users\Groups\GroupController@index']
+            ],
+            'right' => [
+                ['label' => trans('general.buttons.create'), 'action' => 'Users\UserController@create']
+            ]
+        ]); ?>
 
-        <ul id="content-nav-tabs" class="nav nav-tabs">
-            <li role="presentation">
-                <a href="<?php echo e(action('Users\Schools\SchoolController@index')); ?>" class="btn"><?php echo e(trans('users.schools.link')); ?></a>
-            </li>
-
-        </ul>
-
-        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-            <li role="presentation">
-                <a href="<?php echo e(action('Users\Schools\SchoolController@index')); ?>" class="btn"><?php echo e(trans('users.schools.link')); ?></a>
-            </li>
-            
-                
-            
-        </ul>
-
-    </div>
-    <?php 
+       
+    <?php
         $_table_action = function($userObj){
             return action('Users\UserController@show', [$userObj->code]);
         };
-     ?>
+    ?>
     <?php echo $__env->make('users.partials.index', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 <?php $__env->stopSection(); ?>

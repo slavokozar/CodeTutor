@@ -227,6 +227,7 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
         'BreadCrumb'   => Facades\App\Services\BreadCrumbService::class,
+        'ContentNav'   => Facades\App\Services\ContentNavService::class,
     ]
 
 ];

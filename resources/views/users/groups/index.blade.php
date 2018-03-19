@@ -5,16 +5,16 @@
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
             [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
-            [ 'label' => trans('users.schools.link') ]
+            [ 'label' => trans('users.groups.link') ]
         ])
     !!}
 
-    <h1>{{ trans('users.schools.heading') }}</h1>
+    <h1>{{ trans('users.groups.heading') }}</h1>
 
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Users\Schools\SchoolController@create']
+                ['label' => trans('general.buttons.create'), 'action' => 'Users\Groups\GroupController@create']
             ]
         ])
      !!}
@@ -24,38 +24,31 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>{{ trans('users.schools.labels.name') }}</th>
-            <th>{{ trans('users.schools.labels.address') }}</th>
-            <th>{{ trans('users.schools.labels.url') }}</th>
-            <th><i class="fa fa-wrench" aria-hidden="true"></i></th>
-            <th><i class="fa fa-user" data-toggle="tooltip" title="{{ trans('users.schools.labels.teachers') }}"
-                   aria-hidden="true"></i></th>
+            <th>{{ trans('users.groups.labels.name') }}</th>
+            <th>{{ trans('users.groups.labels.school') }}</th>
+            <th>{{ trans('users.groups.labels.public') }}</th>
+            <th><i class="fa fa-user" data-toggle="tooltip"
+                   title="{{ trans('users.groups.labels.teachers') }}" aria-hidden="true"></i></th>
             <th><i class="fa fa-graduation-cap" data-toggle="tooltip"
-                   title="{{ trans('users.schools.labels.students') }}" aria-hidden="true"></i></th>
-
+                   title="{{ trans('users.groups.labels.students') }}" aria-hidden="true"></i></th>
         </tr>
         </thead>
         <tbody>
-        @foreach($schools as $schoolObj)
+        @foreach($groups as $groupObj)
             <tr>
                 <th scope="row">
-                    <a href="{{ action('Users\Schools\SchoolController@show', [$schoolObj->code]) }}">{{$schoolObj->code}}</a>
+                    <a href="{{ action('Users\Groups\GroupController@show', [$groupObj->code]) }}">{{$groupObj->code}}</a>
                 </th>
                 <td>
-                    <a href="{{ action('Users\Schools\SchoolController@show', [$schoolObj->code]) }}">{{$schoolObj->name}}</a>
+                    <a href="{{ action('Users\Groups\GroupController@show', [$groupObj->code]) }}">{{$groupObj->name}}</a>
                 </td>
-                <td>{{$schoolObj->address}}</td>
+                <td>{{$groupObj->school ? $groupObj->school->name : ''}}</td>
+                <td>{!! $groupObj->is_public ? '<i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</td>
                 <td>
-                    <a href="{{ $schoolObj->url }}" target="_blank">{{$schoolObj->url}}</a>
-                </td>
-                <td>
-                    {{ $schoolObj->admins()->count() }}
+                    {{ $groupObj->admins()->count() }}
                 </td>
                 <td>
-                    {{ $schoolObj->teachers()->count() }}
-                </td>
-                <td>
-                    {{ $schoolObj->students()->count() }}
+                    {{ $groupObj->students()->count() }}
                 </td>
             </tr>
         @endforeach

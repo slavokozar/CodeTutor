@@ -1,24 +1,19 @@
 <?php $__env->startSection('content'); ?>
-    <ol class="breadcrumb">
-        <li>
-            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        </li>
-        <li>
-            <a href="<?php echo e(action('Users\UserController@index')); ?>"><?php echo e(trans('users.users.link')); ?></a>
-        </li>
-        <li class="active"><?php echo e(trans('users.schools.link')); ?></li>
-    </ol>
+    <?php echo BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
+            [ 'label' => trans('users.schools.link') ]
+        ]); ?>
+
 
     <h1><?php echo e(trans('users.schools.heading')); ?></h1>
 
-    <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-        <li role="presentation">
-            <a href="<?php echo e(action('Users\Schools\SchoolController@create')); ?>" class="btn"><?php echo e(trans('general.buttons.create')); ?></a>
-        </li>
-        
-        
-        
-    </ul>
+    <?php echo ContentNav::render([
+            'right' => [
+                ['label' => trans('general.buttons.create'), 'action' => 'Users\Schools\SchoolController@create']
+            ]
+        ]); ?>
+
 
 
     <table class="table">
@@ -29,8 +24,10 @@
             <th><?php echo e(trans('users.schools.labels.address')); ?></th>
             <th><?php echo e(trans('users.schools.labels.url')); ?></th>
             <th><i class="fa fa-wrench" aria-hidden="true"></i></th>
-            <th><i class="fa fa-user" data-toggle="tooltip" title="<?php echo e(trans('users.schools.labels.teachers')); ?>" aria-hidden="true"></i></th>
-            <th><i class="fa fa-graduation-cap" data-toggle="tooltip" title="<?php echo e(trans('users.schools.labels.students')); ?>" aria-hidden="true"></i></th>
+            <th><i class="fa fa-user" data-toggle="tooltip" title="<?php echo e(trans('users.schools.labels.teachers')); ?>"
+                   aria-hidden="true"></i></th>
+            <th><i class="fa fa-graduation-cap" data-toggle="tooltip"
+                   title="<?php echo e(trans('users.schools.labels.students')); ?>" aria-hidden="true"></i></th>
 
         </tr>
         </thead>

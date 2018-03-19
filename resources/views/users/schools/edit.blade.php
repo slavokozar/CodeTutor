@@ -2,15 +2,19 @@
 
 @section('content')
     {!!
-    BreadCrumb::render([
-        [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-        [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
-        [ 'action' => 'Users\Schools\SchoolController@index', 'label' => trans('users.schools.link') ],
-        [ 'label' => $schoolObj->name ]
-    ])
-!!}
+        BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
+            [ 'action' => 'Users\Schools\SchoolController@index', 'label' => trans('users.schools.link') ],
+            [ 'label' => $schoolObj->name ]
+        ])
+    !!}
 
-    <h1>{{ $schoolObj->name }}</h1>
+    @if($schoolObj->id)
+        <h1>{{ $schoolObj->name }}</h1>
+    @else
+        <h1>{{ trans('users.schools.create') }}</h1>
+    @endif
 
     <form class="form-horizontal"
           action="{{ $schoolObj->id == null ? action('Users\Schools\SchoolController@store') : action('Users\Schools\SchoolController@update', $schoolObj->code)}}"
@@ -20,13 +24,8 @@
             <input type="hidden" name="_method" value="put">
         @endif
 
-        <div class="subnavigation clearfix">
-            <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-                <li class="active" role="presentation">
-                    <button class="btn" type="submit">{{ trans('general.buttons.save') }}</button>
-                </li>
-            </ul>
-        </div>
+        {!! ContentNav::submit(['label' => trans('general.buttons.save')]) !!}
+
         <main role="main">
             <section id="basic">
 

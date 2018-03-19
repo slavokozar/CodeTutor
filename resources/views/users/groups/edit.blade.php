@@ -5,22 +5,22 @@
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
             [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
-            [ 'action' => 'Users\Schools\SchoolController@index', 'label' => trans('users.schools.link') ],
-            [ 'label' => $schoolObj->name ]
+            [ 'action' => 'Users\Groups\GroupController@index', 'label' => trans('users.groups.link') ],
+            [ 'label' => $groupObj->name ]
         ])
     !!}
 
-    @if($schoolObj->id)
-        <h1>{{ $schoolObj->name }}</h1>
+    @if($groupObj->id)
+        <h1>{{ $groupObj->name }}</h1>
     @else
-        <h1>{{ trans('users.schools.create') }}</h1>
+        <h1>{{ trans('users.groups.create') }}</h1>
     @endif
 
     <form class="form-horizontal"
-          action="{{ $schoolObj->id == null ? action('Users\Schools\SchoolController@store') : action('Users\Schools\SchoolController@update', $schoolObj->code)}}"
+          action="{{ $groupObj->id == null ? action('Users\Groups\GroupController@store') : action('Users\Schools\GroupController@update', $groupObj->code)}}"
           method="post">
         {!! csrf_field() !!}
-        @if($schoolObj->id != null)
+        @if($groupObj->id != null)
             <input type="hidden" name="_method" value="put">
         @endif
 
@@ -29,13 +29,13 @@
         <main role="main">
             <section id="basic">
 
-                @if($schoolObj->id != null)
+                @if($groupObj->id != null)
                     <div class="row">
                         <div class="col-md-20">
                             <label for="">#</label>
                         </div>
                         <div class="col-md-40">
-                            {{$schoolObj->code}}
+                            {{$groupObj->code}}
                         </div>
                     </div>
                 @endif
@@ -43,31 +43,30 @@
                     <label class="col-md-20" for="">{{ trans('users.labels.name') }}</label>
                     <div class="col-md-40">
                         <input class="form-control" type="text" name="name"
-                               value="{{ old('name', $schoolObj->name) }}"/>
+                               value="{{ old('name', $groupObj->name) }}"/>
                         @if( $errors->has('name') )
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         @endif
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                    <label class="col-md-20" for="">{{ trans('users.labels.address') }}</label>
-                    <div class="col-md-40">
-                        <textarea class="form-control"
-                                  name="address">{{ old('address', $schoolObj->address) }}</textarea>
-                        @if( $errors->has('address') )
-                            <span class="help-block">{{ $errors->first('address') }}</span>
-                        @endif
+
+                    <div class="form-group{{ $errors->has('school_id') ? ' has-error' : '' }}">
+                        <label class="col-md-20" for="">{{ trans('users.labels.school') }}</label>
+                        <div class="col-md-40">
+
+                            <select class="form-control" name="school_id">
+                                @foreach($schools as $schoolObj)
+                                    <option value="{{ $schoolObj->id }}"{{ old('school_id', $groupObj->school_id) == $schoolObj->id ? ' selected' : '' }}>{{$schoolObj->name}}</option>
+                                @endforeach
+                            </select>
+                                   {{--value="{{ old('school_id', $groupObj->name) }}"/>--}}
+                            @if( $errors->has('school_id') )
+                                <span class="help-block">{{ $errors->first('school_id') }}</span>
+                            @endif
+                        </div>
                     </div>
-                </div>
-                <div class="form-group{{ $errors->has('url') ? ' has-error' : '' }}">
-                    <label class="col-md-20" for="">{{ trans('users.labels.url') }}</label>
-                    <div class="col-md-40">
-                        <input class="form-control" type="text" name="url" value="{{ old('url', $schoolObj->url) }}"/>
-                        @if( $errors->has('url') )
-                            <span class="help-block">{{ $errors->first('url') }}</span>
-                        @endif
-                    </div>
-                </div>
+
+
             </section>
         </main>
 

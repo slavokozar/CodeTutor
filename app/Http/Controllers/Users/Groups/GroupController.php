@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Users\Groups;
 
-use Facades\App\Services\Users\GroupService;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-use App\Http\Requests;
+use App\Http\Requests\Users\GroupRequest;
+
+use Facades\App\Services\Users\Groups\GroupService;
+use Facades\App\Services\Users\Schools\SchoolService;
+
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -28,62 +32,99 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        $groupObj = GroupService::blank();
+        $schools = SchoolService::all(Auth::user());
+
+        return view('users.groups.edit', compact(['groupObj','schools']));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        //
+        $groupObj = GroupService::create($request->all());
+
+        return redirect(action('Users\Groups\GroupController@show', [$groupObj->code]));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($group)
     {
-        //
+        $groupObj = GroupService::getOrFail($group);
+
+        return view('users.groups.show', compact(['groupObj']));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($group)
     {
-        //
+        $groupObj = GroupService::getOrFail($group);
+        $schools = SchoolService::all(Auth::user());
+
+        return view('users.groups.edit', compact(['groupObj','schools']));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(GroupRequest $request, $group)
     {
-        //
+        $groupObj = GroupService::getOrFail($group);
+
+        $groupObj = GroupService::update($groupObj, $request->all());
+
+        return redirect(action('Users\Groups\GroupController@show', $groupObj->code));
+    }
+
+    /**
+     * Show modal fo destroy confirmation
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteModal($group)
+    {
+        $groupObj = GroupService::getOrFail($group);
+
+        return view('users.groups.delete', compact(['groupObj']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($group)
     {
-        //
+        $groupObj = GroupService::getOrFail($group);
+
+        GroupService::destroy($groupObj);
+
+        return redirect(action('Users/UsersController@index'));
     }
 }

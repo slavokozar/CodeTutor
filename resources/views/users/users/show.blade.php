@@ -1,30 +1,25 @@
 @extends('layout_full')
 
 @section('content')
-    <ol class="breadcrumb">
-        <li>
-            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        </li>
-        <li>
-            <a href="{{ action('Users\UserController@index') }}">{{ trans('users.users.link') }}</a>
-        </li>
-        <li class="active">{{ $userObj->name }}</li>
-    </ol>
+    {!!
+        BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
+            [ 'label' => $userObj->id ? $userObj->name : trans('users.users.create') ]
+        ])
+    !!}
+
 
     <h1>{{ $userObj->name }}</h1>
 
-    <div class="subnavigation clearfix">
-        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-            <li role="presentation">
-                <a href="{{ action('Users\UserController@edit', [$userObj->code]) }}"
-                   class="btn">{{ trans('general.buttons.edit') }}</a>
-            </li>
-            <li role="presentation">
-                <a href="{{ action('Users\UserController@deleteModal', [$userObj->code]) }}"
-                   class="btn btn-modal">{{ trans('general.buttons.delete') }}</a>
-            </li>
-        </ul>
-    </div>
+    {!!
+        ContentNav::render([
+            'right' => [
+                ['label' => trans('general.buttons.edit'), 'action' => 'Users\UserController@edit', 'params' => [$userObj->code] ],
+                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\UserController@create', 'params' => [$userObj->code]]
+            ]
+        ])
+     !!}
 
     <main role="main">
 

@@ -25,6 +25,7 @@ return [
         'url' => 'uzivatelia',
         'heading' => 'Užívatelia',
         'link' => 'Užívatelia',
+        'create' => 'Vytvorenie užívateľa',
         'no-groups' => 'Tento užívateľ nie je členom žiadnej skupiny.',
         'no-schools' => 'Tento užívateľ nie je členom žiadnej školy.',
         'roles' => [
@@ -39,10 +40,17 @@ return [
         'url' => 'skupiny',
         'heading' => 'Skupiny',
         'link' => 'Skupiny',
+        'create' => 'Vytvorenie skupiny',
         'add' => 'Pridať do skupiny',
+        'labels' => [
+            'name' => 'názov',
+            'school' => 'škola',
+            'public' => 'verejná',
+            'admins' => 'správcovia',
+            'students' => 'študenti',
+        ],
         'roles' => [
             'ADMIN' => 'správca',
-            'TEACHER' => 'učiteľ',
             '' => 'študent',
         ],
         'delete' => [
@@ -55,6 +63,7 @@ return [
         'url' => 'skoly',
         'heading' => 'Školy',
         'link' => 'Školy',
+        'create' => 'Vytvorenie školy',
         'involved' => 'Zapojené školy',
         'add' => 'Pridať do školy',
         'labels' => [

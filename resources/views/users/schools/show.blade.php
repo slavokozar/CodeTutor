@@ -13,30 +13,21 @@
 
     <h1>{{ $schoolObj->name }}</h1>
 
-    <div class="subnavigation clearfix">
-        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-            <li role="presentation">
-                <a href="{{ action('Users\Schools\AdminController@index', [$schoolObj->code]) }}"
-                   class="btn">{{ trans('users.admins.link') }}</a>
-            </li>
-            <li role="presentation">
-                <a href="{{ action('Users\Schools\TeacherController@index', [$schoolObj->code]) }}"
-                   class="btn">{{ trans('users.teachers.link') }}</a>
-            </li>
-            <li role="presentation">
-                <a href="{{ action('Users\Schools\StudentController@index', [$schoolObj->code]) }}"
-                   class="btn">{{ trans('users.students.link') }}</a>
-            </li>
-            <li role="presentation">
-                <a href="{{ action('Users\Schools\SchoolController@edit', [$schoolObj->code]) }}"
-                   class="btn">{{ trans('general.buttons.edit') }}</a>
-            </li>
-            <li role="presentation">
-                <a href="{{ action('Users\Schools\SchoolController@deleteModal', [$schoolObj->code]) }}"
-                   class="btn btn-modal">{{ trans('general.buttons.delete') }}</a>
-            </li>
-        </ul>
-    </div>
+    {!!
+        ContentNav::render([
+            'left' => [
+                ['label' => trans('users.admins.link'), 'action' => 'Users\Schools\AdminController@index', 'params' => [$schoolObj->code] ],
+                ['label' => trans('users.teachers.link'), 'action' => 'Users\Schools\TeacherController@index', 'params' => [$schoolObj->code] ],
+                ['label' => trans('users.students.link'), 'action' => 'Users\Schools\StudentController@index', 'params' => [$schoolObj->code] ],
+
+            ],
+            'right' => [
+                ['label' => trans('general.buttons.edit'), 'action' => 'Users\Schools\SchoolController@edit', 'params' => [$schoolObj->code] ],
+                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\Schools\SchoolController@create', 'params' => [$schoolObj->code]]
+            ]
+        ])
+     !!}
+
 
     <main role="main">
         <div class="row">

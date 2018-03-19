@@ -39,4 +39,32 @@ class GroupService
     {
         Response::make('Group ' . $code . 'not found!', 404);
     }
+
+    public function blank(){
+        return new Group();
+    }
+
+
+    public function create($data){
+        $data['code'] = uniqid();
+        $groupObj = Group::create($data);
+
+        return $groupObj;
+    }
+
+
+
+
+    public function update($groupObj, $data){
+        $groupObj->name = $data['name'];
+
+        $groupObj->save();
+
+        return $groupObj;
+    }
+
+
+    public function destroy($groupObj){
+
+    }
 }

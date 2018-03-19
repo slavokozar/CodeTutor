@@ -1,30 +1,26 @@
 @extends('layout_full')
 
-
-    <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        <li class="active">{{ trans('users.users.link') }}</li>
-    </ol>
+@section('content')
+    {!!
+        BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'label' => trans('users.users.link') ]
+        ])
+    !!}
 
     <h1>{{ trans('users.users.heading') }}</h1>
 
-
-
-    <div class="subnavigation clearfix">
-        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-
-
-            <li role="presentation">
-                <a href="{{ action('Users\Schools\SchoolController@index') }}"
-                   class="btn">{{ trans('users.schools.link') }}</a>
-            </li>
-            .btn-modal
-            {{--<li role="presentation">--}}
-            {{--<a href="{{ action('Users\GroupController@index') }}" class="btn">{{ trans('users.groups.link') }}</a>--}}
-            {{--</li>--}}
-        </ul>
-    </div>
-
+    {!!
+        ContentNav::render([
+            'left' => [
+                ['label' => trans('users.schools.heading'), 'action' => 'Users\Schools\SchoolController@index'],
+                ['label' => trans('users.groups.heading'), 'action' => 'Users\Groups\GroupController@index']
+            ],
+            'right' => [
+                ['label' => trans('general.buttons.create'), 'action' => 'Users\UserController@create']
+            ]
+        ])
+     !!}
        
     @php
         $_table_action = function($userObj){

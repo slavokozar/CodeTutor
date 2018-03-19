@@ -1,29 +1,24 @@
 @extends('layout_full')
 
 @section('content')
-    <ol class="breadcrumb">
-        <li>
-            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        </li>
-        <li>
-            <a href="{{ action('Users\UserController@index') }}">{{ trans('users.users.link') }}</a>
-        </li>
-        <li class="active">{{ trans('users.schools.link') }}</li>
-    </ol>
+    {!!
+        BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
+            [ 'label' => trans('users.schools.link') ]
+        ])
+    !!}
 
     <h1>{{ trans('users.schools.heading') }}</h1>
 
-    <div class="subnavigation clearfix">
-        <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-            <li role="presentation">
-                <a href="{{ action('Users\Schools\SchoolController@create') }}"
-                   class="btn">{{ trans('general.buttons.create') }}</a>
-            </li>
-            {{--<li role="presentation">--}}
-            {{--<a href="{{ action('Users\GroupController@index') }}" class="btn">{{ trans('users.groups.link') }}</a>--}}
-            {{--</li>--}}
-        </ul>
-    </div>
+    {!!
+        ContentNav::render([
+            'right' => [
+                ['label' => trans('general.buttons.create'), 'action' => 'Users\Schools\SchoolController@create']
+            ]
+        ])
+     !!}
+
 
     <table class="table">
         <thead>

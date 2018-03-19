@@ -1,17 +1,19 @@
 @extends('layout_full')
 
 @section('content')
-    <ol class="breadcrumb">
-        <li>
-            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        </li>
-        <li>
-            <a href="{{ action('Users\UserController@index') }}">{{ trans('users.users.link') }}</a>
-        </li>
-        <li class="active">{{ $userObj->name }}</li>
-    </ol>
+    {!!
+        BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
+            [ 'label' => $userObj->id ? $userObj->name : trans('users.users.create') ]
+        ])
+    !!}
 
-    <h1>{{ $userObj->name }}</h1>
+    @if($userObj->id)
+        <h1>{{ $userObj->name }}</h1>
+    @else
+        <h1>{{ trans('users.users.create') }}</h1>
+    @endif
 
     <form class="form-horizontal"
           action="{{ $userObj->id == null ? action('Users\UserController@store') : action('Users\UserController@update', $userObj->code)}}"
@@ -21,13 +23,7 @@
             <input type="hidden" name="_method" value="put">
         @endif
 
-        <div class="subnavigation clearfix">
-            <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-                <li class="active" role="presentation">
-                    <button class="btn" type="submit">{{ trans('general.buttons.save') }}</button>
-                </li>
-            </ul>
-        </div>
+        {!! ContentNav::submit(['label' => trans('general.buttons.save')]) !!}
 
         <main role="main">
             <section id="basic">

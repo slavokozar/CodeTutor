@@ -43,6 +43,9 @@
                 'url': $(this).attr('href'),
                 'method': 'get'
             }).done(function(data){
+
+                console.log(data);
+
                 $modal = $(data);
                 $('body').append($modal);
                 $modal.modal('show');
