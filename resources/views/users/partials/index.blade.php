@@ -67,6 +67,8 @@
         @endforeach
         </tbody>
     </table>
+
+    {{$users->render()}}
 @else
     <p></p>
 @endif

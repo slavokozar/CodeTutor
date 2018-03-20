@@ -1,4 +1,4 @@
-@extends('layout_sidebar')
+@extends('layouts.sidebar')
 
 @section('sidebar')
     @include('assignments.partials.sidebar')

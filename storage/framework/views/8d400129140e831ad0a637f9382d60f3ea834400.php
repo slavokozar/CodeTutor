@@ -1,4 +1,4 @@
-<?php $__env->startSection('wrapper'); ?>
+<?php $__env->startSection('content'); ?>
     <div id="auth" class="container">
         <div class="wrapper">
             <div class="row">
@@ -69,4 +69,4 @@
     </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('wrapper', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make('layouts.app', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

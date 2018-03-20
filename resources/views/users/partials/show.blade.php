@@ -1,32 +1,10 @@
-<div class="row">
-    <div class="col-md-20">
-        <label for="">#</label>
-    </div>
-    <div class="col-md-40">
-        {{$userObj->code}}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-20">
-        <label for="">{{ trans('users.labels.name') }}</label>
-    </div>
-    <div class="col-md-40">
-        {{$userObj->name}}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-20">
-        <label for="">{{ trans('users.labels.email') }}</label>
-    </div>
-    <div class="col-md-40">
-        {{$userObj->email}}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-20">
-        <label for="">{{ trans('users.labels.birthdate') }}</label>
-    </div>
-    <div class="col-md-40">
-        {{$userObj->name}}
-    </div>
-</div>
+<section id="basic">
+    {!!
+        DataRender::render([
+            ['label'=>'#', 'value'=>$userObj->code],
+            ['label'=>trans('users.labels.name'), 'value'=>$userObj->name],
+            ['label'=>trans('users.labels.email'), 'value'=>$userObj->email],
+            ['label'=>trans('users.labels.birthdate'), 'value'=>$userObj->birthdate]
+        ])
+    !!}
+</section>

@@ -6,7 +6,7 @@
  * Time: 23:31
  */
 
-namespace App\Services;
+namespace App\Services\Utils;
 
 
 class ContentNavService

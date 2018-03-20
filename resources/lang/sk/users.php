@@ -88,18 +88,21 @@ return [
     'admins' => [
         'url' => 'spravcovia',
         'heading' => 'Správcovia',
-        'link' => 'Správcovia'
+        'link' => 'Správcovia',
+        'create' => 'Vytvorenie správcu',
     ],
 
     'teachers' => [
         'url' => 'ucitelia',
         'heading' => 'Učitelia',
-        'link' => 'Učitelia'
+        'link' => 'Učitelia',
+        'create' => 'Vytvorenie učiteľa'
     ],
 
     'students' => [
         'url' => 'studenti',
         'heading' => 'Študenti',
-        'link' => 'Študenti'
+        'link' => 'Študenti',
+        'create' => 'Vytvorenie študenta'
     ],
 ];

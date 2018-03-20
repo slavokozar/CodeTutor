@@ -226,8 +226,9 @@ return [
         'URL'          => Illuminate\Support\Facades\URL::class,
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
-        'BreadCrumb'   => Facades\App\Services\BreadCrumbService::class,
-        'ContentNav'   => Facades\App\Services\ContentNavService::class,
+        'BreadCrumb'   => Facades\App\Services\Utils\BreadCrumbService::class,
+        'ContentNav'   => Facades\App\Services\Utils\ContentNavService::class,
+        'DataRender'   => Facades\App\Services\Utils\DataRenderService::class,
     ]
 
 ];

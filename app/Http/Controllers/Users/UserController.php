@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = UserService::all();
+        $users = UserService::paginate();
 
         return view('users.users.index', compact(['users']));
     }

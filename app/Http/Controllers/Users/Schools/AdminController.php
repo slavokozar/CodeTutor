@@ -10,7 +10,9 @@ namespace App\Http\Controllers\Users\Schools;
 
 use App\Http\Controllers\Controller;
 
-use Facades\App\Services\Users\SchoolService;
+use Facades\App\Services\Users\Schools\SchoolService;
+use Facades\App\Services\Users\Schools\AdminService;
+
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -20,10 +22,11 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($code)
+    public function index($school)
     {
-        $schoolObj = SchoolService::getOrFail($code);
-        $users = $schoolObj->admins;
+        $schoolObj = SchoolService::getOrFail($school);
+        $users = AdminService::paginate($schoolObj);
+
         return view('users.schools.admins.index', compact(['schoolObj','users']));
     }
 
@@ -32,9 +35,12 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = AdminService::blank($schoolObj);
+
+        return view('users.schools.admins.edit', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -44,9 +50,12 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = AdminService::create($schoolObj, $request->all());
+
+        return redirect(action('Users\Schools\AdminController@show', [$schoolObj->code, $userObj->code]));
     }
 
     /**
@@ -56,10 +65,12 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($code)
+    public function show($school, $user)
     {
-        $schoolObj = SchoolService::get($code);
-        return view('users.schools.show', compact(['schoolObj']));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = AdminService::gerOrFail($schoolObj, $user);
+
+        return view('users.schools.admins.show', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -69,9 +80,12 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($school, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = AdminService::gerOrFail($schoolObj, $user);
+
+        return view('users.schools.admins.edit', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -82,9 +96,29 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $school, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = AdminService::gerOrFail($schoolObj, $user);
+
+        $userObj = AdminService::update($schoolObj, $request->all());
+
+        return redirect(action('Users\Schools\AdminController@show', [$schoolObj->code, $userObj->code]));
+    }
+
+    /**
+     * Show modal fo destroy confirmation
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteModal($school, $user)
+    {
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = AdminService::getOrFail($schoolObj, $user);
+
+        return view('users.schools.admins.delete', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -94,8 +128,13 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($school, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = AdminService::getOrFail($schoolObj, $user);
+
+        AdminService::destroy($schoolObj, $userObj);
+
+        return redirect(action('Users\Schools\AdminController@index'));
     }
 }

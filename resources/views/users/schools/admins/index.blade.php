@@ -1,23 +1,25 @@
-@extends('layout_full')
+@extends('layouts.main')
 
-@section('content')
-    <ol class="breadcrumb">
-        <li>
-            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        </li>
-        <li>
-            <a href="{{ action('Users\UserController@index') }}">{{ trans('users.users.link') }}</a>
-        </li>
-        <li>
-            <a href="{{ action('Users\Schools\SchoolController@index') }}">{{ trans('users.schools.link') }}</a>
-        </li>
-        <li>
-            <a href="{{ action('Users\Schools\SchoolController@show', [$schoolObj->code  ]) }}">{{ $schoolObj->name }}</a>
-        </li>
-        <li class="active">{{ trans('users.admins.link') }}</li>
-    </ol>
+@section('content-main')
+    {!!
+        BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
+            [ 'action' => 'Users\Schools\SchoolController@index', 'label' => trans('users.schools.link') ],
+            [ 'action' => 'Users\Schools\SchoolController@show', 'params' => [$schoolObj->code], 'label' => $schoolObj->name ],
+            [ 'label' => trans('users.admins.link') ]
+        ])
+    !!}
 
     <h1>{{ trans('users.admins.heading') }}</h1>
+
+    {!!
+        ContentNav::render([
+            'right' => [
+                ['label' => trans('general.buttons.create'), 'action' => 'Users\Schools\AdminController@create', 'params' => [$schoolObj->code]]
+            ]
+        ])
+    !!}
 
     @php
         $_table_skip['school'] = true;
@@ -25,6 +27,7 @@
             return action('Users\Schools\AdminController@show', [$schoolObj->code, $userObj->code]);
         };
     @endphp
+
     @include('users.partials.index')
 
 @endsection

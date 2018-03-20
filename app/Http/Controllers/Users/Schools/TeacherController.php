@@ -10,8 +10,10 @@ namespace App\Http\Controllers\Users\Schools;
 
 use App\Http\Controllers\Controller;
 
-use Facades\App\Services\Users\SchoolService;
-use Illuminate\Http\Request;
+use App\Http\Requests\Users\UserRequest;
+
+use Facades\App\Services\Users\Schools\SchoolService;
+use Facades\App\Services\Users\Schools\TeacherService;
 
 class TeacherController extends Controller
 {
@@ -23,8 +25,9 @@ class TeacherController extends Controller
     public function index($code)
     {
         $schoolObj = SchoolService::getOrFail($code);
-        $users = $schoolObj->teachers;
-        return view('users.schools.students.index', compact(['schoolObj','users']));
+        $users = TeacherService::paginate($schoolObj);
+
+        return view('users.schools.teachers.index', compact(['schoolObj','users']));
     }
 
     /**
@@ -44,7 +47,7 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         return redirect(action('Users/UsersController@index'));
     }
@@ -82,7 +85,7 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         return redirect(action('Users/UsersController@index'));
     }

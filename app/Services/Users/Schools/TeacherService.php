@@ -11,5 +11,13 @@ namespace App\Services\Users\Schools;
 
 class TeacherService
 {
+    public function all($schoolObj)
+    {
+        return $schoolObj->teachers;
+    }
 
+    public function paginate($schoolObj)
+    {
+        return $schoolObj->teachers()->paginate(10);
+    }
 }

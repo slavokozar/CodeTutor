@@ -1,6 +1,6 @@
-@extends('layout_full')
+@extends('layouts.main')
 
-@section('content')
+@section('content-main')
     {!!
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],

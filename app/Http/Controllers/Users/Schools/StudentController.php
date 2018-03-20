@@ -10,12 +10,10 @@ namespace App\Http\Controllers\Users\Schools;
 
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\Users\UserRequest;
 
 use Facades\App\Services\Users\Schools\SchoolService;
 use Facades\App\Services\Users\Schools\StudentService;
-
-use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -27,7 +25,7 @@ class StudentController extends Controller
     public function index($school)
     {
         $schoolObj = SchoolService::getOrFail($school);
-        $users = StudentService::all($schoolObj);
+        $users = StudentService::paginate($schoolObj);
 
         return view('users.schools.students.index', compact(['schoolObj', 'users']));
     }

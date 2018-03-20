@@ -18,6 +18,11 @@ class StudentService
         return $schoolObj->students;
     }
 
+    public function paginate($schoolObj)
+    {
+        return $schoolObj->students()->paginate(10);
+    }
+
     public function getOrFail($schoolObj, $code)
     {
         $schoolObj = $this->get($schoolObj, $code);

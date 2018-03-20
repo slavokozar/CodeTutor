@@ -1,4 +1,4 @@
-@extends('layout_full')
+@extends('layouts.app')
 
 @section('sidebar')
     @foreach($tags as $tag)

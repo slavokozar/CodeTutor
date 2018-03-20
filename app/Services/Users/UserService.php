@@ -20,6 +20,10 @@ class UserService
         return User::all();
     }
 
+    public function paginate(){
+        return User::paginate(10);
+    }
+
     public function getOrFail($code)
     {
         $userObj = $this->get($code);

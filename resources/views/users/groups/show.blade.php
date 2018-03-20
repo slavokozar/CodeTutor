@@ -1,11 +1,11 @@
-@extends('layout_full')
+@extends('layouts.main')
 
-@section('content')
+@section('content-main')
     {!!
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
             [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
-            [ 'action' => 'Users\Schools\SchoolController@index', 'label' => trans('users.schools.link') ],
+            [ 'action' => 'Users\Groups\GroupController@index', 'label' => trans('users.groups.link') ],
             [ 'label' => $groupObj->name ]
         ])
     !!}
@@ -23,26 +23,14 @@
      !!}
 
 
-    <main role="main">
-        <div class="row">
-            <div class="col-md-20">
-                <label for="">{{trans('users.groups.labels.name')}}</label>
-            </div>
-            <div class="col-md-40">
-                {{ $groupObj->name }}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-20">
-                <label for="">{{trans('users.groups.labels.school')}}</label>
-            </div>
-            <div class="col-md-40">
-                {{ $groupObj->school->name }}
-            </div>
-        </div>
-
-    </main>
+    <section id="basic">
+        {!!
+            DataRender::render([
+                [ 'label' => trans('users.groups.labels.name'), 'value' => $groupObj->name ],
+                [ 'label' => trans('users.groups.labels.school'), 'value' => $groupObj->school ? $groupObj->school->name : '' ],
+            ])
+         !!}
+    </section>
 
 
 @endsection

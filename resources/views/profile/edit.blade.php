@@ -1,6 +1,6 @@
-@extends('wrapper')
+@extends('layouts.app')
 
-@section('wrapper')
+@section('content')
 
     <div id="auth" class="container">
 

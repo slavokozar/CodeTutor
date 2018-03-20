@@ -1,6 +1,6 @@
-@extends('layout_full')
+@extends('layouts.main')
 
-@section('content')
+@section('content-main')
     {!!
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
@@ -29,26 +29,15 @@
      !!}
 
 
-    <main role="main">
-        <div class="row">
-            <div class="col-md-20">
-                <label for="">{{trans('users.schools.labels.address')}}</label>
-            </div>
-            <div class="col-md-40">
-                {{ $schoolObj->address }}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-20">
-                <label for="">{{trans('users.schools.labels.url')}}</label>
-            </div>
-            <div class="col-md-40">
-                <a href="{{ $schoolObj->url }}" target="_blank">{{ $schoolObj->url }}</a>
-            </div>
-        </div>
-
-    </main>
+    <section id="basic">
+        {!!
+            DataRender::render([
+                ['label'=>'#', 'value'=>$schoolObj->code],
+                ['label'=>trans('users.schools.labels.address'), 'value'=>$schoolObj->address],
+                ['label'=>trans('users.schools.labels.url'), 'value'=>$schoolObj->url],
+            ])
+        !!}
+    </section>
 
 
 @endsection

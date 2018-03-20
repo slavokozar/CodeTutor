@@ -1,13 +1,13 @@
 <?php
 
-namespace Facades\App\Services;
+namespace Facades\App\Services\Utils;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Services\ContentNavService
+ * @see \App\Services\Utils\DataRenderService
  */
-class ContentNavService extends Facade
+class DataRenderService extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class ContentNavService extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'App\Services\ContentNavService';
+        return 'App\Services\Utils\DataRenderService';
     }
 }

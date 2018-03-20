@@ -1,6 +1,6 @@
-@extends('layout_full')
+@extends('layouts.main')
 
-@section('content')
+@section('content-main')
     {!!
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
@@ -27,6 +27,9 @@
             return action('Users\UserController@show', [$userObj->code]);
         };
     @endphp
-    @include('users.partials.index')
+    <section id="list">
+        @include('users.partials.index')
+    </section>
+
 
 @endsection

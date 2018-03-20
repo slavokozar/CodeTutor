@@ -1,36 +1,9 @@
-<div class="row">
-    <div class="col-md-20">
-        <label for="">#</label>
-    </div>
-    <div class="col-md-40">
-        <?php echo e($userObj->code); ?>
+<section id="basic">
+    <?php echo DataRender::render([
+            ['label'=>'#', 'value'=>$userObj->code],
+            ['label'=>trans('users.labels.name'), 'value'=>$userObj->name],
+            ['label'=>trans('users.labels.email'), 'value'=>$userObj->email],
+            ['label'=>trans('users.labels.birthdate'), 'value'=>$userObj->birthdate]
+        ]); ?>
 
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-20">
-        <label for=""><?php echo e(trans('users.labels.name')); ?></label>
-    </div>
-    <div class="col-md-40">
-        <?php echo e($userObj->name); ?>
-
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-20">
-        <label for=""><?php echo e(trans('users.labels.email')); ?></label>
-    </div>
-    <div class="col-md-40">
-        <?php echo e($userObj->email); ?>
-
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-20">
-        <label for=""><?php echo e(trans('users.labels.birthdate')); ?></label>
-    </div>
-    <div class="col-md-40">
-        <?php echo e($userObj->name); ?>
-
-    </div>
-</div>
+</section>

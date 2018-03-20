@@ -6,7 +6,7 @@
  * Time: 0:39
  */
 
-namespace App\Services;
+namespace App\Services\Utils;
 
 
 class BreadCrumbService
@@ -23,7 +23,7 @@ class BreadCrumbService
             }else if(isset($links[$i]['url'])){
                 $breadcrumb .= '<li><a href="' . $links[$i]['url'] . '">' . $links[$i]['label'] . '</a></li>';
             }else if(isset($links[$i]['action'])){
-                $breadcrumb .= '<li><a href="' . action($links[$i]['action']) . '">' . $links[$i]['label'] . '</a></li>';
+                $breadcrumb .= '<li><a href="' . action($links[$i]['action'], isset($links[$i]['params']) ? $links[$i]['params'] : '') . '">' . $links[$i]['label'] . '</a></li>';
             }else{
                 $breadcrumb .= '<li>' . $links[$i]['label'] . '</li>';
             }

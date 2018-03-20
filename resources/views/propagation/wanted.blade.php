@@ -1,4 +1,4 @@
-@extends('layout_propagation')
+@extends('layouts.propagation')
 
 @section('content')
     <div class="content">
