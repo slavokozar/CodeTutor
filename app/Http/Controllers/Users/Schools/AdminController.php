@@ -10,10 +10,11 @@ namespace App\Http\Controllers\Users\Schools;
 
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\Users\UserRequest;
+
 use Facades\App\Services\Users\Schools\SchoolService;
 use Facades\App\Services\Users\Schools\AdminService;
 
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -50,7 +51,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $school)
+    public function store(UserRequest $request, $school)
     {
         $schoolObj = SchoolService::getOrFail($school);
         $userObj = AdminService::create($schoolObj, $request->all());
@@ -68,9 +69,13 @@ class AdminController extends Controller
     public function show($school, $user)
     {
         $schoolObj = SchoolService::getOrFail($school);
-        $userObj = AdminService::gerOrFail($schoolObj, $user);
+        $userObj = AdminService::getOrFail($schoolObj, $user);
 
-        return view('users.schools.admins.show', compact(['schoolObj', 'userObj']));
+        $groups = $userObj->groups()->whereHas('school', function ($query) use ($schoolObj) {
+            $query->where('id', $schoolObj->id);
+        })->get();
+
+        return view('users.schools.admins.show', compact(['schoolObj', 'userObj', 'groups']));
     }
 
     /**
@@ -83,7 +88,7 @@ class AdminController extends Controller
     public function edit($school, $user)
     {
         $schoolObj = SchoolService::getOrFail($school);
-        $userObj = AdminService::gerOrFail($schoolObj, $user);
+        $userObj = AdminService::getOrFail($schoolObj, $user);
 
         return view('users.schools.admins.edit', compact(['schoolObj', 'userObj']));
     }
@@ -96,12 +101,12 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $school, $user)
+    public function update(UserRequest $request, $school, $user)
     {
         $schoolObj = SchoolService::getOrFail($school);
-        $userObj = AdminService::gerOrFail($schoolObj, $user);
+        $userObj = AdminService::getOrFail($schoolObj, $user);
 
-        $userObj = AdminService::update($schoolObj, $request->all());
+        $userObj = AdminService::update($schoolObj, $userObj, $request->all());
 
         return redirect(action('Users\Schools\AdminController@show', [$schoolObj->code, $userObj->code]));
     }
@@ -135,6 +140,6 @@ class AdminController extends Controller
 
         AdminService::destroy($schoolObj, $userObj);
 
-        return redirect(action('Users\Schools\AdminController@index'));
+        return redirect(action('Users\Schools\AdminController@index', [$schoolObj->code]));
     }
 }

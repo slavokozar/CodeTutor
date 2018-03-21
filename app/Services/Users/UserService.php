@@ -9,6 +9,8 @@
 namespace App\Services\Users;
 
 use App\Models\Users\User;
+
+use Facades\App\Services\Users\UserEmailService as UserEmailServiceFacade;
 use Illuminate\Support\Facades\Response;
 
 class UserService
@@ -42,7 +44,7 @@ class UserService
 
     private function fail($code)
     {
-        Response::make('User ' . $code . 'not found!', 404);
+        Response::make('User ' . $code . 'not found!', 404)->throwResponse();
     }
 
 
@@ -59,8 +61,6 @@ class UserService
     }
 
 
-
-
     public function update($userObj, $data){
         $userObj->title = $data['title'];
         $userObj->name = $data['name'];
@@ -70,26 +70,16 @@ class UserService
 
         $userObj->save();
 
-        $userObj = $this->updateEmail($userObj, $data['email']);
+        if($userObj->email != $data['email']){
+            $userObj = UserEmailServiceFacade::update($userObj, $data['email']);
+        }
 
         return $userObj;
     }
-
-    public function updateEmail($userObj, $email){
-        $userObj->email = $email;
-        $userObj->save();
-
-        //todo poslat email a overit ucet
-
-        return $userObj;
-    }
-
-
-
 
     public function destroy($userObj){
+        $userObj->delete();
 
+        //todo notification
     }
-
-
 }

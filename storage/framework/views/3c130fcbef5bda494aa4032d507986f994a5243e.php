@@ -1,7 +1,5 @@
-@extends('layouts.main')
-
-@section('content-main')
-    @php
+<?php $__env->startSection('content-main'); ?>
+    <?php
         $breadcrumb = [
              [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
              [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
@@ -16,17 +14,18 @@
         }else{
             $breadcrumb[] = [ 'label' => trans('users.admins.create') ];
         }
-    @endphp
+    ?>
 
-    {!! BreadCrumb::render($breadcrumb)!!}
+    <?php echo BreadCrumb::render($breadcrumb); ?>
 
-    @if($userObj->id)
-        <h1>{{ $userObj->name }}</h1>
-    @else
-        <h1>{{ trans('users.admins.create') }}</h1>
-    @endif
 
-    @php
+    <?php if($userObj->id): ?>
+        <h1><?php echo e($userObj->name); ?></h1>
+    <?php else: ?>
+        <h1><?php echo e(trans('users.admins.create')); ?></h1>
+    <?php endif; ?>
+
+    <?php
         if($userObj->id == null){
             $_form_action = 'Users\Schools\AdminController@store';
             $_form_params = [$schoolObj->code];
@@ -36,8 +35,9 @@
             $_form_params = [$schoolObj->code, $userObj->code];
             $_form_method = 'put';
         }
-    @endphp
+    ?>
 
-    @include('users.partials.edit')
+    <?php echo $__env->make('users.partials.edit', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

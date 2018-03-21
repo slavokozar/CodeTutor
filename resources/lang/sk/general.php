@@ -7,6 +7,9 @@ return [
         'create' => 'Vytvoriť',
         'cancel' => 'Zrušiť'
     ],
+
+    'back-to' => 'Späť na ',
+
     'headings' => [
         'edit' => 'Úprava',
         'create' => 'Vytvorenie',

@@ -59,7 +59,7 @@ class ContentNavService
             '<div id="content-navigation" class="content-nav-right">' .
                 '<ul class="nav nav-tabs">' .
                     '<li class="active" role="presentation">' .
-                        '<button class="btn" type="submit">' . $config['label'] . '</button>' .
+                        '<button class="btn btn-submit" type="submit">' . $config['label'] . '</button>' .
                     '</li>' .
                 '</ul>' .
             '</div>';

@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
             if(array_key_exists ('controller', $action)){
                 $controller = class_basename($action['controller']);
                 list($controller, $action) = explode('@', $controller);
-                $view->with(compact('controller', 'action'));
+                $view->with(compact('_controller', '_action'));
             }
         });
     }

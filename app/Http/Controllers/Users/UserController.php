@@ -62,7 +62,10 @@ class UserController extends Controller
     {
         $userObj = UserService::getOrFail($user);
 
-        return view('users.users.show', compact(['userObj']));
+        $groups = $userObj->groups;
+        $schools = $userObj->schools;
+
+        return view('users.users.show', compact(['userObj', 'groups', 'schools']));
     }
 
     /**
@@ -107,9 +110,6 @@ class UserController extends Controller
     {
         $userObj = UserService::getOrFail($user);
 
-        return "ferko";
-        return $userObj;
-
         return view('users.users.delete', compact(['userObj']));
     }
 
@@ -126,6 +126,6 @@ class UserController extends Controller
 
         UserService::destroy($userObj);
 
-        return redirect(action('Users/UsersController@index'));
+        return redirect(action('Users\UserController@index'));
     }
 }

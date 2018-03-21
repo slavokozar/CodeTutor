@@ -22,9 +22,9 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($code)
+    public function index($school)
     {
-        $schoolObj = SchoolService::getOrFail($code);
+        $schoolObj = SchoolService::getOrFail($school);
         $users = TeacherService::paginate($schoolObj);
 
         return view('users.schools.teachers.index', compact(['schoolObj','users']));
@@ -35,9 +35,12 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = TeacherService::blank($schoolObj);
+
+        return view('users.schools.teachers.edit', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -47,9 +50,12 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request, $school)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = TeacherService::create($schoolObj, $request->all());
+
+        return redirect(action('Users\Schools\TeacherController@show', [$schoolObj->code, $userObj->code]));
     }
 
     /**
@@ -59,10 +65,16 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($code)
+    public function show($school, $user)
     {
-        $schoolObj = SchoolService::get($code);
-        return view('users.schools.show', compact(['schoolObj']));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = TeacherService::getOrFail($schoolObj, $user);
+
+        $groups = $userObj->groups()->whereHas('school', function ($query) use ($schoolObj) {
+            $query->where('id', $schoolObj->id);
+        })->get();
+
+        return view('users.schools.teachers.show', compact(['schoolObj', 'userObj', 'groups']));
     }
 
     /**
@@ -72,9 +84,12 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($school, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = TeacherService::getOrFail($schoolObj, $user);
+
+        return view('users.schools.teachers.edit', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -85,9 +100,29 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, $school, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = TeacherService::getOrFail($schoolObj, $user);
+
+        $userObj = TeacherService::update($schoolObj, $userObj, $request->all());
+
+        return redirect(action('Users\Schools\TeacherController@show', [$schoolObj->code, $userObj->code]));
+    }
+
+    /**
+     * Show modal fo destroy confirmation
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteModal($school, $user)
+    {
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = TeacherService::getOrFail($schoolObj, $user);
+
+        return view('users.schools.teachers.delete', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -97,8 +132,13 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($school, $user)
     {
-        return redirect(action('Users/UsersController@index'));
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = TeacherService::getOrFail($schoolObj, $user);
+
+        TeacherService::destroy($schoolObj, $userObj);
+
+        return redirect(action('Users\Schools\TeacherController@index', [$schoolObj->code]));
     }
 }

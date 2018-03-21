@@ -15,6 +15,7 @@ use App\Http\Requests\Users\UserRequest;
 use Facades\App\Services\Users\Schools\SchoolService;
 use Facades\App\Services\Users\Schools\StudentService;
 
+
 class StudentController extends Controller
 {
     /**
@@ -27,7 +28,7 @@ class StudentController extends Controller
         $schoolObj = SchoolService::getOrFail($school);
         $users = StudentService::paginate($schoolObj);
 
-        return view('users.schools.students.index', compact(['schoolObj', 'users']));
+        return view('users.schools.students.index', compact(['schoolObj','users']));
     }
 
     /**
@@ -38,8 +39,9 @@ class StudentController extends Controller
     public function create($school)
     {
         $schoolObj = SchoolService::getOrFail($school);
+        $userObj = StudentService::blank($schoolObj);
 
-        return view('users.schools.students.create', compact(['schoolObj']));
+        return view('users.schools.students.edit', compact(['schoolObj', 'userObj']));
     }
 
     /**
@@ -52,10 +54,9 @@ class StudentController extends Controller
     public function store(UserRequest $request, $school)
     {
         $schoolObj = SchoolService::getOrFail($school);
+        $userObj = StudentService::create($schoolObj, $request->all());
 
-        $userObj = StudentService::create($schoolObj, $request);
-
-        return redirect(action('Users\Schools\StudentController@show',[$schoolObj->code, $userObj->code]));
+        return redirect(action('Users\Schools\StudentController@show', [$schoolObj->code, $userObj->code]));
     }
 
     /**
@@ -70,7 +71,11 @@ class StudentController extends Controller
         $schoolObj = SchoolService::getOrFail($school);
         $userObj = StudentService::getOrFail($schoolObj, $user);
 
-        return view('users.schools.students.show', compact(['schoolObj', 'userObj']));
+        $groups = $userObj->groups()->whereHas('school', function ($query) use ($schoolObj) {
+            $query->where('id', $schoolObj->id);
+        })->get();
+
+        return view('users.schools.students.show', compact(['schoolObj', 'userObj', 'groups']));
     }
 
     /**
@@ -85,14 +90,14 @@ class StudentController extends Controller
         $schoolObj = SchoolService::getOrFail($school);
         $userObj = StudentService::getOrFail($schoolObj, $user);
 
-        return view('users.schools.students.show', compact(['schoolObj', 'userObj']));
+        return view('users.schools.students.edit', compact(['schoolObj', 'userObj']));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param  int                      $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -101,11 +106,10 @@ class StudentController extends Controller
         $schoolObj = SchoolService::getOrFail($school);
         $userObj = StudentService::getOrFail($schoolObj, $user);
 
-        $userObj = StudentService::update($userObj, $request);
+        $userObj = StudentService::update($schoolObj, $userObj, $request->all());
 
-        return redirect(action('Users/UsersController@index'));
+        return redirect(action('Users\Schools\StudentController@show', [$schoolObj->code, $userObj->code]));
     }
-
 
     /**
      * Show modal fo destroy confirmation
@@ -122,7 +126,6 @@ class StudentController extends Controller
         return view('users.schools.students.delete', compact(['schoolObj', 'userObj']));
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
@@ -132,10 +135,11 @@ class StudentController extends Controller
      */
     public function destroy($school, $user)
     {
-        $schoolObj = SchoolService::getOrFail($user);
+        $schoolObj = SchoolService::getOrFail($school);
+        $userObj = StudentService::getOrFail($schoolObj, $user);
 
+        StudentService::destroy($schoolObj, $userObj);
 
-
-        return redirect(action('Users/UsersController@index'));
+        return redirect(action('Users\Schools\StudentController@index', [$schoolObj->code]));
     }
 }

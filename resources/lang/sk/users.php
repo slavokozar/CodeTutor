@@ -18,8 +18,10 @@ return [
 
     'delete' => [
         'heading' => 'Vymazanie užívateľa',
-        'message' => 'Naozaj si želáte vymazať užívateľa <strong>:name</strong> ?'
+        'message' => 'Naozaj si eláte vymazať užívateľa <strong>:name</strong> ?'
     ],
+
+
 
     'users' => [
         'url' => 'uzivatelia',
@@ -33,6 +35,7 @@ return [
             'TEACHER' => 'učiteľ',
             '' => 'študent',
         ],
+        'not-found' => 'Užívateľ s kódom <strong>:code</strong> neexistuje.',
     ],
 
 
@@ -83,6 +86,9 @@ return [
             'heading' => 'Vymazanie školy',
             'message' => 'Naozaj si želáte vymazať školu <strong>:name</strong> ?'
         ],
+        'no-admins' => 'Táto škola nemá žiadnych správcov.',
+        'no-teachers' => 'Táto škola nemá žiadnych učiteľov.',
+        'no-students' => 'Táto škola nemá žiadnych správcov',
     ],
 
     'admins' => [
@@ -90,19 +96,22 @@ return [
         'heading' => 'Správcovia',
         'link' => 'Správcovia',
         'create' => 'Vytvorenie správcu',
+        'edit' => 'Úprava správcu',
     ],
 
     'teachers' => [
         'url' => 'ucitelia',
         'heading' => 'Učitelia',
         'link' => 'Učitelia',
-        'create' => 'Vytvorenie učiteľa'
+        'create' => 'Vytvorenie učiteľa',
+        'edit' => 'Úprava učiteľa',
     ],
 
     'students' => [
         'url' => 'studenti',
         'heading' => 'Študenti',
         'link' => 'Študenti',
-        'create' => 'Vytvorenie študenta'
+        'create' => 'Vytvorenie študenta',
+        'edit' => 'Úprava študenta',
     ],
 ];
