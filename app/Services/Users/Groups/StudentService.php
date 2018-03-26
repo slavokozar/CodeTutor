@@ -6,7 +6,7 @@
  * Time: 1:05
  */
 
-namespace App\Services\Users\Schools;
+namespace App\Services\Users\Groups;
 
 use App\Classes\SchoolRoles;
 

@@ -60,6 +60,10 @@ return [
             'heading' => 'Vymazanie skupiny',
             'message' => 'Naozaj si želáte vymazať skupinu <strong>:name</strong> ?'
         ],
+        'no-teachers' => 'Táto skupina nemá žiadnych učiteľov.',
+        'add-teachers' => 'Pridanie učiteľov do skupiny <strong>:group</strong>.',
+        'no-students' => 'Táto skupina nemá žiadnych študentov.',
+        'add-students' => 'Pridanie študentov do skupiny <strong>:group</strong>.',
     ],
 
     'schools' => [
@@ -88,7 +92,7 @@ return [
         ],
         'no-admins' => 'Táto škola nemá žiadnych správcov.',
         'no-teachers' => 'Táto škola nemá žiadnych učiteľov.',
-        'no-students' => 'Táto škola nemá žiadnych správcov',
+        'no-students' => 'Táto škola nemá žiadnych študentov.',
     ],
 
     'admins' => [
@@ -97,6 +101,7 @@ return [
         'link' => 'Správcovia',
         'create' => 'Vytvorenie správcu',
         'edit' => 'Úprava správcu',
+        'add' => 'Pridanie správcu'
     ],
 
     'teachers' => [
@@ -105,6 +110,7 @@ return [
         'link' => 'Učitelia',
         'create' => 'Vytvorenie učiteľa',
         'edit' => 'Úprava učiteľa',
+        'add' => 'Pridanie učiteľa'
     ],
 
     'students' => [
@@ -113,5 +119,6 @@ return [
         'link' => 'Študenti',
         'create' => 'Vytvorenie študenta',
         'edit' => 'Úprava študenta',
+        'add' => 'Pridanie študenta'
     ],
 ];

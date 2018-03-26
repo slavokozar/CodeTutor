@@ -4,6 +4,7 @@
     @include('layouts.partials.meta')
 
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/select2.css')}}">
     <link rel="shortcut icon" href="{{asset('img/codeleague.ico')}}" type="image/x-icon">
 </head>
 <body>
@@ -36,8 +37,6 @@
                     'method': 'get'
                 }).done(function(data){
 
-                    console.log(data);
-
                     $modal = $(data);
                     $('body').append($modal);
                     $modal.modal('show');
@@ -45,6 +44,8 @@
                     $modal.on('hidden.bs.modal', function(){
                         $modal.remove();
                     })
+
+                    $modal.find('.js-select').select2({});
 
                 })
             });

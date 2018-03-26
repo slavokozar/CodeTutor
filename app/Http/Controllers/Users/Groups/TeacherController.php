@@ -78,39 +78,6 @@ class TeacherController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($school, $user)
-    {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = TeacherService::getOrFail($schoolObj, $user);
-
-        return view('users.schools.teachers.edit', compact(['schoolObj', 'userObj']));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UserRequest $request, $school, $user)
-    {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = TeacherService::getOrFail($schoolObj, $user);
-
-        $userObj = TeacherService::update($schoolObj, $userObj, $request->all());
-
-        return redirect(action('Users\Schools\TeacherController@show', [$schoolObj->code, $userObj->code]));
-    }
-
-    /**
      * Show modal fo destroy confirmation
      *
      * @param  int $id

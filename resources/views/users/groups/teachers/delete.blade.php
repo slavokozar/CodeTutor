@@ -1,5 +1,5 @@
 @php
-    $_delete_action = action('Users\Schools\TeacherController@destroy',[$schoolObj->code, $userObj->code]);
+    $_delete_action = action('Users\Groups\TeacherController@destroy',[$groupObj->code, $userObj->code]);
 @endphp
 
 @include('users.partials.delete')

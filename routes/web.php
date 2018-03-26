@@ -58,6 +58,26 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
 
 
     Route::group(['prefix' => trans('users.groups.url'), 'namespace' => 'Groups'], function () {
+
+
+        Route::group(['prefix' => '/{group}/' . trans('users.teachers.url')], function () {
+            Route::get('/', 'TeacherController@index');
+            Route::get('/' . trans('routes.create'), 'TeacherController@create');
+            Route::post('/', 'TeacherController@store');
+            Route::get('/{user}', 'TeacherController@show');
+            Route::get('/{user}/' . trans('routes.delete'), 'TeacherControllers@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
+        });
+
+        Route::group(['prefix' => '/{group}/' . trans('users.students.url')], function () {
+            Route::get('/', 'StudentController@index');
+            Route::get('/' . trans('routes.create'), 'StudentController@create');
+            Route::post('/', 'StudentController@store');
+            Route::get('/{user}', 'StudentController@show');
+            Route::get('/{user}/' . trans('routes.delete'), 'StudentController@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'StudentController@destroy');
+        });
+
         Route::get('/', 'GroupController@index');
         Route::get('/' . trans('routes.create'), 'GroupController@create');
         Route::post('/', 'GroupController@store');

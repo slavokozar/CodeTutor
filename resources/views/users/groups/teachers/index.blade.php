@@ -5,8 +5,8 @@
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
             [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
-            [ 'action' => 'Users\Schools\SchoolController@index', 'label' => trans('users.schools.link') ],
-            [ 'action' => 'Users\Schools\SchoolController@show', 'params' => [$schoolObj->code], 'label' => $schoolObj->name ],
+            [ 'action' => 'Users\Groups\GroupController@index', 'label' => trans('users.groups.link') ],
+            [ 'action' => 'Users\Groups\GroupController@show', 'params' => [$groupObj->code], 'label' => $groupObj->name ],
             [ 'label' => trans('users.teachers.link') ]
         ])
     !!}
@@ -16,15 +16,16 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Users\Schools\TeacherController@create', 'params' => [$schoolObj->code]]
+                ['label' => trans('general.buttons.create'), 'action' => 'Users\Groups\TeacherController@create', 'params' => [$groupObj->code]]
             ]
         ])
     !!}
 
     @php
         $_table_skip['school'] = true;
-        $_table_action = function($userObj) use ($schoolObj){
-            return action('Users\Schools\TeacherController@show', [$schoolObj->code, $userObj->code]);
+        $_table_skip['group'] = true;
+        $_table_action = function($userObj) use ($groupObj){
+            return action('Users\Groups\TeacherController@show', [$groupObj->code, $userObj->code]);
         };
     @endphp
 
@@ -34,7 +35,7 @@
         <p class="text-center text-warning">
             <i class="fa fa-5x fa-frown-o" aria-hidden="true"></i>
             <br/>
-            {{ trans('users.schools.no-admins') }}
+            {{ trans('users.groups.no-admins') }}
         </p>
     @endif
 

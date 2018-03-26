@@ -7,6 +7,7 @@ $('.selectpicker').selectpicker({
 	size : 4
 });
 
+console.log('ferko');
 $('.js-select').select2();
 
 
@@ -119,7 +120,8 @@ $(document).on('click', '.link-modal', function (e) {
 	e.preventDefault();
 	e.stopPropagation();
 	
-	$link = $(e.target).closest('a');
+	var $link = $(e.target).closest('a');
+	console.log('ferinko');
 	
 	$.ajax({
 		url: $link.attr('href')
@@ -133,15 +135,13 @@ $(document).on('click', '.link-modal', function (e) {
 			if (typeof (options.cancel.callback) === 'function') {
 				options.cancel.callback();
 			}
-			;
-			
 		});
 		
 		$modal.find('.btn.success').click(function () {
 			if (typeof (options.success.callback) === 'function') {
 				options.success.callback();
 			}
-			;
+
 			$modal.modal('hide');
 		});
 		

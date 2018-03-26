@@ -6,14 +6,17 @@
  * Time: 23:42
  */
 
-namespace App\Http\Controllers\Users\Schools;
+namespace App\Http\Controllers\Users\Groups;
 
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Users\UserRequest;
 
-use Facades\App\Services\Users\Schools\SchoolService;
-use Facades\App\Services\Users\Schools\StudentService;
+
+use Facades\App\Services\Users\UserService;
+use Facades\App\Services\Users\Groups\GroupService;
+use Facades\App\Services\Users\Groups\StudentService;
+use Facades\App\Services\Users\Groups\UserGroupService;
 
 
 class StudentController extends Controller
@@ -23,12 +26,12 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($school)
+    public function index($group)
     {
-        $schoolObj = SchoolService::getOrFail($school);
-        $users = StudentService::paginate($schoolObj);
+        $groupObj = GroupService::getOrFail($group);
+        $users = StudentService::paginate($groupObj);
 
-        return view('users.schools.students.index', compact(['schoolObj','users']));
+        return view('users.groups.students.index', compact(['groupObj','users']));
     }
 
     /**
@@ -36,12 +39,13 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($school)
+    public function create($group)
     {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = StudentService::blank($schoolObj);
+        $groupObj = GroupService::getOrFail($group);
 
-        return view('users.schools.students.edit', compact(['schoolObj', 'userObj']));
+        $users = UserService::all();
+
+        return view('users.groups.students.create', compact(['groupObj', 'users']));
     }
 
     /**
@@ -51,12 +55,12 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request, $school)
+    public function store(UserRequest $request, $group)
     {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = StudentService::create($schoolObj, $request->all());
+        $groupObj = GroupService::getOrFail($group);
+        $userObj = UserGroupService::attach($request->input('users'), $groupObj);
 
-        return redirect(action('Users\Schools\StudentController@show', [$schoolObj->code, $userObj->code]));
+        return redirect(action('Users\Groups\StudentController@index', [$groupObj->code]));
     }
 
     /**
@@ -66,49 +70,16 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($school, $user)
+    public function show($group, $user)
     {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = StudentService::getOrFail($schoolObj, $user);
+        $groupObj = GroupService::getOrFail($group);
+        $userObj = StudentService::getOrFail($groupObj, $user);
 
-        $groups = $userObj->groups()->whereHas('school', function ($query) use ($schoolObj) {
-            $query->where('id', $schoolObj->id);
+        $groups = $userObj->groups()->whereHas('school', function ($query) use ($groupObj) {
+            $query->where('id', $groupObj->id);
         })->get();
 
-        return view('users.schools.students.show', compact(['schoolObj', 'userObj', 'groups']));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($school, $user)
-    {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = StudentService::getOrFail($schoolObj, $user);
-
-        return view('users.schools.students.edit', compact(['schoolObj', 'userObj']));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UserRequest $request, $school, $user)
-    {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = StudentService::getOrFail($schoolObj, $user);
-
-        $userObj = StudentService::update($schoolObj, $userObj, $request->all());
-
-        return redirect(action('Users\Schools\StudentController@show', [$schoolObj->code, $userObj->code]));
+        return view('users.groups.students.show', compact(['groupObj', 'userObj', 'groups']));
     }
 
     /**
@@ -118,12 +89,12 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function deleteModal($school, $user)
+    public function deleteModal($group, $user)
     {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = StudentService::getOrFail($schoolObj, $user);
+        $groupObj = GroupService::getOrFail($group);
+        $userObj = StudentService::getOrFail($groupObj, $user);
 
-        return view('users.schools.students.delete', compact(['schoolObj', 'userObj']));
+        return view('users.groups.students.delete', compact(['groupObj', 'userObj']));
     }
 
     /**
@@ -133,13 +104,13 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($school, $user)
+    public function destroy($group, $user)
     {
-        $schoolObj = SchoolService::getOrFail($school);
-        $userObj = StudentService::getOrFail($schoolObj, $user);
+        $groupObj = GroupService::getOrFail($group);
+        $userObj = StudentService::getOrFail($groupObj, $user);
 
-        StudentService::destroy($schoolObj, $userObj);
+        StudentService::destroy($groupObj, $userObj);
 
-        return redirect(action('Users\Schools\StudentController@index', [$schoolObj->code]));
+        return redirect(action('Users\Schools\StudentController@index', [$groupObj->code]));
     }
 }

@@ -5,9 +5,9 @@
          BreadCrumb::render([
              [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
              [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
-             [ 'action' => 'Users\Schools\SchoolController@index', 'label' => trans('users.schools.link') ],
-             [ 'action' => 'Users\Schools\SchoolController@show', 'params' => [$schoolObj->code], 'label' => $schoolObj->name ],
-             [ 'action' => 'Users\Schools\TeacherController@index', 'params' => [$schoolObj->code],'label' => trans('users.teachers.link') ],
+             [ 'action' => 'Users\Groups\GroupController@index', 'label' => trans('users.groups.link') ],
+             [ 'action' => 'Users\Groups\GroupController@show', 'params' => [$groupObj->code], 'label' => $groupObj->name ],
+             [ 'action' => 'Users\Groups\TeacherController@index', 'params' => [$groupObj->code],'label' => trans('users.teachers.link') ],
              [ 'label' => $userObj->name]
          ])
     !!}
@@ -17,8 +17,8 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.edit'), 'action' => 'Users\Schools\TeacherController@edit', 'params' => [$schoolObj->code, $userObj->code] ],
-                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\Schools\TeacherController@deleteModal', 'params' => [$schoolObj->code, $userObj->code]]
+                ['label' => trans('general.buttons.edit'), 'action' => 'Users\Groups\TeacherController@edit', 'params' => [$groupObj->code, $userObj->code] ],
+                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\Groups\TeacherController@deleteModal', 'params' => [$groupObj->code, $userObj->code]]
             ]
         ])
     !!}

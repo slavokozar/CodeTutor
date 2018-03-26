@@ -45,7 +45,7 @@
                 <td>{{$groupObj->school ? $groupObj->school->name : ''}}</td>
                 <td>{!! $groupObj->is_public ? '<i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</td>
                 <td>
-                    {{ $groupObj->admins()->count() }}
+                    {{ $groupObj->teachers()->count() }}
                 </td>
                 <td>
                     {{ $groupObj->students()->count() }}
