@@ -9,7 +9,6 @@
 </head>
 <body>
     @include('layouts.partials.navbar')
-    @include('layouts.partials.flash')
 
     @yield('content')
 
@@ -49,6 +48,8 @@
 
                 })
             });
+
+            $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
         });
     </script>
     @yield('scripts')

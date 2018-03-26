@@ -27,6 +27,17 @@
         $_table_action = function($userObj) use ($groupObj){
             return action('Users\Groups\StudentController@show', [$groupObj->code, $userObj->code]);
         };
+
+        $_table_actions = [
+            [
+                'action' => function($userObj) use ($groupObj){
+                    return action('Users\Groups\StudentController@deleteModal', [$groupObj->code, $userObj->code]);
+                },
+                'label' => trans('general.remove'),
+                'icon' => 'fa-trash',
+                'modal' => true
+            ]
+        ]
     @endphp
 
     @if(count($users) > 0)

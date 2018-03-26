@@ -9,7 +9,6 @@
 </head>
 <body>
     <?php echo $__env->make('layouts.partials.navbar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-    <?php echo $__env->make('layouts.partials.flash', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
     <?php echo $__env->yieldContent('content'); ?>
 
@@ -49,6 +48,8 @@
 
                 })
             });
+
+            $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
         });
     </script>
     <?php echo $__env->yieldContent('scripts'); ?>

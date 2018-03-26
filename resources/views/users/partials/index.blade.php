@@ -17,6 +17,9 @@
         @if(!isset($_table_skip['groups']))
             <th>{{ trans('users.labels.groups') }}</th>
         @endif
+        @if(isset($_table_actions))
+            <th>&nbsp;</th>
+        @endif
     </tr>
     </thead>
     <tbody>
@@ -61,6 +64,15 @@
                     @foreach($userObj->groups as $groupObj)
                         {{$groupObj->name}} @if($groupObj->pivot->role)
                             ({{ trans('users.groups.roles')[$groupObj->pivot->role] }})@endif
+                    @endforeach
+                </td>
+            @endif
+            @if(isset($_table_actions))
+                <td>
+                    @foreach($_table_actions as $action)
+                        <a href="{{ $action['action']($userObj) }}" {!! $action['modal'] ? 'class="btn-modal"' : '' !!}>
+                            <i class="fa {{ $action['icon'] }}" aria-hidden="true"></i>
+                        </a>
                     @endforeach
                 </td>
             @endif

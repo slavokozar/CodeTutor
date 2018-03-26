@@ -10,14 +10,10 @@ namespace App\Http\Controllers\Users\Groups;
 
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\Users\UserRequest;
-
-
-use Facades\App\Services\Users\UserService;
 use Facades\App\Services\Users\Groups\GroupService;
 use Facades\App\Services\Users\Groups\StudentService;
 use Facades\App\Services\Users\Groups\UserGroupService;
-
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -43,7 +39,7 @@ class StudentController extends Controller
     {
         $groupObj = GroupService::getOrFail($group);
 
-        $users = UserService::all();
+        $users = StudentService::potential($groupObj);
 
         return view('users.groups.students.create', compact(['groupObj', 'users']));
     }
@@ -55,10 +51,11 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request, $group)
+    public function store(Request $request, $group)
     {
         $groupObj = GroupService::getOrFail($group);
-        $userObj = UserGroupService::attach($request->input('users'), $groupObj);
+
+        UserGroupService::attachIds($request->input('users'), $groupObj);
 
         return redirect(action('Users\Groups\StudentController@index', [$groupObj->code]));
     }
@@ -109,8 +106,8 @@ class StudentController extends Controller
         $groupObj = GroupService::getOrFail($group);
         $userObj = StudentService::getOrFail($groupObj, $user);
 
-        StudentService::destroy($groupObj, $userObj);
+        UserGroupService::detach($userObj, $groupObj);
 
-        return redirect(action('Users\Schools\StudentController@index', [$groupObj->code]));
+        return redirect(action('Users\Groups\StudentController@index', [$groupObj->code]));
     }
 }

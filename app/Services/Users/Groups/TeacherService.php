@@ -10,6 +10,7 @@ namespace App\Services\Users\Groups;
 
 use App\Classes\SchoolRoles;
 
+use App\Models\Users\User;
 use Illuminate\Support\Facades\Response;
 
 use Facades\App\Services\Users\UserService as UserServiceFacade;
@@ -52,39 +53,19 @@ class TeacherService
         Response::view('users.users.not-found',compact('code', 'action', 'label', 'message'))->throwResponse();
     }
 
-    public function blank(){
-        return UserServiceFacade::blank();
-    }
+    public function potential($groupObj){
+        if($groupObj->school != null){
 
-    public function create($schoolObj, $data){
-        $userObj = UserServiceFacade::create($data);
+            return $groupObj->school->students()->whereDoesntHave('groups', function($query) use ($groupObj) {
+                $query->where('user_groups.id', $groupObj->id);
+            })->get();
 
-        $schoolObj->users()->attach($userObj, ['role' => SchoolRoles::teacher]);
+        }else{
 
-        return $userObj;
-    }
+            return User::whereDoesntHave('groups', function($query) use ($groupObj){
+                $query->where('user_groups.id', $groupObj->id);
+            })->get();
 
-    public function update($schoolObj, $userObj, $data){
-        if(!$userObj->has('schools', $schoolObj)){
-            return $this->fail($schoolObj, $userObj->code);
-        }
-
-        $userObj = UserServiceFacade::update($userObj, $data);
-
-        return $userObj;
-    }
-
-    public function destroy($schoolObj, $userObj){
-
-        $groups = $userObj->groups()->where('school_id',$schoolObj->id)->get();
-        foreach($groups as $groupObj){
-            UserGroupServiceFacade::detach($userObj, $groupObj);
-        }
-
-        UserSchoolServiceFacade::detach($userObj, $schoolObj);
-
-        if($userObj->groups()->count() == 0 && $userObj->schools()->count() == 0){
-            UserServiceFacade::destroy($userObj);
         }
     }
 }

@@ -119,6 +119,10 @@ return [
         'link' => 'Študenti',
         'create' => 'Vytvorenie študenta',
         'edit' => 'Úprava študenta',
-        'add' => 'Pridanie študenta'
+        'add' => 'Pridanie študenta',
+        'add-notification' => 'Študent <strong>:name</strong> bol úspešne pridaný do skupiny <strong>:group</strong>.',
+        'remove' => 'Odobranie študenta',
+        'remove-message' => 'Naozaj si želáte odobrať užívateľa <strong>:name</strong> zo skupiny <strong>:group</strong> ?',
+        'remove-notification' => 'Študent <strong>:name</strong> bol úspešne odobraný zo skupiny <strong>:group</strong>.',
     ],
 ];

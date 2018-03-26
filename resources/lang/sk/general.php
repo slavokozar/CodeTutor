@@ -6,7 +6,8 @@ return [
         'save' => 'Uložiť',
         'create' => 'Vytvoriť',
         'add' => 'Pridať',
-        'cancel' => 'Zrušiť'
+        'cancel' => 'Zrušiť',
+        'remove' => 'Odobrať'
     ],
 
     'back-to' => 'Späť na ',
