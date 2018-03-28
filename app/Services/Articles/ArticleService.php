@@ -1,34 +1,39 @@
 <?php
 namespace App\Services\Articles;
 
-use App\_Classes\UUID;
-use App\Facades\CleanString;
-use App\Models\Article;
-use App\_Classes\Parsedown;
+use App\Models\Articles\Article;
 
-/**
- * Created by PhpStorm.
- * User: slavo
- * Date: 16/09/2017
- * Time: 00:55
- */
+use Illuminate\Support\Facades\Response;
+
+use Facades\App\Services\Utils\CleanString as CleanStringFacade;
+use Facades\App\Services\Utils\UniqueCode as UniqueCodeFacade;
+
 class ArticleService
 {
     public function all(){
         return Article::all();
     }
 
-    public function get($code){
-        return Article::where('code',$code)->first();
+    public function paginate(){
+        return Article::paginate(10);
     }
 
     public function getOrFail($code){
         $articleObj = $this->get($code);
 
         if($articleObj == null){
-
+            $this->fail($code);
         }
         return $articleObj;
+    }
+
+    private function get($code){
+        return Article::where('code',$code)->first();
+    }
+
+    private function fail($code)
+    {
+        Response::make('User ' . $code . 'not found!', 404)->throwResponse();
     }
 
 
@@ -43,21 +48,17 @@ class ArticleService
         return $articleObj->comments()->limit(5)->get();
     }
 
-    public function store($data){
-        $normalized = CleanString::normalize($data['name']);
+    public function store($data, $authorObj){
+        $normalized = CleanStringFacade::normalize($data['name']);
 
-        do {
-            $code = new UUID;
-            $code = $code->limit(6, 4);
-            $code = $normalized.'-'.$code;
-        } while (count(Article::where('code', $code)->get()) > 0);
+        $code = UniqueCodeFacade::unique(Article::class, $normalized);
 
         $articleObj = Article::create([
             'name' => $data['name'],
             'code' => $code,
             'is_public' => isset($data['is_public']) && $data['is_public'] ? true : false,
 
-            'author_id' => Auth::user()->id,
+            'author_id' => $authorObj->id,
             'series_id' => null,
             'series_order' => null,
 
@@ -72,11 +73,9 @@ class ArticleService
         if($data['name'] != $articleObj->name) {
             $normalized = CleanString::normalize($data['name']);
 
-            do {
-                $code = new UUID;
-                $code = $code->limit(6, 4);
-                $code = $normalized . '-' . $code;
-            } while (count(Article::where('code', $code)->get()) > 0);
+            $normalized = CleanStringFacade::normalize($data['name']);
+
+            $code = UniqueCodeFacade::unique(Article::class, $normalized);
 
             $articleObj->name = $data['name'];
             $articleObj->code = $code;
@@ -95,7 +94,7 @@ class ArticleService
         return $articleObj;
     }
 
-    public function delete($articleObj){
+    public function destroy($articleObj){
         $articleObj->delete();
     }
 }

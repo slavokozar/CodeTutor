@@ -56,7 +56,7 @@ class TeacherService
     public function potential($groupObj){
         if($groupObj->school != null){
 
-            return $groupObj->school->students()->whereDoesntHave('groups', function($query) use ($groupObj) {
+            return $groupObj->school->teachers()->whereDoesntHave('groups', function($query) use ($groupObj) {
                 $query->where('user_groups.id', $groupObj->id);
             })->get();
 

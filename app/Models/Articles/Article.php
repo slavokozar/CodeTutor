@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Articles;
 
+use App\Models\Users\User;
 use App\Scopes\PublicScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -60,7 +61,7 @@ class Article extends Model
 
     public function author()
     {
-        return $this->belongsTo('App\Models\User', 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function series()

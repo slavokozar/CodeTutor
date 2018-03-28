@@ -26,10 +26,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = ArticleService::all();
-        $tags = TagService::all();
+        $articles = ArticleService::paginate();
 
-        return view('articles.index', compact(['articles', 'tags']));
+        return view('articles.index', compact(['articles']));
     }
 
     /**
@@ -39,7 +38,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $groups = GroupService::all();
+        $articleObj = ArticleService::blank();
 
         return view('articles.create', compact(['groups']));
     }
@@ -65,13 +64,11 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($code)
+    public function show($article)
     {
-        $articleObj = ArticleService::getOrFail($code);
+        $articleObj = ArticleService::getOrFail($article);
 
-
-//        $content = $articleObj->text;
-        $content = ArticleService::content($articleObj);
+//        $content = ArticleService::content($articleObj);
 //        $comments = ArticleService::comments($articleObj);
 
         return view('articles.show',compact(['articleObj','content','comments']));
@@ -84,12 +81,11 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($code)
+    public function edit($article)
     {
-        $articleObj = ArticleService::getOrFail($code);
-        $groups = GroupService::all();
+        $articleObj = ArticleService::getOrFail($article);
 
-        return view('articles.edit',compact(['articleObj','groups']));
+        return view('articles.edit',compact(['articleObj']));
     }
 
     /**
@@ -100,18 +96,18 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, $code)
+    public function update(ArticleRequest $request, $article)
     {
-        $articleObj = ArticleService::getOrFail($code);
+        $articleObj = ArticleService::getOrFail($article);
 
         $articleObj = ArticleService::update($articleObj, $request->input());
 
         return redirect(action('Articles\ArticleController@show',[$articleObj->code]));
     }
 
-    public function delete($code)
+    public function deleteModal($article)
     {
-        $articleObj = ArticleService::getOrFail($code);
+        $articleObj = ArticleService::getOrFail($article);
 
         return view('articles.delete',compact(['articleObj']));
     }
@@ -123,10 +119,11 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($code)
+    public function destroy($article)
     {
-        $articleObj = ArticleService::getOrFail($code);
-        ArticleService::delete($articleObj);
+        $articleObj = ArticleService::getOrFail($article);
+
+        ArticleService::destroy($articleObj);
 
         return redirect(action('Articles\ArticleController@index'));
     }
