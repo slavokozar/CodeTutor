@@ -53,6 +53,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+
+    /**
      * Send the password reset notification.
      *
      * @param  string $token
@@ -64,14 +74,7 @@ class User extends Authenticatable
         $this->notify(new ResetPassword($token));
     }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+
 
     public function groups()
     {

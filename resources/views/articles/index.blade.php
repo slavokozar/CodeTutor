@@ -1,12 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
-@section('sidebar')
-    @foreach($tags as $tag)
-        {{$tag->tag}}
-    @endforeach
-@endsection
 
-@section('content')
+@section('content-main')
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
         <li class="active">Články</li>

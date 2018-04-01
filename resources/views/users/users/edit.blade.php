@@ -17,8 +17,8 @@
 
     @php
         if($userObj->id == null){
-            $_form_action = 'Users\UserController@create';
-            $_form_params = '';
+            $_form_action = 'Users\UserController@store';
+            $_form_params = [];
             $_form_method = 'post';
         }else{
             $_form_action = 'Users\UserController@update';

@@ -143,18 +143,18 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
 //
 ///* ASSIGNMENTS */
 Route::get('zadania', 'Assignments\AssignmentController@index');
-//
-//Route::get('zadania/nove', 'Assignments\AssignmentController@create');
-//Route::post('zadania/nove', 'Assignments\AssignmentController@store');
-//
-//Route::get('zadania/{assignment}', 'Assignments\AssignmentController@show');
-//
-//Route::get('zadania/{assignment}/uprava', 'Assignments\AssignmentController@edit');
-//Route::post('zadania/{assignment}/uprava', 'Assignments\AssignmentController@update');
-//
-//Route::get('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@remove');
-//Route::post('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@delete');
-//
+
+Route::get('zadania/nove', 'Assignments\AssignmentController@create');
+Route::post('zadania/nove', 'Assignments\AssignmentController@store');
+
+Route::get('zadania/{assignment}', 'Assignments\AssignmentController@show');
+
+Route::get('zadania/{assignment}/uprava', 'Assignments\AssignmentController@edit');
+Route::post('zadania/{assignment}/uprava', 'Assignments\AssignmentController@update');
+
+Route::get('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@remove');
+Route::post('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@delete');
+
 //
 /////* ASSIGNMENTS - solutions */
 ////Route::get('zadania/{assignment}/riesenia', 'Assignments\SolutionController@index');
@@ -185,18 +185,18 @@ Route::get('zadania', 'Assignments\AssignmentController@index');
 //
 ///* ARTICLES */
 Route::get('clanky', 'Articles\ArticleController@index');
-//
-//Route::get('clanky/vytvorenie', 'Articles\ArticleController@create');
-//Route::post('clanky', 'Articles\ArticleController@store');
-//
-//Route::get('clanky/{article}', 'Articles\ArticleController@show');
-//
-//Route::get('clanky/{article}/uprava', 'Articles\ArticleController@edit');
-//Route::post('clanky/{article}/uprava', 'Articles\ArticleController@update');
-//
-//Route::get('clanky/{article}/odstranenie', 'Articles\ArticleController@delete');
-//Route::post('clanky/{article}/odstranenie', 'Articles\ArticleController@destroy');
-//
+
+Route::get('clanky/vytvorenie', 'Articles\ArticleController@create');
+Route::post('clanky', 'Articles\ArticleController@store');
+
+Route::get('clanky/{article}', 'Articles\ArticleController@show');
+
+Route::get('clanky/{article}/uprava', 'Articles\ArticleController@edit');
+Route::post('clanky/{article}/uprava', 'Articles\ArticleController@update');
+
+Route::get('clanky/{article}/odstranenie', 'Articles\ArticleController@delete');
+Route::post('clanky/{article}/odstranenie', 'Articles\ArticleController@destroy');
+
 
 
 ///* COMMENTS */

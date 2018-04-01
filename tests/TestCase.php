@@ -1,25 +1,20 @@
 <?php
 
-abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
+namespace Tests;
+
+use DB;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
 {
-    /**
-     * The base URL to use while testing the application.
-     *
-     * @var string
-     */
-    protected $baseUrl = 'http://localhost';
+    use CreatesApplication;
 
-    /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication()
+    public function tearDown()
     {
-        $app = require __DIR__.'/../bootstrap/app.php';
+        $this->beforeApplicationDestroyed(function () {
+            DB::disconnect();
+        });
 
-        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
-
-        return $app;
+        parent::tearDown();
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace Facades\App\Services\Users\Schools;
+namespace Facades\App\Services\Articles;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Services\Users\Schools\SchoolService
+ * @see \App\Services\Articles\TagService
  */
-class SchoolService extends Facade
+class TagService extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class SchoolService extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'App\Services\Users\Schools\SchoolService';
+        return 'App\Services\Articles\TagService';
     }
 }

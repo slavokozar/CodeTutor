@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\_Classes\UUID;
-use App\Models\School;
 use App\Models\User;
+use App\Models\Users\School;
 use App\Notifications\UserRegistered;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -58,7 +58,9 @@ class RegisterController extends Controller
     {
 
         return Validator::make($data, [
+            'title' => 'max:255',
             'name' => 'required|max:255',
+            'surname' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'school_id' => 'required',
             'date' => ['required', 'regex:/^(([1-9])|([12][0-9])|(3[01]))(( )?[.\/-]( )?)(([0]?[1-9])|(1[012]))(( )?[.\/-]( )?)(19|20)?[0-9][0-9]$/'],

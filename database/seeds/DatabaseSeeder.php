@@ -1,10 +1,8 @@
 <?php
 
-use App\Models\Article;
-use App\Models\Assignment;
-use App\Models\Group;
-use App\Models\School;
-use App\Models\User;
+
+use App\Classes\UserRoles;
+use App\Models\Users\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,17 +15,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-//        $rules = Article::create([
-//            'name' => 'Pravidlá',
-//            'code' => 'rules_sk',
-//            'is_public' => false,
-//            'author_id' => $admin->id,
-//            'series_id' => null,
-//            'series_order' => null,
-//
-//            'description' => '',
-//            'text' => ''
-//        ]);
+
+
 
         $this->call(UserSeeder::class);
 

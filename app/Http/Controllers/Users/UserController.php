@@ -9,10 +9,15 @@ use App\Http\Requests\Users\UserRequest;
 use Facades\App\Services\Users\UserService;
 use Facades\App\Services\Users\Groups\GroupService;
 use Facades\App\Services\Users\Schools\SchoolService;
+use Illuminate\Http\Request;
 
 
 class UserController extends Controller
 {
+//    public function __construct(){
+//        $this->middleware(['auth']);
+//    }
+
     /**
      * Display a listing of the resource.
      *

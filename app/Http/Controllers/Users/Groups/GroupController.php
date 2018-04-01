@@ -47,7 +47,9 @@ class GroupController extends Controller
      */
     public function store(GroupRequest $request)
     {
-        $groupObj = GroupService::create($request->all());
+        $data = $request->all();
+        $data['school_id'] = $data['school_id'] == '' ? null : $data['school_id'];
+        $groupObj = GroupService::create($data);
 
         return redirect(action('Users\Groups\GroupController@show', [$groupObj->code]));
     }

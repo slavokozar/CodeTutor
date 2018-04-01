@@ -1,9 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
-@section('sidebar')
-@endsection
 
-@section('content')
+@section('content-main')
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
         <li><a href="{{action('Articles\ArticleController@index')}}">Články</a></li>
