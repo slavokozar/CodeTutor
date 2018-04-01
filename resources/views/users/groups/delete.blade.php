@@ -11,7 +11,7 @@
                 <p class="text-center text-danger">
                     <i class="fa fa-5x fa-exclamation-triangle" aria-hidden="true"></i>
                 </p>
-                <p class="text-center text-danger">{!! trans('users.groups.delete.message', ['name' => $schoolObj->name]) !!}</p>
+                <p class="text-center text-danger">{!! trans('users.groups.delete.message', ['name' => $groupObj->name]) !!}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"

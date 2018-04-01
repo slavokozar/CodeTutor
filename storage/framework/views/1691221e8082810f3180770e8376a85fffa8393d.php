@@ -4,11 +4,11 @@
     <?php echo $__env->make('layouts.partials.meta', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
     <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/select2.css')); ?>">
     <link rel="shortcut icon" href="<?php echo e(asset('img/codeleague.ico')); ?>" type="image/x-icon">
 </head>
 <body>
     <?php echo $__env->make('layouts.partials.navbar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-    <?php echo $__env->make('layouts.partials.flash', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
     <?php echo $__env->yieldContent('content'); ?>
 
@@ -36,8 +36,6 @@
                     'method': 'get'
                 }).done(function(data){
 
-                    console.log(data);
-
                     $modal = $(data);
                     $('body').append($modal);
                     $modal.modal('show');
@@ -46,8 +44,12 @@
                         $modal.remove();
                     })
 
+                    $modal.find('.js-select').select2({});
+
                 })
             });
+
+            $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
         });
     </script>
     <?php echo $__env->yieldContent('scripts'); ?>

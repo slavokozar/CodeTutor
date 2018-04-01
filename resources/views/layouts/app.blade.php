@@ -4,11 +4,11 @@
     @include('layouts.partials.meta')
 
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/select2.css')}}">
     <link rel="shortcut icon" href="{{asset('img/codeleague.ico')}}" type="image/x-icon">
 </head>
 <body>
     @include('layouts.partials.navbar')
-    @include('layouts.partials.flash')
 
     @yield('content')
 
@@ -36,8 +36,6 @@
                     'method': 'get'
                 }).done(function(data){
 
-                    console.log(data);
-
                     $modal = $(data);
                     $('body').append($modal);
                     $modal.modal('show');
@@ -46,8 +44,12 @@
                         $modal.remove();
                     })
 
+                    $modal.find('.js-select').select2({});
+
                 })
             });
+
+            $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
         });
     </script>
     @yield('scripts')

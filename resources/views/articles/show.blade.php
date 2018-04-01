@@ -1,31 +1,28 @@
 @extends('layouts.main')
 
-
 @section('content-main')
-    <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        <li><a href="{{action('Articles\ArticleController@index')}}">Články</a></li>
-        <li class="active">{{$articleObj->name}}</li>
-    </ol>
-
-    <h1>{!! $articleObj->is_public ? '' : 'profile' !!}{{$articleObj->name}}</h1>
-
-    <div class="row">
-        <div class="col-md-60">
-            <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-                <li role="presentation">
-                    <a href="{{action('Articles\ArticleController@edit',[$articleObj->code])}}">Upraviť</a>
-                </li>
-                <li role="presentation">
-                    <a href="{{action('Articles\ArticleController@delete',[$articleObj->code])}}">Vymazať</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    {!!
+        BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'label' => trans('articles.articles.link'), 'action' => 'Articles\ArticleController@index' ],
+            [ 'label' => $articleObj->name]
+        ])
+    !!}
 
 
-    <section id="assignments">
-        {!! $content !!}
+    <h1>{{ $articleObj->name }}</h1>
+
+    {!!
+        ContentNav::render([
+            'right' => [
+                ['label' => trans('general.buttons.edit'), 'action' => 'Articles\ArticleController@edit', 'params' => [$articleObj->code]],
+                ['label' => trans('general.buttons.delete'), 'action' => 'Articles\ArticleController@deleteModal', 'params' => [$articleObj->code], 'modal' => true]
+            ]
+        ])
+     !!}
+
+    <section id="article">
+        {!! $articleObj->text !!}
     </section>
 
 

@@ -15,6 +15,11 @@
 
     {!!
         ContentNav::render([
+            'left' => [
+                ['label' => trans('users.teachers.link'), 'action' => 'Users\Groups\TeacherController@index', 'params' => [$groupObj->code] ],
+                ['label' => trans('users.students.link'), 'action' => 'Users\Groups\StudentController@index', 'params' => [$groupObj->code] ],
+
+            ],
             'right' => [
                 ['label' => trans('general.buttons.edit'), 'action' => 'Users\Groups\GroupController@edit', 'params' => [$groupObj->code] ],
                 ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\Groups\GroupController@create', 'params' => [$groupObj->code]]

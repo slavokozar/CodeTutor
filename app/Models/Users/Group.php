@@ -32,9 +32,9 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'user_group_user', 'user_id', 'group_id')->withPivot(['role']);
     }
 
-    public function admins()
+    public function teachers()
     {
-        return $this->users()->wherePivot('role',GroupRoles::admin);
+        return $this->users()->wherePivot('role',GroupRoles::teacher);
     }
 
     public function students()

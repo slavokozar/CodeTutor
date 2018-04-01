@@ -41,7 +41,7 @@
                 <td><?php echo e($groupObj->school ? $groupObj->school->name : ''); ?></td>
                 <td><?php echo $groupObj->is_public ? '<i class="fa fa-check" aria-hidden="true"></i>' : ''; ?></td>
                 <td>
-                    <?php echo e($groupObj->admins()->count()); ?>
+                    <?php echo e($groupObj->teachers()->count()); ?>
 
                 </td>
                 <td>

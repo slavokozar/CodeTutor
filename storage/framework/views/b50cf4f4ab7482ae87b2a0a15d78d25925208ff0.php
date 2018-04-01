@@ -17,6 +17,9 @@
         <?php if(!isset($_table_skip['groups'])): ?>
             <th><?php echo e(trans('users.labels.groups')); ?></th>
         <?php endif; ?>
+        <?php if(isset($_table_actions)): ?>
+            <th>&nbsp;</th>
+        <?php endif; ?>
     </tr>
     </thead>
     <tbody>
@@ -64,6 +67,15 @@
                     <?php $__currentLoopData = $userObj->groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php echo e($groupObj->name); ?> <?php if($groupObj->pivot->role): ?>
                             (<?php echo e(trans('users.groups.roles')[$groupObj->pivot->role]); ?>)<?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </td>
+            <?php endif; ?>
+            <?php if(isset($_table_actions)): ?>
+                <td>
+                    <?php $__currentLoopData = $_table_actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e($action['action']($userObj)); ?>" <?php echo $action['modal'] ? 'class="btn-modal"' : ''; ?>>
+                            <i class="fa <?php echo e($action['icon']); ?>" aria-hidden="true"></i>
+                        </a>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </td>
             <?php endif; ?>

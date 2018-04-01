@@ -42,6 +42,17 @@ class UserService
         return User::where('code', $code)->first();
     }
 
+    public function findOrFail($id)
+    {
+        $userObj = User::find($id);
+
+        if ($userObj == null) {
+            $this->fail($id);
+        } else {
+            return $userObj;
+        }
+    }
+
     private function fail($code)
     {
         Response::make('User ' . $code . 'not found!', 404)->throwResponse();

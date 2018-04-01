@@ -56,8 +56,26 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
 
     });
 
-
     Route::group(['prefix' => trans('users.groups.url'), 'namespace' => 'Groups'], function () {
+
+        Route::group(['prefix' => '/{group}/' . trans('users.teachers.url')], function () {
+            Route::get('/', 'TeacherController@index');
+            Route::get('/' . trans('routes.create'), 'TeacherController@create');
+            Route::post('/', 'TeacherController@store');
+            Route::get('/{user}', 'TeacherController@show');
+            Route::get('/{user}/' . trans('routes.delete'), 'TeacherControllers@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
+        });
+
+        Route::group(['prefix' => '/{group}/' . trans('users.students.url')], function () {
+            Route::get('/', 'StudentController@index');
+            Route::get('/' . trans('routes.create'), 'StudentController@create');
+            Route::post('/', 'StudentController@store');
+            Route::get('/{user}', 'StudentController@show');
+            Route::get('/{user}/' . trans('routes.delete'), 'StudentController@deleteModal');
+            Route::delete('/{user}/' . trans('routes.delete'), 'StudentController@destroy');
+        });
+
         Route::get('/', 'GroupController@index');
         Route::get('/' . trans('routes.create'), 'GroupController@create');
         Route::post('/', 'GroupController@store');
@@ -183,21 +201,63 @@ Route::post('zadania/{assignment}/odstranenie', 'Assignments\AssignmentControlle
 ////
 ////Route::get('zadania/{assignment}/odovzdanie/historia', 'Assignments\SubmitController@history');
 //
-///* ARTICLES */
-Route::get('clanky', 'Articles\ArticleController@index');
 
-Route::get('clanky/vytvorenie', 'Articles\ArticleController@create');
-Route::post('clanky', 'Articles\ArticleController@store');
+/* ARTICLES */
 
-Route::get('clanky/{article}', 'Articles\ArticleController@show');
+Route::group(['prefix' => trans('articles.url'), 'namespace' => 'Articles'], function () {
 
-Route::get('clanky/{article}/uprava', 'Articles\ArticleController@edit');
-Route::post('clanky/{article}/uprava', 'Articles\ArticleController@update');
+//    Route::group(['prefix' => trans('users.schools.url'), 'namespace' => 'Schools'], function () {
+//
+//        Route::group(['prefix' => '/{school}/' . trans('users.admins.url')], function () {
+//            Route::get('/', 'AdminController@index');
+//            Route::get('/' . trans('routes.create'), 'AdminController@create');
+//            Route::post('/', 'AdminController@store');
+//            Route::get('/{user}', 'AdminController@show');
+//            Route::get('/{user}/' . trans('routes.edit'), 'AdminController@edit');
+//            Route::put('/{user}/' . trans('routes.edit'), 'AdminController@update');
+//            Route::get('/{user}/' . trans('routes.delete'), 'AdminController@deleteModal');
+//            Route::delete('/{user}/' . trans('routes.delete'), 'AdminController@destroy');
+//        });
+//
 
-Route::get('clanky/{article}/odstranenie', 'Articles\ArticleController@delete');
-Route::post('clanky/{article}/odstranenie', 'Articles\ArticleController@destroy');
+//
+//        Route::get('/', 'SchoolController@index');
+//        Route::get('/' . trans('routes.create'), 'SchoolController@create');
+//        Route::post('/', 'SchoolController@store');
+//        Route::get('/{school}', 'SchoolController@show');
+//        Route::get('/{school}/' . trans('routes.edit'), 'SchoolController@edit');
+//        Route::put('/{school}/' . trans('routes.edit'), 'SchoolController@update');
+//        Route::get('/{school}/' . trans('routes.delete'), 'SchoolController@deleteModal');
+//        Route::delete('/{school}/' . trans('routes.delete'), 'SchoolController@destroy');
+//
+//    });
+//
+
+    Route::get('/', 'ArticleController@index');
+    Route::get('/' . trans('routes.create'), 'ArticleController@create');
+    Route::post('/', 'ArticleController@store');
+    Route::get('/{article}', 'ArticleController@show');
+    Route::get('/{article}/' . trans('routes.edit'), 'ArticleController@edit');
+    Route::put('/{article}/' . trans('routes.edit'), 'ArticleController@update');
+    Route::get('/{article}/' . trans('routes.delete'), 'ArticleController@deleteModal');
+    Route::delete('/{article}/' . trans('routes.delete'), 'ArticleController@destroy');
+});
 
 
+
+
+//
+//Route::get('clanky/vytvorenie', 'Articles\ArticleController@create');
+//Route::post('clanky', 'Articles\ArticleController@store');
+//
+//Route::get('clanky/{article}', 'Articles\ArticleController@show');
+//
+//Route::get('clanky/{article}/uprava', 'Articles\ArticleController@edit');
+//Route::post('clanky/{article}/uprava', 'Articles\ArticleController@update');
+//
+//Route::get('clanky/{article}/odstranenie', 'Articles\ArticleController@delete');
+//Route::post('clanky/{article}/odstranenie', 'Articles\ArticleController@destroy');
+//
 
 ///* COMMENTS */
 //Route::get('{object}/{code}/komentare', 'System\CommentController@index');

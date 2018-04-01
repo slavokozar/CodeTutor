@@ -17,7 +17,7 @@
     @endif
 
     <form class="form-horizontal"
-          action="{{ $groupObj->id == null ? action('Users\Groups\GroupController@store') : action('Users\Schools\GroupController@update', $groupObj->code)}}"
+          action="{{ $groupObj->id == null ? action('Users\Groups\GroupController@store') : action('Users\Groups\GroupController@update', $groupObj->code)}}"
           method="post">
         {!! csrf_field() !!}
         @if($groupObj->id != null)
@@ -55,10 +55,11 @@
                         <div class="col-md-40">
 
                             <select class="form-control" name="school_id">
+
                                 <option value="">Global</option>
                                 @foreach($schools as $schoolObj)
                                     <option value="{{ $schoolObj->id }}"{{ old('school_id', $groupObj->school_id) == $schoolObj->id ? ' selected' : '' }}>{{$schoolObj->name}}</option>
-                                @endforeach
+
                             </select>
                                    {{--value="{{ old('school_id', $groupObj->name) }}"/>--}}
                             @if( $errors->has('school_id') )
