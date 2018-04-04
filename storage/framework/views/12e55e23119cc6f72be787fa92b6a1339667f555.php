@@ -1,41 +1,49 @@
 <?php $__env->startSection('content-main'); ?>
-    <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        <li class="active">Články</li>
-    </ol>
+    <?php echo BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'label' => trans('articles.articles.link') ]
+        ]); ?>
 
-    <h1>Články</h1>
 
-    <?php if(Auth::check() && Auth::user()->isArticleAuthor()): ?>
-        <div class="row">
-            <div class="col-md-60">
-                <ul id="content-nav-tabs" class="nav nav-tabs">
-                    <li role="presentation">
-                        <a href="<?php echo e(action('Articles\ArticleController@create')); ?>" class="btn">Vytvoriť nový</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    <?php endif; ?>
 
-    <?php if(count($articles) == 0): ?>
-        <p class="text-center text-danger">
-            Práve tu nie su žiadne články.<br/>
-            <i class="fa fa-4x fa-meh-o" aria-hidden="true"></i><br/>
-            Ľutujeme, ak si myslíte, že články by tu mali byť, neváhajte <a href="/#contact">kontaktovať</a> správcov.
-        </p>
-    <?php else: ?>
-        <?php $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $articleObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="article <?php echo e($articleObj->is_public ? '' : 'private'); ?>">
-                <a href="<?php echo e(action('Articles\ArticleController@show',[$articleObj->code])); ?>">
-                    <h2 class="article-name"><?php echo e($articleObj->name); ?></h2>
-                </a>
-                
-                <p><?php echo $articleObj->description; ?></p>
-                <a href="<?php echo e(action('Articles\ArticleController@show',[$articleObj->code])); ?>">Viac...</a>
-            </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    <?php endif; ?>
+    <h1><?php echo e(trans('articles.articles.heading')); ?></h1>
+
+    <?php echo ContentNav::render([
+            'right' => [
+                ['label' => trans('general.buttons.create'), 'action' => 'Articles\ArticleController@create']
+            ]
+        ]); ?>
+
+
+    <section id="activities-list">
+        <?php if(count($articles) == 0): ?>
+            <p class="text-center text-danger"><?php echo trans('articles.articles.no-articles'); ?></p>
+        <?php else: ?>
+            <?php $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $articleObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="activity <?php echo e($articleObj->is_public ? '' : 'private'); ?>">
+
+                    <div class="activity-image">
+                        <span class="fa fa-newspaper-o" aria-hidden="true"></span>
+                    </div>
+                    <div class="activity-content">
+                        <a href="<?php echo e(action('Articles\ArticleController@show',[$articleObj->code])); ?>">
+                            <h2><?php echo e($articleObj->name); ?></h2>
+                        </a>
+                        <div class="activity-details">
+                            <span class="activity-author"><?php echo e(trans('activities.from-user')); ?> <?php echo e($articleObj->author->name); ?></span>
+                            <span class="activity-date"><?php echo e($articleObj->updated_at); ?></span>
+                        </div>
+                        <p class="activity-description">
+                            <?php echo $articleObj->description; ?>
+
+                            <a class="read-more" href="<?php echo e(action('Articles\ArticleController@show',[$articleObj->code])); ?>"><?php echo e(trans('articles.articles.read-more')); ?></a>
+                        </p>
+                    </div>
+                </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
+    </section>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

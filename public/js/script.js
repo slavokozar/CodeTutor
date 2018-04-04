@@ -15,85 +15,17 @@ setTimeout(function () {
 	$('#flash div.alert').not('.alert-important').hide("slide", { direction: "right" }, 1000);
 },3000);
 
-
-var $replacer = null;
-
-
-var ContentNavTabs = {
-    $tabs: null,
-	$replacer: null,
-	offset: 178,
-
-	init: function(){
-		this.$tabs = $('#content-nav-tabs');
-        var scroll   = $(window).scrollTop();
-        if(scroll > this.offset){
-        	this.makeFixed();
-		}else{
-            this.makeRelative();
-		}
-	},
-
-	makeFixed: function(){
-        var left = this.$tabs.offset().left;
-        var height = this.$tabs.outerHeight();
-
-        if(this.$replacer == null){
-            this.$replacer = $('<div></div>');
-
-            this.$replacer.css({
-                display			:'block',
-                height			: height + 'px'
-            });
-
-            this.$tabs.after(this.$replacer);
-        }
-
-        this.$tabs.css({
-            zIndex      	: 100,
-            top            	: '102px',
-            left           	: (left) + 'px',
-            position       	: 'fixed',
-            background		: '#fff'
-        });
-	},
-	makeRelative: function(){
-        var scroll   = $(window).scrollTop();
-        if(scroll > this.offset) return;
-
-        this.$tabs.removeAttr('style');
-        if(this.$replacer != null){
-            this.$replacer.remove();
-            this.$replacer = null;
-        }
-	}
-};
-ContentNavTabs.init();
-
 $(window).scroll(function () {
 	var scroll   = $(window).scrollTop();
 	var $sidebar = $('.sidebar-wrapper');
-	
+
 	if (scroll > 20) {
 		$('.navbar').addClass('navbar-bg');
 	}
 	else {
 		$('.navbar').removeClass('navbar-bg');
 	}
-	
-	if (scroll > 45) {
-		var width = $sidebar.outerWidth();
-		$sidebar.addClass('sticked').css('width', width + 'px');
-	}
-	else {
-		$sidebar.removeClass('sticked').removeAttr('style');
-	}
 
-	if (scroll > ContentNavTabs.offset) {
-        ContentNavTabs.makeFixed();
-	} else {
-        ContentNavTabs.makeRelative();
-	}
 });
 $(window).load(function () {
 	var scroll = $(window).scrollTop();
@@ -103,18 +35,8 @@ $(window).load(function () {
 	else {
 		$('.navbar').removeClass('navbar-bg');
 	}
-	
-	if ($('.sidebar-wrapper').length) {
-		if (scroll > 112) {
-			var width = $('.sidebar-wrapper').outerWidth();
-			$('.sidebar-wrapper').addClass('sticked').css('width', width + 'px');
-			
-		}
-		else {
-			$('.sidebar-wrapper').removeClass('sticked').removeAttr('style');
-		}
-	}
-})
+
+});
 
 $(document).on('click', '.link-modal', function (e) {
 	e.preventDefault();

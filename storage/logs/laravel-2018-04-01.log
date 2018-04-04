@@ -110,3 +110,29 @@
 #51 /Users/slavo/.composer/vendor/laravel/valet/server.php(147): require('/Users/slavo/Co...')
 #52 {main}
 "} 
+[2018-04-01 15:49:11] local.ERROR: Class ArticleSeeder does not exist {"exception":"[object] (ReflectionException(code: -1): Class ArticleSeeder does not exist at /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/Container.php:752)
+[stacktrace]
+#0 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/Container.php(752): ReflectionClass->__construct('ArticleSeeder')
+#1 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/Container.php(631): Illuminate\\Container\\Container->build('ArticleSeeder')
+#2 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/Container.php(586): Illuminate\\Container\\Container->resolve('ArticleSeeder', Array)
+#3 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(732): Illuminate\\Container\\Container->make('ArticleSeeder', Array)
+#4 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(74): Illuminate\\Foundation\\Application->make('ArticleSeeder')
+#5 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(63): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()
+#6 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(122): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()
+#7 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(64): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
+#8 [internal function]: Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()
+#9 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#10 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#11 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#12 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Container/Container.php(549): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#13 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#14 /Users/slavo/Code/codetutor/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#15 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#16 /Users/slavo/Code/codetutor/vendor/symfony/console/Application.php(946): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /Users/slavo/Code/codetutor/vendor/symfony/console/Application.php(248): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 /Users/slavo/Code/codetutor/vendor/symfony/console/Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#20 /Users/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 /Users/slavo/Code/codetutor/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 {main}
+"} 

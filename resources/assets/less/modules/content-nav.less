@@ -1,8 +1,18 @@
 #content-navigation{
   display: flex;
   justify-content: space-between;
+  margin-top: (-1 * @line-height-computed / 2);
+  margin-bottom: (@line-height-computed / 2);
+
+  position: sticky;
+  top: 90px;
+
 
   &.content-nav-right{
     flex-direction: row-reverse;
+  }
+
+  li{
+    z-index: 999;
   }
 }

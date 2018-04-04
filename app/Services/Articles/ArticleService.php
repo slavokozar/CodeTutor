@@ -48,6 +48,11 @@ class ArticleService
         return $articleObj->comments()->limit(5)->get();
     }
 
+    public function blank(){
+        return new Article();
+    }
+
+
     public function store($data, $authorObj){
         $normalized = CleanStringFacade::normalize($data['name']);
 

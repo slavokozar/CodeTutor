@@ -1,111 +1,113 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
-@section('content')
+@section('content-main')
+    @php
 
-    <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        <li><a href="{{action('Articles\ArticleController@index')}}">Články</a></li>
-        <li><a href="{{action('Articles\ArticleController@show',[$articleObj->code])}}">{{$articleObj->name}}</a></li>
-        <li class="active">{{ $articleObj->id != null ? 'Úprava' : 'Nové' }}</li>
-    </ol>
+        $breadcrumb = [
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'label' => trans('articles.articles.link'), 'action' => 'Articles\ArticleController@index' ],
+        ];
 
+        if($articleObj->id){
+            $breadcrumb[] = [ 'action' => 'Articles\ArticleController@show', 'params' => [$articleObj->code], 'label' => $articleObj->name];
+            $breadcrumb[] = [ 'label' => trans('articles.articles.edit') ];
+        }else{
+            $breadcrumb[] = [ 'label' => trans('articles.articles.create') ];
+        }
 
-    @if($articleObj->id != null)
-        <h1>Úprava {{$articleObj->name}}</h1>
-        <form class="form" method="post"
-              action="{{action('Articles\ArticleController@update',[$articleObj->code])}}">
+    @endphp
+
+    {!! BreadCrumb::render($breadcrumb) !!}
+
+    @if($articleObj->id)
+        <h1>{{ $articleObj->name }}</h1>
     @else
-        <h1>Vytvorenie zadania</h1>
-        <form class="form form-horizontal" method="post"
-              action="{{action('Articles\ArticleController@store')}}">
+        <h1>{{ trans('articles.articles.create') }}</h1>
     @endif
-    {!! csrf_field() !!}
 
-    <div class="row">
-        <div class="col-md-60">
-            <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-                <li role="presentation">
-                    @if($articleObj->id != null)
-                        <a href="{{action('Articles\ArticleController@show',[$articleObj->code])}}">Zrušiť</a>
-                    @else
-                        <a href="{{action('Articles\ArticleController@index')}}">Zrušiť</a>
-                    @endif
-                </li>
-                <li role="presentation">
-                    <button type="submit" class="btn btn-danger">
-                        @if($articleObj->id != null) Upraviť @else Vytvoriť @endif
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
+    @php
+        if($articleObj->id == null){
+            $_form_action = 'Articles\ArticleController@store';
+            $_form_params = [$articleObj->code];
+            $_form_method = 'post';
+        }else{
+            $_form_action = 'Articles\ArticleController@update';
+            $_form_params = [$articleObj->code];
+            $_form_method = 'put';
+        }
+    @endphp
 
-    <section id="assignments">
+    <form class="form-horizontal" action="{{ action($_form_action, $_form_params)}}" method="post">
         {!! csrf_field() !!}
-        <div class="row">
-            <div class="col-lg-30">
-                <div class="form-group{{$errors->has('name') ? ' has-error' : ''}}">
-                    <label for="articleName">Názov</label>
-                    <input id="articleName" type="text" class="form-control" name="name" placeholder="Názov článku"
-                           value="{{old('name') != null ? old('name') : $articleObj->name}}">
-                    @if ($errors->has('name'))
-                        @foreach($errors->get('name') as $error)
-                            <span class="help-block">{{$error}}</span>
-                        @endforeach
-                    @endif
-                </div>
+        @if($_form_method != 'post')
+            <input type="hidden" name="_method" value="{{$_form_method}}">
+        @endif
 
-                <div class="checkbox">
-                    <label>
-                        <input name="is_public" type="checkbox" @if((old('is_public') !== null && old('is_public')) || $articleObj->is_public) checked @endif> Verejný článok
-                    </label>
-                </div>
+        {!! ContentNav::submit(['label' => trans('general.buttons.save')]) !!}
 
-            </div>
-            <div class="col-lg-30">
-                <div class="form-group{{ $errors->has('group') ? ' has-error' : '' }}">
-                    <label for="assignmentGroup">Skupina</label>
-                    <select id="assignmentGroup" name="group" class="form-control">
-                        <option value="">Vyberte skupinu...</option>
-                        @foreach($groups as $group)
-                            <option value="{{$group->id}}"
-                                    @if((old('group') !== null && old('group') == $group->id) || $articleObj->group_id == $group->id) selected @endif>{{$group->name}}</option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('group'))
-                        @foreach($errors->get('description') as $error)
-                            <span class="help-block">{{$error}}</span>
-                        @endforeach
+        <section id="basic">
+
+            @if($articleObj->id != null)
+                <div class="row">
+                    <div class="col-md-20">
+                        <label for="">#</label>
+                    </div>
+                    <div class="col-md-40">
+                        {{$articleObj->code}}
+                    </div>
+                </div>
+            @endif
+
+
+            <div class="form-group{{$errors->has('name') ? ' has-error' : ''}}">
+                <label class="col-md-20" for="articleName">{{ trans('articles.labels.name') }}</label>
+                <div class="col-md-40">
+                    <input id="articleName" type="text" class="form-control" name="name"
+                           value="{{ old('name', $articleObj->name) }}">
+                    @if( $errors->has('name') )
+                        <span class="help-block">{{ $errors->first('name') }}</span>
                     @endif
                 </div>
             </div>
-        </div>
 
 
-        <div class="form-group{{$errors->has('description') ? ' has-error' : ''}}">
-            <label for="articleDescription">Popis</label>
-            <textarea id="articleDescription" class="form-control" name="description" rows="3"
-                      placeholder="Popis, ktorý sa zobrazí vo výpise článkov...">{{old('description') != null ? old('description') : $articleObj->description}}</textarea>
-            @if ($errors->has('description'))
-                @foreach($errors->get('description') as $error)
-                    <span class="help-block">{{$error}}</span>
-                @endforeach
-            @endif
-        </div>
+            {{-- Popis, ktorý sa zobrazí vo výpise článkov..." --}}
 
-        <div class="form-group{{$errors->has('text') ? ' has-error' : ''}}">
-            <label for="articleContent">Content</label>
-            <textarea id="articleContent" class="form-control" name="text" rows="10"
-                      placeholder="Obsah článku">{{old('text') != null ? old('text') : $articleObj->text}}</textarea>
-            @if ($errors->has('text'))
-                @foreach($errors->get('text') as $error)
-                    <span class="help-block">{{$error}}</span>
-                @endforeach
-            @endif
-        </div>
-    </section>
+            <div class="form-group{{$errors->has('description') ? ' has-error' : ''}}">
+                <label class="col-md-20" for="articleDescription">{{ trans('articles.labels.description') }}</label>
+                <div class="col-md-40">
+                    <div class="checkbox">
+                        <label>
+                            <input name="articleNoDescription" type="checkbox" {{ old('no-description') ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
+                        </label>
+                    </div>
 
-</form>
+                    <textarea id="articleDescription" class="form-control" name="description" rows="3"
+                              placeholder="{{ trans('articles.labels.description') }}" disabled>{{ old('description', $articleObj->description) }}</textarea>
+                    @if( $errors->has('description') )
+                        <span class="help-block">{{ $errors->first('description') }}</span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="form-group{{$errors->has('text') ? ' has-error' : ''}}">
+                <label class="col-md-60" for="articleContent">{{ trans('articles.labels.content') }}</label>
+                <div class="col-md-60">
+
+
+                    <textarea id="articleContent" class="form-control" name="text" rows="10"
+                              placeholder="{{ trans('articles.labels.text') }}">{{ old('text', $articleObj->text) }}</textarea>
+                    @if( $errors->has('text') )
+                        <span class="help-block">{{ $errors->first('text') }}</span>
+                    @endif
+                </div>
+            </div>
+
+
+
+        </section>
+    </form>
+
 @endsection
 
 @section('scripts')
@@ -113,14 +115,20 @@
     <script>
         var simplemde = new SimpleMDE({
             element: $("#articleContent")[0],
-            spellChecker: false
+            spellChecker: false,
         });
 
-        simplemde.codemirror.on('refresh', function(){
-            if($(simplemde.element).closest('.form-group').find('.CodeMirror').hasClass('CodeMirror-fullscreen')){
-                ContentNavTabs.makeFixed();
-            }else{
-                ContentNavTabs.makeRelative();
+        simplemde.codemirror.on('refresh', function () {
+            if ($(simplemde.element).closest('.form-group').find('.CodeMirror').hasClass('CodeMirror-fullscreen')) {
+                var width = $('#content-navigation').width();
+                $('#content-navigation').css({
+                    'position': 'fixed',
+                    'top': '90px',
+                    'width': width + 'px',
+                    'margin': 0
+                });
+            } else {
+                $('#content-navigation').removeAttr('style');
             }
         });
     </script>

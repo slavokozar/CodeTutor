@@ -40,7 +40,7 @@ class ArticleController extends Controller
     {
         $articleObj = ArticleService::blank();
 
-        return view('articles.create', compact(['groups']));
+        return view('articles.edit', compact(['articleObj']));
     }
 
     /**
