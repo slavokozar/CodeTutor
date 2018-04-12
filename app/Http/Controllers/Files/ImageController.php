@@ -9,7 +9,16 @@
 namespace App\Http\Controllers\Files;
 
 
-class ImageController
+use App\Http\Controllers\Controller;
+use Facades\App\Services\Files\ImageService;
+
+class ImageController extends Controller
 {
 
+    public function modalThumb($image){
+
+        $imageObj = ImageService::getOrFail($image);
+
+        return view('files.images.modal-thumb', compact(['imageObj']));
+    }
 }

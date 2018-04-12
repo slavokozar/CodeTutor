@@ -9,11 +9,58 @@
 namespace App\Services\Files;
 
 
+use App\Models\Files\Image;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Response;
+use Intervention\Image\Facades\Image as ImageFacade;
 
 class ImageService
 {
+
+    public function all(){
+
+        //todo scope
+
+        return Image::all();
+    }
+
+    public function paginate(){
+        return Image::paginate(10);
+    }
+
+    public function getOrFail($code)
+    {
+        $imageObj = $this->get($code);
+
+        if ($imageObj == null) {
+            $this->fail($code);
+        } else {
+            return $imageObj;
+        }
+    }
+
+    private function get($code)
+    {
+        return Image::where('code', $code)->first();
+    }
+
+    public function findOrFail($id)
+    {
+        $imageObj = Image::find($id);
+
+        if ($imageObj == null) {
+            $this->fail($id);
+        } else {
+            return $imageObj;
+        }
+    }
+
+    private function fail($code)
+    {
+        Response::make('Image ' . $code . 'not found!', 404)->throwResponse();
+    }
+
+
 
     public function getTargetPath()
     {
@@ -22,7 +69,7 @@ class ImageService
 
     public function getDimensions( $fileName )
     {
-        $image = Image::make(File::get($this->getTargetPath() . '/' . $fileName));
+        $image = ImageFacade::make(File::get($this->getTargetPath() . '/' . $fileName));
 
         $height = $image->height();
         $width = $image->width();
@@ -42,8 +89,9 @@ class ImageService
     }
 
 
-    public function createThumbs( $originalFileName, $originalFileWidth, $originalFileHeight )
+    public function createThumbs( $originalFileName)
     {
+        list($originalFileWidth, $originalFileHeight) = $this->getDimensions($originalFileName);
         $thumbs = ['thumbs' => []];
         $sizes = [
             [
@@ -80,7 +128,7 @@ class ImageService
 
                 $generatedImageName = $name . '-' . $size['width'] . 'x' . $adjustedHeight . '.' . $extension;
 
-                $image = Image::make($this->getFile($originalFileName));
+                $image = ImageFacade::make($this->getFile($originalFileName));
                 $image = $image->resize($size['width'], $adjustedHeight);
                 $image->save($this->getTargetPath() . '/' . $generatedImageName);
 
@@ -99,35 +147,4 @@ class ImageService
     }
 
 
-    /**
-     * @param $sourceName
-     *
-     * @return string
-     */
-    public function storeEncodedFile( $sourceName )
-    {
-        $encodedName = $this->getEncodedFileName($sourceName);
-        File::move($this->getTargetPath() . '/' . $sourceName, $this->getTargetPath() . '/' . $encodedName);
-        return $encodedName;
-    }
-
-    private function getEncodedFileName( $sourceName )
-    {
-        $uniqueCode = bin2hex(openssl_random_pseudo_bytes(10));
-        $urlCode = urlencode($uniqueCode);
-
-        return ( $this->getUniqueFilename($urlCode, pathinfo($sourceName, PATHINFO_EXTENSION)) );
-    }
-
-    private function getUniqueFilename( $name, $extension )
-    {
-        $index = 1;
-        $actualName = ( $name . '.' . $extension );
-        while (File::exists(config('media.target_path') . '/' . $actualName)) {
-            $actualName = ( $name . $index . '.' . $extension );
-            $index++;
-        }
-
-        return $actualName;
-    }
 }

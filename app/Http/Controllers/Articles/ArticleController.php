@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\ArticleRequest;
 
+use App\Models\Articles\Article;
+use App\Models\Image;
 use Facades\App\Services\Articles\ArticleService;
 use Facades\App\Services\Articles\TagService;
 
 use Facades\App\Services\Users\GroupService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 
 class ArticleController extends Controller
@@ -26,6 +30,20 @@ class ArticleController extends Controller
      */
     public function index()
     {
+
+//        $article = Article::first();
+//
+//        for($i = 0; $i < 5; $i++){
+//            Image::create([
+//                'object_id' => $article->id,
+//                'object_type' => 'article',
+//                'name' => uniqid(),
+//                'ext' => 'jpg'
+//            ]);
+//        }
+//
+//
+
         $articles = ArticleService::paginate();
 
         return view('articles.index', compact(['articles']));
@@ -40,6 +58,9 @@ class ArticleController extends Controller
     {
         $articleObj = ArticleService::blank();
 
+        Session::put('article_images', []);
+        Session::put('article_files', []);
+
         return view('articles.edit', compact(['articleObj']));
     }
 
@@ -52,7 +73,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        $articleObj = ArticleService::store($request->input());
+        $articleObj = ArticleService::store($request->input(), Auth::user());
 
         return redirect(action('Articles\ArticleController@show', [$articleObj->code]));
     }

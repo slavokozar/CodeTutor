@@ -9,7 +9,11 @@
 namespace App\Http\Controllers\Articles;
 
 
-class AttachementController
-{
+use App\Http\Controllers\Controller;
 
+class AttachementController extends Controller
+{
+    public function index($article){
+        return view('articles/images.blade.php');
+    }
 }

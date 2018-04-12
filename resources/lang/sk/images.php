@@ -1,22 +1,9 @@
 <?php
 return [
-    'buttons' => [
-        'edit' => 'Upraviť',
-        'delete' => 'Vymazať',
-        'save' => 'Uložiť',
-        'create' => 'Vytvoriť',
-        'add' => 'Pridať',
-        'cancel' => 'Zrušiť',
-        'remove' => 'Odobrať',
-        'insert' => 'Vloziť'
-    ],
 
-    'back-to' => 'Späť na ',
+    'empty' => 'Ziadne obrazky',
+    'empty-hint' => 'Pridajte novy obrazok tam hore.',
 
-    'headings' => [
-        'edit' => 'Úprava',
-        'create' => 'Vytvorenie',
-    ]
 
 
 ];

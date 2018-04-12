@@ -1,5 +1,5 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form action="{{ action('Articles\ArticleController@destroy', $articleObj->code) }}" method="post">
                 {!! csrf_field() !!}

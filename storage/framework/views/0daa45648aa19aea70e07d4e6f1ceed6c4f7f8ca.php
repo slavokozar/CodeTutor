@@ -22,18 +22,30 @@
 
     </section>
 
+    <section id="attachements">
+        <?php if($articleObj->images()->count() == 0): ?>
+        <?php else: ?>
+            <ul>
+                <?php $__currentLoopData = $articleObj->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $imageObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($imageObj->name); ?>.<?php echo e($imageObj->ext); ?></li>
+
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </ul>
+        <?php endif; ?>
+    </section>
+
 
     
-        
-        {{--<?php $objectObj = $articleObj; ?>--}}
+    
+    {{--<?php $objectObj = $articleObj; ?>--}}
 
-        
+    
 
-        
-            
-                
-            
-        
+    
+    
+    
+    
+    
     
 <?php $__env->stopSection(); ?>
 

@@ -1,9 +1,6 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form action="{{ action('Articles\ArticleController@destroy', $articleObj->code) }}" method="post">
-                {!! csrf_field() !!}
-                <input type="hidden" name="_method" value="delete">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,17 +9,47 @@
                     <h4 class="modal-title">{{ trans('articles.delete.heading') }}</h4>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center text-danger">
-                        <i class="fa fa-5x fa-exclamation-triangle" aria-hidden="true"></i>
-                    </p>
-                    <p class="text-center text-danger">{!! trans('articles.delete.message', ['name' => $articleObj->name] ) !!}</p>
+                    <div id="images-upload">
+                        <form method="post" action="{{ action('Articles\ImageController@store', [$articleObj == null ? 'null' : $articleObj->code]) }}" enctype="multipart/form-data">
+                            <div class="upload-area">
+                                <a href="#">
+                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                    <p>{{trans('builder/media.modal.images.drag')}}</p>
+                                </a>
+
+                                <input type="file" name="files" multiple>
+                            </div>
+                        </form>
+                    </div>
+
+
+
+                    <div id="images-row" class="row">
+                            @if(count($images) == 0)
+                                <div id="images-empty" class="col-md-60 text-center">
+                                    <p>{{trans('images.empty')}}</p>
+                                    <p>{{trans('images.empty-hint')}}</p>
+                                </div>
+                            @else
+
+
+                                @foreach($images as $imageObj)
+                                    @include('files.images.modal-thumb')
+                                @endforeach
+
+                                <div class="col-md-60 paginator">
+                                    {{--{!! $files->render() !!}--}}
+                                </div>
+                            @endif
+                        </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">{{ trans('general.buttons.cancel') }}</button>
-                    <button type="submit" class="btn btn-danger">{{ trans('general.buttons.delete') }}</button>
+                    <button type="button" class="btn btn-danger success">{{ trans('general.buttons.insert') }}</button>
                 </div>
-            </form>
+
         </div>
     </div>
 </div>

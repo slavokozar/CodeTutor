@@ -7,7 +7,8 @@ return [
         'create' => 'Vytvoriť',
         'add' => 'Pridať',
         'cancel' => 'Zrušiť',
-        'remove' => 'Odobrať'
+        'remove' => 'Odobrať',
+        'insert' => 'Vloziť'
     ],
 
     'back-to' => 'Späť na ',

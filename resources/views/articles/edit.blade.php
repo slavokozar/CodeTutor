@@ -58,6 +58,15 @@
                 </div>
             @endif
 
+            @if($articleObj->images()->count() == 0)
+            @else
+                <ul>
+                    @foreach($articleObj->images as $imageObj)
+                        <li>{{ $imageObj->name }}.{{ $imageObj->ext }}</li>
+
+                    @endforeach
+                </ul>
+            @endif
 
             <div class="form-group{{$errors->has('name') ? ' has-error' : ''}}">
                 <label class="col-md-20" for="articleName">{{ trans('articles.labels.name') }}</label>
@@ -78,12 +87,14 @@
                 <div class="col-md-40">
                     <div class="checkbox">
                         <label>
-                            <input name="articleNoDescription" type="checkbox" {{ old('no-description') ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
+                            <input name="articleNoDescription"
+                                   type="checkbox" {{ old('no-description') ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
                         </label>
                     </div>
 
                     <textarea id="articleDescription" class="form-control" name="description" rows="3"
-                              placeholder="{{ trans('articles.labels.description') }}" disabled>{{ old('description', $articleObj->description) }}</textarea>
+                              placeholder="{{ trans('articles.labels.description') }}"
+                              >{{ old('description', $articleObj->description) }}</textarea>
                     @if( $errors->has('description') )
                         <span class="help-block">{{ $errors->first('description') }}</span>
                     @endif
@@ -104,7 +115,6 @@
             </div>
 
 
-
         </section>
     </form>
 
@@ -112,10 +122,111 @@
 
 @section('scripts')
     <script src="{{asset('js/simplemde.min.js')}}"></script>
+    <script src="{{asset('js/jquery.iframe-transport.js')}}"></script>
+    <script src="{{asset('js/jquery.fileupload.js')}}"></script>
+
     <script>
         var simplemde = new SimpleMDE({
             element: $("#articleContent")[0],
             spellChecker: false,
+            imagesModalUrl: '{{action('Articles\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])}}',
+            imagesModalInit: function () {
+                $('#images-upload a').click(function () {
+                    // console.log('klik upload');
+                    $(this).parent().find('input').click();
+                });
+
+                $('#images-upload').fileupload({
+
+                    // This element will accept file drag/drop uploading
+                    // dropZone: $('#upload-drop'),
+                    dataType: 'json',
+                    autoUpload: true,
+                    maxChunkSize: 1000000,
+                    method: "POST",
+                    sequentialUploads: true,
+                    loader: false,
+
+                    // This function is called when a file is added to the queue;
+                    // either via the browse button, or via drag/drop:
+                    start: function (e, data) {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+
+                        var progress =
+                            '<div id="images-progress-bar" class="progress">' +
+                            '<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">' +
+                            '<span class="sr-only">0%</span>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div id="images-progress-val">0%</div>';
+
+                        $('#images-upload').after(progress);
+                    },
+
+                    add: function (e, data) {
+
+                        var jqXHR = data.submit();
+                    },
+
+                    fail: function (e, data) {
+                        console.log(e);
+
+                        return;
+                    },
+
+                    done: function (e, data) {
+                        var url = '{{ action('Files\ImageController@modalThumb', '?') }}';
+                        console.log(url);
+                        url = url.replace('?', data.result.code);
+                        console.log(url);
+
+                        $.ajax({
+                            method: 'get',
+                            url: url,
+                            global: false
+                        }).done(function (data) {
+                            $element = $(data);
+                            $('.media-file-loader').last().replaceWith($element);
+
+                            $('#images-empty').remove();
+                            $('#images-row').append($element);
+
+                            initImageSelector($element);
+
+
+                            // App.module.contentModal.partials.images.bindSelect($element.find('.media-image-item'));
+                        }).error(function (msg) {
+                            console.log("chyba pocas zobrazovanie uploadnuteho suboru");
+                        })
+                    },
+
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+
+                        $progressBar = $('#images-progress-bar');
+                        $progressVal = $('#images-progress-val');
+
+                        $progressBar.css({width: progress + '%'}).find('.sr-only').html(progress + '%');
+                        $progressVal.html(progress + '%');
+
+                        if (progress == 100) {
+                            $progressBar.addClass('progress-bar-success');
+                            window.setTimeout(function () {
+                                $progressBar.remove();
+                                $progressVal.remove();
+                            }, 3000);
+                        }
+                    }
+                });
+
+                // Prevent the default action when a file is dropped on the window
+                $(document).on('drop dragover', function (e) {
+                    e.preventDefault();
+                });
+            },
+
         });
 
         simplemde.codemirror.on('refresh', function () {
@@ -127,9 +238,29 @@
                     'width': width + 'px',
                     'margin': 0
                 });
+
+                $('.navbar').addClass('navbar-bg');
+
             } else {
                 $('#content-navigation').removeAttr('style');
+
+                if ($(window).scrollTop() > 20) {
+                    $('.navbar').addClass('navbar-bg');
+                }
+                else {
+                    $('.navbar').removeClass('navbar-bg');
+                }
             }
         });
+
+        function initImageSelector($element){
+            $element.find('.images-square').click(function(){
+                $image = $(this);
+
+                $image.toggleClass('selected');
+            });
+        }
     </script>
+
+
 @endsection
