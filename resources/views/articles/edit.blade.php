@@ -78,12 +78,12 @@
                 <div class="col-md-40">
                     <div class="checkbox">
                         <label>
-                            <input name="articleNoDescription" type="checkbox" {{ old('no-description') ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
+                            <input id="articleNoDescription" name="no-description" type="checkbox" {{ old('no-description', !$articleObj->id) ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
                         </label>
                     </div>
 
                     <textarea id="articleDescription" class="form-control" name="description" rows="3"
-                              placeholder="{{ trans('articles.labels.description') }}" disabled>{{ old('description', $articleObj->description) }}</textarea>
+                              placeholder="{{ trans('articles.labels.description') }}" {{ $articleObj->id ? '' : 'disabled' }}>{{ old('description', $articleObj->description) }}</textarea>
                     @if( $errors->has('description') )
                         <span class="help-block">{{ $errors->first('description') }}</span>
                     @endif
@@ -113,8 +113,13 @@
 @section('scripts')
     <script src="{{asset('js/simplemde.min.js')}}"></script>
     <script>
+        var $content = $("#articleContent");
+        var $noDescCheck = $('#articleNoDescription');
+        var $descText = $('#articleDescription');
+        var descLength = 10;
+
         var simplemde = new SimpleMDE({
-            element: $("#articleContent")[0],
+            element: $content[0],
             spellChecker: false,
         });
 
@@ -129,6 +134,24 @@
                 });
             } else {
                 $('#content-navigation').removeAttr('style');
+            }
+        });
+
+        simplemde.codemirror.on("change", function(){
+            if($noDescCheck.is(':checked')){
+                $descText.val(simplemde.value().substring(0, descLength));
+            }
+        });
+
+
+        $noDescCheck.change(function(){
+            if($noDescCheck.is(':checked')){
+                $descText.attr('disabled', true)
+
+                $descText.val(simplemde.value().substring(0, descLength));
+
+            }else{
+                $descText.removeAttr('disabled', true);
             }
         });
     </script>
