@@ -129,8 +129,12 @@ function modal(options) {
 		var $modal = $(data);
 		
 		$('body').append($modal);
-		$modal.modal();
-		
+		$modal.modal('show');
+
+        if (typeof (options.init) === 'function') {
+            options.init();
+        }
+
 		$modal.find('.btn.cancel').click(function () {
 			if (typeof (options.cancel.callback) === 'function') {
 				options.cancel.callback();

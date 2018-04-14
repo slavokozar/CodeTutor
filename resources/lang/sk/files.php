@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'url' => 'staticky-obsah',
+    'url' => 'subory',
 
     'files' => 'subory',
     'images' => 'obrazky',

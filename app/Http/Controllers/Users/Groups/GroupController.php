@@ -49,7 +49,7 @@ class GroupController extends Controller
     {
         $data = $request->all();
         $data['school_id'] = $data['school_id'] == '' ? null : $data['school_id'];
-        $groupObj = GroupService::create($data);
+        $groupObj = GroupService::crHGeate($data);
 
         return redirect(action('Users\Groups\GroupController@show', [$groupObj->code]));
     }

@@ -2,5 +2,6 @@
 return [
     'create' => 'vytvorenie',
     'edit' => 'uprava',
-    'delete' => 'vymazanie'
+    'delete' => 'vymazanie',
+    'images' => 'obrazky'
 ];

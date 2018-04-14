@@ -241,10 +241,17 @@ Route::group(['prefix' => trans('articles.url'), 'namespace' => 'Articles'], fun
     Route::put('/{article}/' . trans('routes.edit'), 'ArticleController@update');
     Route::get('/{article}/' . trans('routes.delete'), 'ArticleController@deleteModal');
     Route::delete('/{article}/' . trans('routes.delete'), 'ArticleController@destroy');
+
+
+    Route::get('/{article?}/' . trans('routes.images'), 'ImageController@index');
+    Route::post('/{article?}/' . trans('routes.images'), 'ImageController@store');
+
 });
 
+Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function () {
+    Route::get(trans('files.images') . '/{image}/' . trans('files.modal-thumb'), 'ImageController@modalThumb');
 
-
+});
 
 //
 //Route::get('clanky/vytvorenie', 'Articles\ArticleController@create');

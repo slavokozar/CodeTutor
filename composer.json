@@ -11,6 +11,8 @@
     "laracasts/flash": "^3.0",
     "laravel/framework": "5.5.*",
     "laravel/tinker": "~1.0",
+    "gargron/fileupload": "~1.1.1",
+    "intervention/image": "^2.3",
     "pion/laravel-chunk-upload": "^1.1"
   },
   "require-dev": {

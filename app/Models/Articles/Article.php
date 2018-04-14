@@ -2,6 +2,7 @@
 
 namespace App\Models\Articles;
 
+use App\Models\Files\Image;
 use App\Models\Users\User;
 use App\Scopes\PublicScope;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,8 @@ class Article extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'articles';
+
     protected $fillable = [
         'name',
         'code',
@@ -74,6 +77,10 @@ class Article extends Model
         return $this->hasMany('App\Models\ArticleTag', 'article_tag_article', 'article_id', 'tag_id');
     }
 
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'object_id')->where('object_type','article');
+    }
 
     public function comments()
     {
