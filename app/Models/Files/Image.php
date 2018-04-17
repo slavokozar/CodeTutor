@@ -15,4 +15,12 @@ class Image extends Model
         'name',
         'ext'
     ];
+
+    public function url($size = null){
+
+        if($size == null){
+            return asset('static-images/' . $this->code . '.' . $this->ext);
+        }
+
+    }
 }

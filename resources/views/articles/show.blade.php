@@ -27,6 +27,7 @@
 
     <section id="attachements">
         @if($articleObj->images()->count() == 0)
+            <p>{{ trans('articles.labels.no-images')  }}</p>
         @else
             <ul>
                 @foreach($articleObj->images as $imageObj)

@@ -21,4 +21,17 @@ class ImageController extends Controller
 
         return view('files.images.modal-thumb', compact(['imageObj']));
     }
+
+    public function articleThumb($image){
+
+        $imageObj = ImageService::getOrFail($image);
+
+        return view('files.images.article-thumb', compact(['imageObj']));
+    }
+
+    public function delete($image){
+        $imageObj = ImageService::findOrFail($image);
+        $imageObj->delete();
+
+    }
 }

@@ -59,7 +59,7 @@ class Article extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new PublicScope);
+//        static::addGlobalScope(new PublicScope);
     }
 
     public function author()

@@ -250,7 +250,10 @@ Route::group(['prefix' => trans('articles.url'), 'namespace' => 'Articles'], fun
 
 Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function () {
     Route::get(trans('files.images') . '/{image}/' . trans('files.modal-thumb'), 'ImageController@modalThumb');
+    Route::get(trans('files.images') . '/{image}/' . trans('files.article-thumb'), 'ImageController@articleThumb');
 
+
+    Route::delete(trans('files.images') . '/{image}', 'ImageController@delete');
 });
 
 //

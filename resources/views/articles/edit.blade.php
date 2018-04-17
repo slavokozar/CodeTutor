@@ -58,16 +58,6 @@
                 </div>
             @endif
 
-            @if($articleObj->images()->count() == 0)
-            @else
-                <ul>
-                    @foreach($articleObj->images as $imageObj)
-                        <li>{{ $imageObj->name }}.{{ $imageObj->ext }}</li>
-
-                    @endforeach
-                </ul>
-            @endif
-
             <div class="form-group{{$errors->has('name') ? ' has-error' : ''}}">
                 <label class="col-md-20" for="articleName">{{ trans('articles.labels.name') }}</label>
                 <div class="col-md-40">
@@ -79,7 +69,16 @@
                 </div>
             </div>
 
-
+                <div class="form-group{{$errors->has('name') ? ' has-error' : ''}}">
+                    <label class="col-md-20" for="articleName">{{ trans('articles.labels.name') }}</label>
+                    <div class="col-md-40">
+                        <input id="articleName" type="text" class="form-control" name="name"
+                               value="{{ old('name', $articleObj->name) }}">
+                        @if( $errors->has('name') )
+                            <span class="help-block">{{ $errors->first('name') }}</span>
+                        @endif
+                    </div>
+                </div>
             {{-- Popis, ktorý sa zobrazí vo výpise článkov..." --}}
 
             <div class="form-group{{$errors->has('description') ? ' has-error' : ''}}">
@@ -87,27 +86,84 @@
                 <div class="col-md-40">
                     <div class="checkbox">
                         <label>
-<<<<<<< HEAD
-                            <input id="articleNoDescription" name="no-description" type="checkbox" {{ old('no-description', !$articleObj->id) ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
-=======
-                            <input name="articleNoDescription"
-                                   type="checkbox" {{ old('no-description') ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
->>>>>>> ce14c2004ac59140c192c6dc588f58558c54ca1c
+
+                            <input id="articleNoDescription" name="no-description"
+                                   type="checkbox" {{ old('no-description', $articleObj->id == null) ? 'checked' : '' }}>{{ trans('articles.labels.description-same-as-article') }}
                         </label>
                     </div>
 
                     <textarea id="articleDescription" class="form-control" name="description" rows="3"
-<<<<<<< HEAD
                               placeholder="{{ trans('articles.labels.description') }}" {{ $articleObj->id ? '' : 'disabled' }}>{{ old('description', $articleObj->description) }}</textarea>
-=======
-                              placeholder="{{ trans('articles.labels.description') }}"
-                              >{{ old('description', $articleObj->description) }}</textarea>
->>>>>>> ce14c2004ac59140c192c6dc588f58558c54ca1c
+
                     @if( $errors->has('description') )
                         <span class="help-block">{{ $errors->first('description') }}</span>
                     @endif
                 </div>
             </div>
+            @if($articleObj->id != null)
+                <div class="form-group">
+                    <label class="col-md-20" for="articleImages">{{ trans('articles.labels.images') }}</label>
+                    <div id="articleImages" class="col-md-40">
+                        <div id="articleImages-empty" class="{{ (count($articleObj->images) > 0) ? 'hidden' : '' }}">{{ trans('articles.labels.no-images')  }}</div>
+                        <ul>
+                            @foreach($articleObj->images as $imageObj)
+                                @include('files.images.article-thumb')
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+                {{--<div class="form-group">--}}
+                {{--<label class="col-md-20" for="articleImages">{{ trans('articles.labels.images') }}</label>--}}
+                {{--<div id="articleImages" class="col-md-40">--}}
+                {{--@if(count($articleObj->images) > 0)--}}
+                {{--<ul>--}}
+                {{--@foreach($articleObj->images as $imageObj)--}}
+                {{--<li>{{ $imageObj->name }}</li>--}}
+                {{--@endforeach--}}
+                {{--</ul>--}}
+                {{--@else--}}
+                {{--<p>{{ trans('articles.labels.no-images')  }}</p>--}}
+                {{--@endif--}}
+                {{--</div>--}}
+                {{--</div>--}}
+            @else
+                @php
+                    print_r(Session::get('article_images'));
+                @endphp
+
+                {{--<div class="form-group">--}}
+                {{--<label class="col-md-20" for="articleImages">{{ trans('articles.labels.images') }}</label>--}}
+                {{--<div id="articleImages" class="col-md-40">--}}
+                {{--@if(count(Session::get('article_images')) > 0)--}}
+                {{--<ul>--}}
+                {{--@foreach(Session::get('article_images') as $imageId)--}}
+                {{--<li>{{ $imageId }}</li>--}}
+                {{--@endforeach--}}
+                {{--</ul>--}}
+                {{--@else--}}
+                {{--<p>{{ trans('articles.labels.no-images')  }}</p>--}}
+                {{--@endif--}}
+                {{--</div>--}}
+                {{--</div>--}}
+
+                {{--<div class="form-group">--}}
+                {{--<label class="col-md-20" for="articleImages">{{ trans('articles.labels.images') }}</label>--}}
+                {{--<div id="articleImages" class="col-md-40">--}}
+                {{--@if(count($articleObj->images) > 0)--}}
+                {{--<ul>--}}
+                {{--@foreach($articleObj->images as $imageObj)--}}
+                {{--<li>{{ $imageObj->name }}</li>--}}
+                {{--@endforeach--}}
+                {{--</ul>--}}
+                {{--@else--}}
+                {{--<p>{{ trans('articles.labels.no-images')  }}</p>--}}
+                {{--@endif--}}
+                {{--</div>--}}
+                {{--</div>--}}
+
+
+            @endif
 
             <div class="form-group{{$errors->has('text') ? ' has-error' : ''}}">
                 <label class="col-md-60" for="articleContent">{{ trans('articles.labels.content') }}</label>
@@ -147,6 +203,12 @@
                 $('#images-upload a').click(function () {
                     // console.log('klik upload');
                     $(this).parent().find('input').click();
+                });
+
+                $('#images-row > div').not('#images-empty').each(function(index, element){
+
+                    initImageSelector($(element));
+
                 });
 
                 $('#images-upload').fileupload({
@@ -190,15 +252,11 @@
                     },
 
                     done: function (e, data) {
-                        var url = '{{ action('Files\ImageController@modalThumb', '?') }}';
-                        console.log(url);
-                        url = url.replace('?', data.result.code);
-                        console.log(url);
+                        var modalUrl = '{{ action('Files\ImageController@modalThumb', '?') }}'.replace('?', data.result.code);
+                        var articleUrl = '{{ action('Files\ImageController@articleThumb', '?') }}'.replace('?', data.result.code);
 
                         $.ajax({
-                            method: 'get',
-                            url: url,
-                            global: false
+                            url: modalUrl
                         }).done(function (data) {
                             $element = $(data);
                             $('.media-file-loader').last().replaceWith($element);
@@ -207,9 +265,17 @@
                             $('#images-row').append($element);
 
                             initImageSelector($element);
+                        }).error(function (msg) {
+                            console.log("chyba pocas zobrazovanie uploadnuteho suboru");
+                        })
+
+                        $.ajax({
+                            url: articleUrl
+                        }).done(function (data) {
+                            $element = $(data);
+                            $('#articleImages ul').append($element);
 
 
-                            // App.module.contentModal.partials.images.bindSelect($element.find('.media-image-item'));
                         }).error(function (msg) {
                             console.log("chyba pocas zobrazovanie uploadnuteho suboru");
                         })
@@ -266,33 +332,58 @@
             }
         });
 
-<<<<<<< HEAD
-        simplemde.codemirror.on("change", function(){
-            if($noDescCheck.is(':checked')){
+        simplemde.codemirror.on("change", function () {
+            if ($noDescCheck.is(':checked')) {
                 $descText.val(simplemde.value().substring(0, descLength));
             }
         });
 
 
-        $noDescCheck.change(function(){
-            if($noDescCheck.is(':checked')){
+        $noDescCheck.change(function () {
+
+            console.log('ferko');
+
+            if ($noDescCheck.is(':checked')) {
+                console.log('checked');
                 $descText.attr('disabled', true)
 
                 $descText.val(simplemde.value().substring(0, descLength));
 
-            }else{
-                $descText.removeAttr('disabled', true);
+            } else {
+                console.log('not checked');
+                $descText.removeAttr('disabled');
             }
         });
-=======
-        function initImageSelector($element){
-            $element.find('.images-square').click(function(){
+
+        function initImageSelector($element) {
+            $element.find('.images-square').click(function () {
                 $image = $(this);
 
-                $image.toggleClass('selected');
+                $image.closest('#images-row').find('.images-square').removeClass('selected');
+
+                $image.addClass('selected');
             });
         }
->>>>>>> ce14c2004ac59140c192c6dc588f58558c54ca1c
+
+        $(document).on('click', '.image-delete', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $link = $(this);
+
+            $.ajax({
+                url: $link.attr('href'),
+                method: 'delete'
+            }).done(function (data) {
+                console.log(data);
+                $link.closest('li').remove();
+
+            }).error(function (jqXHR) {
+                console.log(jqXHR);
+            })
+
+
+        })
     </script>
 
 

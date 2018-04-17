@@ -31,6 +31,16 @@ class ArticleService
         return Article::where('code',$code)->first();
     }
 
+    public function findOrFail($id){
+        $articleObj = Article::find($id);
+
+        if($articleObj == null){
+            $this->fail($id);
+        }
+        return $articleObj;
+    }
+
+
     private function fail($code)
     {
         Response::make('User ' . $code . 'not found!', 404)->throwResponse();
@@ -67,7 +77,7 @@ class ArticleService
             'series_id' => null,
             'series_order' => null,
 
-            'description' => $data['description'],
+            'description' => (isset($data['no-description']) && $data['no-description']) ? substr(strip_tags($data['text']), 0,160) : $data['description'],
             'text' => $data['text']
         ]);
 

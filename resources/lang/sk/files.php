@@ -6,7 +6,8 @@ return [
     'files' => 'subory',
     'images' => 'obrazky',
 
-    'modal-thumb' => 'modal-nahlad'
+    'modal-thumb' => 'modal-nahlad',
+    'article-thumb' => 'clanok-nahlad'
 
 
 

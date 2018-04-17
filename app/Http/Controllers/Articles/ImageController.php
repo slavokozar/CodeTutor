@@ -11,10 +11,15 @@ namespace App\Http\Controllers\Articles;
 
 use App\Classes\MediaNameGenerator;
 use App\Http\Controllers\Controller;
+
+
 use App\Models\Files\Image;
+
+use Facades\App\Services\Articles\ArticleService;
 use Facades\App\Services\Files\ImageService;
 use Facades\App\Services\Utils\CleanString;
 use Facades\App\Services\Utils\UniqueCode;
+
 use FileUpload\FileNameGenerator\Simple;
 use FileUpload\FileUploadFactory;
 use FileUpload\PathResolver;
@@ -22,22 +27,39 @@ use FileUpload\FileSystem;
 use FileUpload\Validator\SizeValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class ImageController extends Controller
 {
 
     public function index($article){
 
-        $articleObj = null;
+        if($article == 'null'){
+            $articleObj = null;
+            $images = [];
+            foreach(Session::get('article_images', []) as $image){
+                $images[] = ImageService::findOrFail($image);
+            }
+        }else{
+            $articleObj = ArticleService::getOrFail($article);
+            $images = $articleObj->images;
+        }
 
-        $images = [];
+
 
         return view('articles.images', compact(['articleObj', 'images']));
     }
 
 
-    public function store( Request $request )
+    public function store($article = 'null', Request $request )
     {
+        if($article == 'null'){
+            $articleObj = null;
+        }else{
+            $articleObj = ArticleService::getOrFail($article);
+        }
+
+
         try {
             $fileObj = null;
 
@@ -72,13 +94,21 @@ class ImageController extends Controller
 
                 File::move(ImageService::getTargetPath() . '/' . $files[0]->name, ImageService::getTargetPath() . '/' . $filename);
 
-                ImageService::createThumbs($filename);
+//                ImageService::createThumbs($filename);
 
                 $imageObj = Image::create([
                     'code' => $code,
                     'name' => $pathinfo['filename'],
-                    'ext' => $pathinfo['extension'],
+                    'ext' => $pathinfo['extension']
                 ]);
+
+                if($articleObj != null){
+                    $imageObj->object_id = $articleObj->id;
+                    $imageObj->object_type = 'article';
+                    $imageObj->save();
+                }else{
+                    $request->session()->push('article_images', $imageObj->id);
+                }
 
                 return $imageObj;
 
@@ -89,5 +119,4 @@ class ImageController extends Controller
             return response($e->getMessage(), 500);
         }
     }
-
 }

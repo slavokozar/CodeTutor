@@ -60,7 +60,6 @@
                 </div>
             <?php endif; ?>
 
-
             <div class="form-group<?php echo e($errors->has('name') ? ' has-error' : ''); ?>">
                 <label class="col-md-20" for="articleName"><?php echo e(trans('articles.labels.name')); ?></label>
                 <div class="col-md-40">
@@ -72,7 +71,16 @@
                 </div>
             </div>
 
-
+                <div class="form-group<?php echo e($errors->has('name') ? ' has-error' : ''); ?>">
+                    <label class="col-md-20" for="articleName"><?php echo e(trans('articles.labels.name')); ?></label>
+                    <div class="col-md-40">
+                        <input id="articleName" type="text" class="form-control" name="name"
+                               value="<?php echo e(old('name', $articleObj->name)); ?>">
+                        <?php if( $errors->has('name') ): ?>
+                            <span class="help-block"><?php echo e($errors->first('name')); ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
             
 
             <div class="form-group<?php echo e($errors->has('description') ? ' has-error' : ''); ?>">
@@ -80,18 +88,85 @@
                 <div class="col-md-40">
                     <div class="checkbox">
                         <label>
-                            <input id="articleNoDescription" name="no-description" type="checkbox" <?php echo e(old('no-description', !$articleObj->id) ? 'checked' : ''); ?>><?php echo e(trans('articles.labels.description-same-as-article')); ?>
+
+                            <input id="articleNoDescription" name="no-description"
+                                   type="checkbox" <?php echo e(old('no-description', $articleObj->id == null) ? 'checked' : ''); ?>><?php echo e(trans('articles.labels.description-same-as-article')); ?>
 
                         </label>
                     </div>
 
                     <textarea id="articleDescription" class="form-control" name="description" rows="3"
                               placeholder="<?php echo e(trans('articles.labels.description')); ?>" <?php echo e($articleObj->id ? '' : 'disabled'); ?>><?php echo e(old('description', $articleObj->description)); ?></textarea>
+
                     <?php if( $errors->has('description') ): ?>
                         <span class="help-block"><?php echo e($errors->first('description')); ?></span>
                     <?php endif; ?>
                 </div>
             </div>
+            <?php if($articleObj->id != null): ?>
+                <div class="form-group">
+                    <label class="col-md-20" for="articleImages"><?php echo e(trans('articles.labels.images')); ?></label>
+                    <div id="articleImages" class="col-md-40">
+                        <div id="articleImages-empty" class="<?php echo e((count($articleObj->images) > 0) ? 'hidden' : ''); ?>"><?php echo e(trans('articles.labels.no-images')); ?></div>
+                        <ul>
+                            <?php $__currentLoopData = $articleObj->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $imageObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php echo $__env->make('files.images.article-thumb', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    </div>
+                </div>
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            <?php else: ?>
+                <?php
+                    print_r(Session::get('article_images'));
+                ?>
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+
+            <?php endif; ?>
 
             <div class="form-group<?php echo e($errors->has('text') ? ' has-error' : ''); ?>">
                 <label class="col-md-60" for="articleContent"><?php echo e(trans('articles.labels.content')); ?></label>
@@ -107,7 +182,6 @@
             </div>
 
 
-
         </section>
     </form>
 
@@ -115,6 +189,9 @@
 
 <?php $__env->startSection('scripts'); ?>
     <script src="<?php echo e(asset('js/simplemde.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/jquery.iframe-transport.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/jquery.fileupload.js')); ?>"></script>
+
     <script>
         var $content = $("#articleContent");
         var $noDescCheck = $('#articleNoDescription');
@@ -124,6 +201,114 @@
         var simplemde = new SimpleMDE({
             element: $content[0],
             spellChecker: false,
+            imagesModalUrl: '<?php echo e(action('Articles\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])); ?>',
+            imagesModalInit: function () {
+                $('#images-upload a').click(function () {
+                    // console.log('klik upload');
+                    $(this).parent().find('input').click();
+                });
+
+                $('#images-row > div').not('#images-empty').each(function(index, element){
+
+                    initImageSelector($(element));
+
+                });
+
+                $('#images-upload').fileupload({
+
+                    // This element will accept file drag/drop uploading
+                    // dropZone: $('#upload-drop'),
+                    dataType: 'json',
+                    autoUpload: true,
+                    maxChunkSize: 1000000,
+                    method: "POST",
+                    sequentialUploads: true,
+                    loader: false,
+
+                    // This function is called when a file is added to the queue;
+                    // either via the browse button, or via drag/drop:
+                    start: function (e, data) {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+
+                        var progress =
+                            '<div id="images-progress-bar" class="progress">' +
+                            '<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">' +
+                            '<span class="sr-only">0%</span>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div id="images-progress-val">0%</div>';
+
+                        $('#images-upload').after(progress);
+                    },
+
+                    add: function (e, data) {
+
+                        var jqXHR = data.submit();
+                    },
+
+                    fail: function (e, data) {
+                        console.log(e);
+
+                        return;
+                    },
+
+                    done: function (e, data) {
+                        var modalUrl = '<?php echo e(action('Files\ImageController@modalThumb', '?')); ?>'.replace('?', data.result.code);
+                        var articleUrl = '<?php echo e(action('Files\ImageController@articleThumb', '?')); ?>'.replace('?', data.result.code);
+
+                        $.ajax({
+                            url: modalUrl
+                        }).done(function (data) {
+                            $element = $(data);
+                            $('.media-file-loader').last().replaceWith($element);
+
+                            $('#images-empty').remove();
+                            $('#images-row').append($element);
+
+                            initImageSelector($element);
+                        }).error(function (msg) {
+                            console.log("chyba pocas zobrazovanie uploadnuteho suboru");
+                        })
+
+                        $.ajax({
+                            url: articleUrl
+                        }).done(function (data) {
+                            $element = $(data);
+                            $('#articleImages ul').append($element);
+
+
+                        }).error(function (msg) {
+                            console.log("chyba pocas zobrazovanie uploadnuteho suboru");
+                        })
+                    },
+
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+
+                        $progressBar = $('#images-progress-bar');
+                        $progressVal = $('#images-progress-val');
+
+                        $progressBar.css({width: progress + '%'}).find('.sr-only').html(progress + '%');
+                        $progressVal.html(progress + '%');
+
+                        if (progress == 100) {
+                            $progressBar.addClass('progress-bar-success');
+                            window.setTimeout(function () {
+                                $progressBar.remove();
+                                $progressVal.remove();
+                            }, 3000);
+                        }
+                    }
+                });
+
+                // Prevent the default action when a file is dropped on the window
+                $(document).on('drop dragover', function (e) {
+                    e.preventDefault();
+                });
+            },
+
         });
 
         simplemde.codemirror.on('refresh', function () {
@@ -135,28 +320,75 @@
                     'width': width + 'px',
                     'margin': 0
                 });
+
+                $('.navbar').addClass('navbar-bg');
+
             } else {
                 $('#content-navigation').removeAttr('style');
+
+                if ($(window).scrollTop() > 20) {
+                    $('.navbar').addClass('navbar-bg');
+                }
+                else {
+                    $('.navbar').removeClass('navbar-bg');
+                }
             }
         });
 
-        simplemde.codemirror.on("change", function(){
-            if($noDescCheck.is(':checked')){
+        simplemde.codemirror.on("change", function () {
+            if ($noDescCheck.is(':checked')) {
                 $descText.val(simplemde.value().substring(0, descLength));
             }
         });
 
 
-        $noDescCheck.change(function(){
-            if($noDescCheck.is(':checked')){
+        $noDescCheck.change(function () {
+
+            console.log('ferko');
+
+            if ($noDescCheck.is(':checked')) {
+                console.log('checked');
                 $descText.attr('disabled', true)
 
                 $descText.val(simplemde.value().substring(0, descLength));
 
-            }else{
-                $descText.removeAttr('disabled', true);
+            } else {
+                console.log('not checked');
+                $descText.removeAttr('disabled');
             }
         });
+
+        function initImageSelector($element) {
+            $element.find('.images-square').click(function () {
+                $image = $(this);
+
+                $image.closest('#images-row').find('.images-square').removeClass('selected');
+
+                $image.addClass('selected');
+            });
+        }
+
+        $(document).on('click', '.image-delete', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $link = $(this);
+
+            $.ajax({
+                url: $link.attr('href'),
+                method: 'delete'
+            }).done(function (data) {
+                console.log(data);
+                $link.closest('li').remove();
+
+            }).error(function (jqXHR) {
+                console.log(jqXHR);
+            })
+
+
+        })
     </script>
+
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

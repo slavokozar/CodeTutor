@@ -16,6 +16,7 @@
 
 
     <section id="activities-list">
+
         <?php if(count($articles) == 0): ?>
             <p class="text-center text-danger"><?php echo trans('articles.articles.no-articles'); ?></p>
         <?php else: ?>
@@ -31,6 +32,8 @@
                         </a>
                         <div class="activity-details">
                             <span class="activity-author"><?php echo e(trans('activities.from-user')); ?> <?php echo e($articleObj->author->name); ?></span>
+
+                            <?php if($articleObj->group != null): ?><span class="activity-group"><?php echo e(trans('activities.in-group')); ?> <?php echo e($articleObj->group->name); ?></span><?php endif; ?>
                             <span class="activity-date"><?php echo e($articleObj->updated_at); ?></span>
                         </div>
                         <p class="activity-description">

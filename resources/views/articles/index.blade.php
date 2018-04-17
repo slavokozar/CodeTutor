@@ -20,6 +20,7 @@
      !!}
 
     <section id="activities-list">
+
         @if(count($articles) == 0)
             <p class="text-center text-danger">{!! trans('articles.articles.no-articles') !!}</p>
         @else
@@ -35,6 +36,8 @@
                         </a>
                         <div class="activity-details">
                             <span class="activity-author">{{ trans('activities.from-user') }} {{$articleObj->author->name}}</span>
+
+                            @if($articleObj->group != null)<span class="activity-group">{{ trans('activities.in-group') }} {{$articleObj->group->name}}</span>@endif
                             <span class="activity-date">{{$articleObj->updated_at}}</span>
                         </div>
                         <p class="activity-description">

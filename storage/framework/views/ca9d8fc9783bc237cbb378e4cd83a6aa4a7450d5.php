@@ -1,43 +1,52 @@
 <?php $__env->startSection('content-main'); ?>
-    <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        <li><a href="<?php echo e(action('Articles\ArticleController@index')); ?>">Články</a></li>
-        <li class="active"><?php echo e($articleObj->name); ?></li>
-    </ol>
+    <?php echo BreadCrumb::render([
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+            [ 'label' => trans('articles.articles.link'), 'action' => 'Articles\ArticleController@index' ],
+            [ 'label' => $articleObj->name]
+        ]); ?>
 
-    <h1><?php echo $articleObj->is_public ? '' : 'profile'; ?><?php echo e($articleObj->name); ?></h1>
 
-    <div class="row">
-        <div class="col-md-60">
-            <ul id="content-nav-tabs" class="nav nav-tabs nav-tabs-right">
-                <li role="presentation">
-                    <a href="<?php echo e(action('Articles\ArticleController@edit',[$articleObj->code])); ?>">Upraviť</a>
-                </li>
-                <li role="presentation">
-                    <a href="<?php echo e(action('Articles\ArticleController@delete',[$articleObj->code])); ?>">Vymazať</a>
-                </li>
+
+    <h1><?php echo e($articleObj->name); ?></h1>
+
+    <?php echo ContentNav::render([
+            'right' => [
+                ['label' => trans('general.buttons.edit'), 'action' => 'Articles\ArticleController@edit', 'params' => [$articleObj->code]],
+                ['label' => trans('general.buttons.delete'), 'action' => 'Articles\ArticleController@deleteModal', 'params' => [$articleObj->code], 'modal' => true]
+            ]
+        ]); ?>
+
+
+    <section id="article">
+        <?php echo $articleObj->text; ?>
+
+    </section>
+
+    <section id="attachements">
+        <?php if($articleObj->images()->count() == 0): ?>
+            <p><?php echo e(trans('articles.labels.no-images')); ?></p>
+        <?php else: ?>
+            <ul>
+                <?php $__currentLoopData = $articleObj->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $imageObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($imageObj->name); ?>.<?php echo e($imageObj->ext); ?></li>
+
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
-        </div>
-    </div>
-
-
-    <section id="assignments">
-        <?php echo $content; ?>
-
+        <?php endif; ?>
     </section>
 
 
     
-        
-        {{--<?php $objectObj = $articleObj; ?>--}}
+    
+    {{--<?php $objectObj = $articleObj; ?>--}}
 
-        
+    
 
-        
-            
-                
-            
-        
+    
+    
+    
+    
+    
     
 <?php $__env->stopSection(); ?>
 
