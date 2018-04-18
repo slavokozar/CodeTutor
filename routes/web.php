@@ -148,11 +148,19 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
 //
 ////Route::get(trans('users.url') . '/' . trans('users.groups.url'), 'Users\GroupController@index');
 //
-    /* PROFILE */
-    Route::get('/profil/skupiny', 'Profile\ProfileController@groups');
 
-    Route::get('/profil/zmena-hesla', 'Profile\ProfileController@edit');
-    Route::post('/profil/zmena-hesla', 'Profile\ProfileController@update');
+Route::group(['prefix' => trans('profile.url'), 'namespace' => 'Profile'], function () {
+    Route::get('/profil/zmena-hesla', 'ProfileController@edit');
+    Route::post('/profil/zmena-hesla', 'ProfileController@update');
+
+    Route::get('/' . trans('profile.articles.url'), 'ArticleController@index');
+    Route::get('/' . trans('profile.assignments.url'), 'AssignmentController@index');
+    Route::get('/' . trans('profile.files.url'), 'FileController@index');
+    Route::get('/' . trans('profile.link.url'), 'LinkController@index');
+//    Route::get('/' . trans('profile.groups.url'), 'GroupController@index');
+
+});
+
 
 ///* GROUPS */
 ////Route::resource('skupiny', 'Users\GroupController');
@@ -206,33 +214,6 @@ Route::post('zadania/{assignment}/odstranenie', 'Assignments\AssignmentControlle
 
 Route::group(['prefix' => trans('articles.url'), 'namespace' => 'Articles'], function () {
 
-//    Route::group(['prefix' => trans('users.schools.url'), 'namespace' => 'Schools'], function () {
-//
-//        Route::group(['prefix' => '/{school}/' . trans('users.admins.url')], function () {
-//            Route::get('/', 'AdminController@index');
-//            Route::get('/' . trans('routes.create'), 'AdminController@create');
-//            Route::post('/', 'AdminController@store');
-//            Route::get('/{user}', 'AdminController@show');
-//            Route::get('/{user}/' . trans('routes.edit'), 'AdminController@edit');
-//            Route::put('/{user}/' . trans('routes.edit'), 'AdminController@update');
-//            Route::get('/{user}/' . trans('routes.delete'), 'AdminController@deleteModal');
-//            Route::delete('/{user}/' . trans('routes.delete'), 'AdminController@destroy');
-//        });
-//
-
-//
-//        Route::get('/', 'SchoolController@index');
-//        Route::get('/' . trans('routes.create'), 'SchoolController@create');
-//        Route::post('/', 'SchoolController@store');
-//        Route::get('/{school}', 'SchoolController@show');
-//        Route::get('/{school}/' . trans('routes.edit'), 'SchoolController@edit');
-//        Route::put('/{school}/' . trans('routes.edit'), 'SchoolController@update');
-//        Route::get('/{school}/' . trans('routes.delete'), 'SchoolController@deleteModal');
-//        Route::delete('/{school}/' . trans('routes.delete'), 'SchoolController@destroy');
-//
-//    });
-//
-
     Route::get('/', 'ArticleController@index');
     Route::get('/' . trans('routes.create'), 'ArticleController@create');
     Route::post('/', 'ArticleController@store');
@@ -241,7 +222,6 @@ Route::group(['prefix' => trans('articles.url'), 'namespace' => 'Articles'], fun
     Route::put('/{article}/' . trans('routes.edit'), 'ArticleController@update');
     Route::get('/{article}/' . trans('routes.delete'), 'ArticleController@deleteModal');
     Route::delete('/{article}/' . trans('routes.delete'), 'ArticleController@destroy');
-
 
     Route::get('/{article?}/' . trans('routes.images'), 'ImageController@index');
     Route::post('/{article?}/' . trans('routes.images'), 'ImageController@store');
@@ -256,18 +236,6 @@ Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function 
     Route::delete(trans('files.images') . '/{image}', 'ImageController@delete');
 });
 
-//
-//Route::get('clanky/vytvorenie', 'Articles\ArticleController@create');
-//Route::post('clanky', 'Articles\ArticleController@store');
-//
-//Route::get('clanky/{article}', 'Articles\ArticleController@show');
-//
-//Route::get('clanky/{article}/uprava', 'Articles\ArticleController@edit');
-//Route::post('clanky/{article}/uprava', 'Articles\ArticleController@update');
-//
-//Route::get('clanky/{article}/odstranenie', 'Articles\ArticleController@delete');
-//Route::post('clanky/{article}/odstranenie', 'Articles\ArticleController@destroy');
-//
 
 ///* COMMENTS */
 //Route::get('{object}/{code}/komentare', 'System\CommentController@index');
@@ -284,3 +252,6 @@ Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function 
 /* AUTH */
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
+
+
+Route::get('feed', 'FeedController@index');

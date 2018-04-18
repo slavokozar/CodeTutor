@@ -8,6 +8,8 @@
 
 namespace App\Services\Users;
 
+use App\Classes\GroupRoles;
+use App\Classes\SchoolRoles;
 use App\Models\Users\User;
 
 use Facades\App\Services\Users\UserEmailService as UserEmailServiceFacade;
@@ -15,14 +17,16 @@ use Illuminate\Support\Facades\Response;
 
 class UserService
 {
-    public function all(){
+    public function all()
+    {
 
         //todo scope
 
         return User::all();
     }
 
-    public function paginate(){
+    public function paginate()
+    {
         return User::paginate(10);
     }
 
@@ -59,12 +63,14 @@ class UserService
     }
 
 
-    public function blank(){
+    public function blank()
+    {
         return new User();
     }
 
 
-    public function create($data){
+    public function create($data)
+    {
         $data['code'] = uniqid();
         $userObj = User::create($data);
 
@@ -72,7 +78,8 @@ class UserService
     }
 
 
-    public function update($userObj, $data){
+    public function update($userObj, $data)
+    {
         $userObj->title = $data['title'];
         $userObj->name = $data['name'];
         $userObj->surname = $data['surname'];
@@ -81,16 +88,46 @@ class UserService
 
         $userObj->save();
 
-        if($userObj->email != $data['email']){
+        if ($userObj->email != $data['email']) {
             $userObj = UserEmailServiceFacade::update($userObj, $data['email']);
         }
 
         return $userObj;
     }
 
-    public function destroy($userObj){
+    public function destroy($userObj)
+    {
         $userObj->delete();
 
         //todo notification
     }
+
+
+    public function managedGroups($userObj)
+    {
+        $publicGroups = $userObj->groups()->whereNull('school_id')
+            ->wherePivotIn('role', [GroupRoles::teacher, GroupRoles::admin])
+            ->get();
+
+        $managedGroups = [
+            'public_groups' => $publicGroups,
+            'schools' => []
+        ];
+
+        foreach ($userObj->schools as $schoolObj) {
+            $groups = $userObj->groups()->where('school_id', $schoolObj->id)
+                ->wherePivotIn('role', [GroupRoles::teacher, GroupRoles::admin])
+                ->get();
+
+            if (count($groups) > 0) {
+                $managedGroups['schools'][] = [
+                    'school' => $schoolObj,
+                    'groups' => $groups
+                ];
+            }
+        }
+
+        return $managedGroups;
+    }
+
 }

@@ -60,16 +60,6 @@
                 </div>
             <?php endif; ?>
 
-            <?php if($articleObj->images()->count() == 0): ?>
-            <?php else: ?>
-                <ul>
-                    <?php $__currentLoopData = $articleObj->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $imageObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <li><?php echo e($imageObj->name); ?>.<?php echo e($imageObj->ext); ?></li>
-
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </ul>
-            <?php endif; ?>
-
             <div class="form-group<?php echo e($errors->has('name') ? ' has-error' : ''); ?>">
                 <label class="col-md-20" for="articleName"><?php echo e(trans('articles.labels.name')); ?></label>
                 <div class="col-md-40">
@@ -81,28 +71,151 @@
                 </div>
             </div>
 
+            <div class="form-group<?php echo e($errors->has('name') ? ' has-error' : ''); ?>">
+                <div class="col-md-40 col-md-offset-20">
+                    <div class="checkbox">
+                        <label>
+                            <input name="is_public" type="checkbox"
+                                   <?php if((old('is_public') !== null && old('is_public'))): ?> checked <?php endif; ?>> Verejný článok
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-            
+            <?php $sharedObject = $articleObj ?>
+            <div class="form-group<?php echo e($errors->has('share') ? ' has-error' : ''); ?>">
+                <label class="col-md-20" for="articleShare"><?php echo e(trans('articles.labels.share')); ?></label>
+                <div class="col-md-40">
+                    <select name="share[]" id="articleShare" class="js-select" multiple>
+                        <?php $__currentLoopData = $groups['public_groups']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($groupObj->id); ?>"
+                                <?php echo e($articleObj->sharingsGroups()->where('group_id', $groupObj->id)->exists() ? 'selected' : ''); ?>
+
+                            >
+                                <?php echo e($groupObj->name); ?>
+
+                            </option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $groups['schools']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $school): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $schoolObj = $school['school'] ?>
+                            <optgroup label="<?php echo e($schoolObj->name); ?>">
+                                <option value="school_<?php echo e($schoolObj->id); ?>"
+                                    <?php echo e($articleObj->sharingsSchools()->where('school_id', $schoolObj->id)->exists() ? 'selected' : ''); ?>
+
+                                >
+                                    <?php echo e(trans('users.schools.share')); ?>
+
+                                    <?php echo e($schoolObj->name); ?>
+
+                                </option>
+                                <?php $__currentLoopData = $school['groups']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($groupObj->id); ?>"
+                                        <?php echo e($articleObj->sharingsGroups()->where('group_id', $groupObj->id)->exists() ? 'selected' : ''); ?>
+
+                                    >
+                                        <?php echo e(trans('users.labels.group')); ?>
+
+                                        <?php echo e($groupObj->name); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </optgroup>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+
+                    <?php if( $errors->has('share') ): ?>
+                        <span class="help-block"><?php echo e($errors->first('share')); ?></span>
+                    <?php endif; ?>
+                </div>
+            </div>
+
 
             <div class="form-group<?php echo e($errors->has('description') ? ' has-error' : ''); ?>">
                 <label class="col-md-20" for="articleDescription"><?php echo e(trans('articles.labels.description')); ?></label>
                 <div class="col-md-40">
                     <div class="checkbox">
                         <label>
-                            <input name="articleNoDescription"
-                                   type="checkbox" <?php echo e(old('no-description') ? 'checked' : ''); ?>><?php echo e(trans('articles.labels.description-same-as-article')); ?>
+
+                            <input id="articleNoDescription" name="no-description"
+                                   type="checkbox" <?php echo e(old('no-description', $articleObj->id == null) ? 'checked' : ''); ?>><?php echo e(trans('articles.labels.description-same-as-article')); ?>
 
                         </label>
                     </div>
 
                     <textarea id="articleDescription" class="form-control" name="description" rows="3"
-                              placeholder="<?php echo e(trans('articles.labels.description')); ?>"
-                              ><?php echo e(old('description', $articleObj->description)); ?></textarea>
+                              placeholder="<?php echo e(trans('articles.labels.description')); ?>" <?php echo e($articleObj->id ? '' : 'disabled'); ?>><?php echo e(old('description', $articleObj->description)); ?></textarea>
+
                     <?php if( $errors->has('description') ): ?>
                         <span class="help-block"><?php echo e($errors->first('description')); ?></span>
                     <?php endif; ?>
                 </div>
             </div>
+
+            <?php if($articleObj->id != null): ?>
+                <div class="form-group">
+                    <label class="col-md-20" for="articleImages"><?php echo e(trans('articles.labels.images')); ?></label>
+                    <div id="articleImages" class="col-md-40">
+                        <div id="articleImages-empty"
+                             class="<?php echo e((count($articleObj->images) > 0) ? 'hidden' : ''); ?>">
+                            <?php echo e(trans('articles.labels.no-images')); ?>
+
+                        </div>
+                        <ul>
+                            <?php $__currentLoopData = $articleObj->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $imageObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php echo $__env->make('files.images.article-thumb', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-20" for="articleAttachments"><?php echo e(trans('articles.labels.attachments')); ?></label>
+                    <div id="articleAttachments" class="col-md-40">
+                        <div id="articleAttachments-empty"
+                             class="<?php echo e((count($articleObj->attachments) > 0) ? 'hidden' : ''); ?>">
+                            <?php echo e(trans('articles.labels.no-attachments')); ?>
+
+                        </div>
+                        <ul>
+                            <?php $__currentLoopData = $articleObj->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachmentObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php echo $__env->make('files.attachment.article-thumb', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    </div>
+                </div>
+            <?php else: ?>
+                
+                    
+                    
+                        
+                             
+                            
+                        
+                        
+                            
+                                
+                                
+                            
+                        
+                    
+                
+
+                
+                    
+                    
+                        
+                             
+                            
+                        
+                        
+                            
+                                
+                                
+                            
+                        
+                    
+                
+            <?php endif; ?>
 
             <div class="form-group<?php echo e($errors->has('text') ? ' has-error' : ''); ?>">
                 <label class="col-md-60" for="articleContent"><?php echo e(trans('articles.labels.content')); ?></label>
@@ -129,14 +242,25 @@
     <script src="<?php echo e(asset('js/jquery.fileupload.js')); ?>"></script>
 
     <script>
+        var $content = $("#articleContent");
+        var $noDescCheck = $('#articleNoDescription');
+        var $descText = $('#articleDescription');
+        var descLength = 10;
+
         var simplemde = new SimpleMDE({
-            element: $("#articleContent")[0],
+            element: $content[0],
             spellChecker: false,
             imagesModalUrl: '<?php echo e(action('Articles\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])); ?>',
             imagesModalInit: function () {
                 $('#images-upload a').click(function () {
                     // console.log('klik upload');
                     $(this).parent().find('input').click();
+                });
+
+                $('#images-row > div').not('#images-empty').each(function (index, element) {
+
+                    initImageSelector($(element));
+
                 });
 
                 $('#images-upload').fileupload({
@@ -180,15 +304,11 @@
                     },
 
                     done: function (e, data) {
-                        var url = '<?php echo e(action('Files\ImageController@modalThumb', '?')); ?>';
-                        console.log(url);
-                        url = url.replace('?', data.result.code);
-                        console.log(url);
+                        var modalUrl = '<?php echo e(action('Files\ImageController@modalThumb', '?')); ?>'.replace('?', data.result.code);
+                        var articleUrl = '<?php echo e(action('Files\ImageController@articleThumb', '?')); ?>'.replace('?', data.result.code);
 
                         $.ajax({
-                            method: 'get',
-                            url: url,
-                            global: false
+                            url: modalUrl
                         }).done(function (data) {
                             $element = $(data);
                             $('.media-file-loader').last().replaceWith($element);
@@ -197,9 +317,17 @@
                             $('#images-row').append($element);
 
                             initImageSelector($element);
+                        }).error(function (msg) {
+                            console.log("chyba pocas zobrazovanie uploadnuteho suboru");
+                        })
+
+                        $.ajax({
+                            url: articleUrl
+                        }).done(function (data) {
+                            $element = $(data);
+                            $('#articleImages ul').append($element);
 
 
-                            // App.module.contentModal.partials.images.bindSelect($element.find('.media-image-item'));
                         }).error(function (msg) {
                             console.log("chyba pocas zobrazovanie uploadnuteho suboru");
                         })
@@ -256,13 +384,58 @@
             }
         });
 
-        function initImageSelector($element){
-            $element.find('.images-square').click(function(){
+        simplemde.codemirror.on("change", function () {
+            if ($noDescCheck.is(':checked')) {
+                $descText.val(simplemde.value().substring(0, descLength));
+            }
+        });
+
+
+        $noDescCheck.change(function () {
+
+            console.log('ferko');
+
+            if ($noDescCheck.is(':checked')) {
+                console.log('checked');
+                $descText.attr('disabled', true)
+
+                $descText.val(simplemde.value().trim().substring(0, descLength));
+
+            } else {
+                console.log('not checked');
+                $descText.removeAttr('disabled');
+            }
+        });
+
+        function initImageSelector($element) {
+            $element.find('.images-square').click(function () {
                 $image = $(this);
 
-                $image.toggleClass('selected');
+                $image.closest('#images-row').find('.images-square').removeClass('selected');
+
+                $image.addClass('selected');
             });
         }
+
+        $(document).on('click', '.image-delete', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $link = $(this);
+
+            $.ajax({
+                url: $link.attr('href'),
+                method: 'delete'
+            }).done(function (data) {
+                console.log(data);
+                $link.closest('li').remove();
+
+            }).error(function (jqXHR) {
+                console.log(jqXHR);
+            })
+
+
+        })
     </script>
 
 

@@ -2,9 +2,15 @@
 
 namespace App\Models\Users;
 
+use App\Models\Articles\Article;
+use App\Models\Assignments\Assignment;
+
 use App\Notifications\ResetPassword;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 use Illuminate\Notifications\Notifiable;
+use phpDocumentor\Reflection\DocBlock\Tags\Link;
 
 /**
  * App\Models\User
@@ -75,6 +81,10 @@ class User extends Authenticatable
     }
 
 
+    public function fullName(){
+        return $this->title . ' ' . $this->name . ' ' . $this->surname;
+    }
+
 
     public function groups()
     {
@@ -85,6 +95,24 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(School::class, 'school_user', 'school_id', 'user_id')->withPivot(['role']);
     }
+
+
+    public function articles(){
+        return $this->hasMany(Article::class, 'author_id');
+    }
+
+    public function assignments(){
+        return $this->hasMany(Assignment::class, 'author_id');
+    }
+
+//    public function files(){
+//        return $this->belongsToMany(File::class, 'user_group_user', 'group_id', 'user_id')->withPivot(['role']);
+//    }
+//
+//    public function links(){
+//        return $this->belongsToMany(Link::class, 'user_group_user', 'group_id', 'user_id')->withPivot(['role']);
+//    }
+
 
 //    public function isGroupLecturer($groupId){
 //        return $this->groups()->find($groupId)->pivot->lecturer;

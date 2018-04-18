@@ -42,7 +42,18 @@
                             {{Auth::user()->name}}<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{action('Profile\ProfileController@edit')}}">Zmeniť heslo</a></li>
+                            <li><a href="{{action('Profile\ProfileController@edit')}}">{{ trans('profile.password.show') }}</a></li>
+                            <li><a href="{{action('Profile\ProfileController@edit')}}">{{ trans('profile.password.link') }}</a></li>
+
+                            <li role="separator" class="divider"></li>
+
+                            <li><a href="{{action('Profile\ArticleController@index')}}">{{ trans('profile.articles.link') }}</a></li>
+                            <li><a href="{{action('Profile\AssignmentController@index')}}">{{ trans('profile.assignments.link') }}</a></li>
+                            <li><a href="{{action('Profile\FileController@index')}}">{{ trans('profile.files.link') }}</a></li>
+                            <li><a href="{{action('Profile\LinkController@index')}}">{{ trans('profile.links.link') }}</a></li>
+
+                            <li role="separator" class="divider"></li>
+
                             <li><a href="{{action('Auth\LoginController@logout')}}">Odhlásiť</a></li>
                         </ul>
                     </li>

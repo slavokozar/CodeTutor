@@ -21,9 +21,33 @@
         ])
      !!}
 
+    <section id="sharing">
+        <p>
+            Tento clanok je zdielany v skupinach:
+        <ul>
+            @foreach($articleObj->sharingsGroups as $sharingObj)
+                <li>{{$sharingObj->group->name}}</li>
+            @endforeach
+        </ul>
+        </p>
+
+        <p>
+            Tento clanok je zdielany v skolach:
+        <ul>
+            @foreach($articleObj->sharingsSchools as $sharingObj)
+                <li>{{$sharingObj->school->name}}</li>
+            @endforeach
+        </ul>
+        </p>
+    </section>
+
+
     <section id="article">
         {!! $articleObj->text !!}
     </section>
+
+
+
 
     <section id="attachements">
         @if($articleObj->images()->count() == 0)
@@ -39,18 +63,18 @@
     </section>
 
 
-    {{--<section id="comments">--}}
-    {{--<h2>Komentáre</h2>--}}
-    {{--<?php $objectObj = $articleObj; ?>--}}
+    <section id="comments">
+        <h2>Komentáre</h2>
+        <?php $objectObj = $articleObj; ?>
 
-    {{--@include('comments.comments')--}}
+        {{--@include('comments.comments')--}}
 
-    {{--@if(count($comments) > 0)--}}
-    {{--<p class="text-center">--}}
-    {{--<a href="{{action('CommentController@index',[$articleObj->commentRoute(), $articleObj->code])}}">všetky komentáre</a>--}}
-    {{--</p>--}}
-    {{--@endif--}}
-    {{--</section>--}}
+        {{--@if(count($comments) > 0)--}}
+        {{--<p class="text-center">--}}
+        {{--<a href="{{action('CommentController@index',[$articleObj->commentRoute(), $articleObj->code])}}">všetky komentáre</a>--}}
+        {{--</p>--}}
+        {{--@endif--}}
+    </section>
 @endsection
 
 

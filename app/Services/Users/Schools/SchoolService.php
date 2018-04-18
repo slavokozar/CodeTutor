@@ -32,8 +32,21 @@ class SchoolService
 
     private function get($code)
     {
-        return School::where('code', $code)->firstOrFail();
+        return School::where('code', $code)->first();
     }
+
+
+    public function findOrFail($id)
+    {
+        $schoolObj = School::find($id);
+
+        if ($schoolObj == null) {
+            $this->fail(id);
+        } else {
+            return $schoolObj;
+        }
+    }
+
 
     private function fail($code)
     {
