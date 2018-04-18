@@ -7,7 +7,6 @@ $('.selectpicker').selectpicker({
 	size : 4
 });
 
-console.log('ferko');
 $('.js-select').select2();
 
 

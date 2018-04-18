@@ -13,8 +13,11 @@ use App\Models\Articles\Article;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
+use Facades\App\Services\Users\UserService;
 use Facades\App\Services\Files\ImageService;
 use Facades\App\Services\Articles\ArticleService;
+use Facades\App\Services\ShareService;
+
 use Facades\App\Services\Articles\TagService;
 use Facades\App\Services\Users\GroupService;
 
@@ -48,9 +51,11 @@ class ArticleController extends Controller
         $articleObj = ArticleService::blank();
 
         Session::put('article_images', []);
-        Session::put('article_files', []);
+        Session::put('article_attachments', []);
 
-        return view('articles.edit', compact(['articleObj']));
+        $groups = UserService::managedGroups(Auth::user());
+
+        return view('articles.edit', compact(['articleObj', 'groups']));
     }
 
     /**
@@ -62,6 +67,8 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
+
+
         $articleObj = ArticleService::store($request->all(), Auth::user());
 
         $images = Session::get('article_images', []);
@@ -71,12 +78,13 @@ class ArticleController extends Controller
             $imageObj->object_type = 'article';
             $imageObj->save();
         }
-        $files = Session::get('article_files', []);
-        foreach($files as $file){
+
+        $attachments = Session::get('article_attachments', []);
+        foreach($attachments as $attachment){
 
         }
 
-
+        ShareService::setSharing($articleObj, $request->input('share'));
 
         return redirect(action('Articles\ArticleController@show', [$articleObj->code]));
     }
@@ -109,7 +117,9 @@ class ArticleController extends Controller
     {
         $articleObj = ArticleService::getOrFail($article);
 
-        return view('articles.edit',compact(['articleObj']));
+        $groups = UserService::managedGroups(Auth::user());
+
+        return view('articles.edit',compact(['articleObj', 'groups']));
     }
 
     /**
@@ -125,6 +135,8 @@ class ArticleController extends Controller
         $articleObj = ArticleService::getOrFail($article);
 
         $articleObj = ArticleService::update($articleObj, $request->input());
+
+        ShareService::setSharing($articleObj, $request->input('share'));
 
         return redirect(action('Articles\ArticleController@show',[$articleObj->code]));
     }

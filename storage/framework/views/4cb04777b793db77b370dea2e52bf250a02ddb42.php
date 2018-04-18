@@ -42,7 +42,18 @@
                             <?php echo e(Auth::user()->name); ?><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo e(action('Profile\ProfileController@edit')); ?>">Zmeniť heslo</a></li>
+                            <li><a href="<?php echo e(action('Profile\ProfileController@edit')); ?>"><?php echo e(trans('profile.password.show')); ?></a></li>
+                            <li><a href="<?php echo e(action('Profile\ProfileController@edit')); ?>"><?php echo e(trans('profile.password.link')); ?></a></li>
+
+                            <li role="separator" class="divider"></li>
+
+                            <li><a href="<?php echo e(action('Profile\ArticleController@index')); ?>"><?php echo e(trans('profile.articles.link')); ?></a></li>
+                            <li><a href="<?php echo e(action('Profile\AssignmentController@index')); ?>"><?php echo e(trans('profile.assignments.link')); ?></a></li>
+                            <li><a href="<?php echo e(action('Profile\FileController@index')); ?>"><?php echo e(trans('profile.files.link')); ?></a></li>
+                            <li><a href="<?php echo e(action('Profile\LinkController@index')); ?>"><?php echo e(trans('profile.links.link')); ?></a></li>
+
+                            <li role="separator" class="divider"></li>
+
                             <li><a href="<?php echo e(action('Auth\LoginController@logout')); ?>">Odhlásiť</a></li>
                         </ul>
                     </li>

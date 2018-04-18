@@ -17,13 +17,38 @@
         ]); ?>
 
 
+    <section id="sharing">
+        <p>
+            Tento clanok je zdielany v skupinach:
+        <ul>
+            <?php $__currentLoopData = $articleObj->sharingsGroups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sharingObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($sharingObj->group->name); ?></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </ul>
+        </p>
+
+        <p>
+            Tento clanok je zdielany v skolach:
+        <ul>
+            <?php $__currentLoopData = $articleObj->sharingsSchools; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sharingObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($sharingObj->school->name); ?></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </ul>
+        </p>
+    </section>
+
+
     <section id="article">
         <?php echo $articleObj->text; ?>
 
     </section>
 
+
+
+
     <section id="attachements">
         <?php if($articleObj->images()->count() == 0): ?>
+            <p><?php echo e(trans('articles.labels.no-images')); ?></p>
         <?php else: ?>
             <ul>
                 <?php $__currentLoopData = $articleObj->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $imageObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -35,18 +60,18 @@
     </section>
 
 
-    
-    
-    {{--<?php $objectObj = $articleObj; ?>--}}
+    <section id="comments">
+        <h2>Komentáre</h2>
+        <?php $objectObj = $articleObj; ?>
 
-    
+        
 
-    
-    
-    
-    
-    
-    
+        
+        
+        
+        
+        
+    </section>
 <?php $__env->stopSection(); ?>
 
 

@@ -3,5 +3,5 @@
 return [
 
     'from-user' => 'Od používateľa',
-    'in-group' => 'V skupine'
+    'shared-id' => 'Zdieľané pre'
 ];

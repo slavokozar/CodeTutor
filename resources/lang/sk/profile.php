@@ -1,7 +1,41 @@
 <?php
 
 return [
-    'url' => 'uzivatelia',
+    'url' => 'profil',
+
+    'show' => 'Zobraziť profil',
+
+    'password' => [
+        'link' => 'Nastavenie hesla',
+    ],
+
+
+
+    'articles' => [
+        'link' => 'Články',
+        'heading' => 'Moje Články',
+        'no-articles' => 'Nemáte žiadne články.<br/>'.
+            '<i class="fa fa-4x fa-meh-o" aria-hidden="true"></i><br/>'
+    ],
+
+    'assignments' => [
+        'link' => 'Zadania',
+        'heading' => 'Moje Zadania'
+    ],
+
+    'files' => [
+        'link' => 'Zdieľané súbory',
+        'heading' => 'Moje Zdieľané Súbory'
+    ],
+
+    'links' => [
+        'link' => 'Zdieľané odkazy',
+        'heading' => 'Moje Zdieľané Odkazy'
+    ],
+
+
+
+
 
     'labels' => [
         'title' => 'titul',
@@ -10,17 +44,12 @@ return [
         'email' => 'email',
         'roles' => 'roly',
         'schools' => 'školy',
-        'group' => 'skupina',
         'groups' => 'skupiny',
         'birthdate' => 'Dátum narodenia',
         'url' => 'Webová stránka',
         'address' => 'Adresa',
     ],
 
-    'delete' => [
-        'heading' => 'Vymazanie užívateľa',
-        'message' => 'Naozaj si eláte vymazať užívateľa <strong>:name</strong> ?'
-    ],
 
 
 
@@ -94,7 +123,6 @@ return [
         'no-admins' => 'Táto škola nemá žiadnych správcov.',
         'no-teachers' => 'Táto škola nemá žiadnych učiteľov.',
         'no-students' => 'Táto škola nemá žiadnych študentov.',
-        'share' => 'Celá škola'
     ],
 
     'admins' => [

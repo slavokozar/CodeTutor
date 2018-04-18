@@ -21,18 +21,29 @@ class GroupService
 
     public function getOrFail($code)
     {
-        $schoolObj = $this->get($code);
+        $groupObj = $this->get($code);
 
-        if ($schoolObj == null) {
+        if ($groupObj == null) {
             $this->fail($code);
         } else {
-            return $schoolObj;
+            return $groupObj;
         }
     }
 
     private function get($code)
     {
         return Group::where('code', $code)->firstOrFail();
+    }
+
+    public function findOrFail($id)
+    {
+        $groupObj = Group::find($id);
+
+        if ($groupObj == null) {
+            $this->fail(id);
+        } else {
+            return $groupObj;
+        }
     }
 
     private function fail($code)
