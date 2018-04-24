@@ -53,18 +53,40 @@
             @endif
             @if(!isset($_table_skip['school']))
                 <td>
-                    @foreach($userObj->schools as $schoolObj)
-                        {{$schoolObj->name}} @if($schoolObj->pivot->role)
-                            ({{ trans('users.schools.roles')[$schoolObj->pivot->role] }})@endif
-                    @endforeach
+                    @if(count($userObj->schools) > 0)
+                        <ul>
+                            @foreach($userObj->schools as $schoolObj)
+                                <li>
+                                    <a href="{{ action('Users\Schools\SchoolController@show', [$schoolObj->code]) }}">
+                                        {{$schoolObj->name}}
+                                    </a>
+                                    @if($schoolObj->pivot->role)
+                                        ({{ trans('users.schools.roles')[$schoolObj->pivot->role] }})
+                                    @endif
+
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </td>
             @endif
             @if(!isset($_table_skip['groups']))
                 <td>
-                    @foreach($userObj->groups as $groupObj)
-                        {{$groupObj->name}} @if($groupObj->pivot->role)
-                            ({{ trans('users.groups.roles')[$groupObj->pivot->role] }})@endif
-                    @endforeach
+                    @if(count($userObj->groups) > 0)
+                        <ul>
+                            @foreach($userObj->groups as $groupObj)
+                                <li>
+                                    <a href="{{ action('Users\Groups\GroupController@show', [$schoolObj->code]) }}">
+                                        {{$groupObj->name}}
+                                    </a>
+                                    @if($groupObj->pivot->role)
+                                        ({{ trans('users.groups.roles')[$groupObj->pivot->role] }})
+                                    @endif
+
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </td>
             @endif
             @if(isset($_table_actions))

@@ -151,4 +151,67 @@ class AssignmentService
 
         return true;
     }
+
+
+
+
+
+    /*
+     *
+     *
+    public function userScore()
+    {
+        if($this->userSolution() == null) return 0;
+        return $this->userSolution()->scores()->sum('points');
+    }
+
+    public function maxScore()
+    {
+        return 22;
+    }
+
+    public function userHasManualScore(){
+        return true;
+    }
+
+    public function userManualScore()
+    {
+        return 10;
+    }
+
+    public function maxManualScore()
+    {
+        return 10;
+    }
+
+    public function userReview()
+    {
+        if($this->userSolution() == null) return 0;
+        return $this->userSolution()->reviews()->sum('points');
+    }
+
+
+
+
+    public function deadline()
+    {
+        $diff = abs(date("Y-m-d H:i:s") - strtotime($this->deadline_at));
+
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+        $hours =  floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 )/ (60*60));
+        $minutes = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60)/ (60));
+
+        if($days > 0){
+            return "<span>" . $days . "</span> dní <span>" . $hours . "</span> hodín";
+        }else{
+            return "<span>" . $hours . "</span> hodín <span>" . $minutes . "</span> minút";
+        }
+
+    }
+     *
+     */
+
 }
