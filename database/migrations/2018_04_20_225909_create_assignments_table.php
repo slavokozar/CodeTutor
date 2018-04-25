@@ -19,7 +19,6 @@ class CreateAssignmentsTable extends Migration
             $table->boolean('is_public')->default(false);
 
             $table->integer('author_id')->unsigned();
-            $table->integer('group_id')->unsigned();
 
             $table->string('name');
             $table->text('description');

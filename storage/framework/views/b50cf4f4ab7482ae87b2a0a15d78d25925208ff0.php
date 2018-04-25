@@ -56,18 +56,42 @@
             <?php endif; ?>
             <?php if(!isset($_table_skip['school'])): ?>
                 <td>
-                    <?php $__currentLoopData = $userObj->schools; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schoolObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php echo e($schoolObj->name); ?> <?php if($schoolObj->pivot->role): ?>
-                            (<?php echo e(trans('users.schools.roles')[$schoolObj->pivot->role]); ?>)<?php endif; ?>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(count($userObj->schools) > 0): ?>
+                        <ul>
+                            <?php $__currentLoopData = $userObj->schools; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schoolObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li>
+                                    <a href="<?php echo e(action('Users\Schools\SchoolController@show', [$schoolObj->code])); ?>">
+                                        <?php echo e($schoolObj->name); ?>
+
+                                    </a>
+                                    <?php if($schoolObj->pivot->role): ?>
+                                        (<?php echo e(trans('users.schools.roles')[$schoolObj->pivot->role]); ?>)
+                                    <?php endif; ?>
+
+                                </li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    <?php endif; ?>
                 </td>
             <?php endif; ?>
             <?php if(!isset($_table_skip['groups'])): ?>
                 <td>
-                    <?php $__currentLoopData = $userObj->groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php echo e($groupObj->name); ?> <?php if($groupObj->pivot->role): ?>
-                            (<?php echo e(trans('users.groups.roles')[$groupObj->pivot->role]); ?>)<?php endif; ?>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(count($userObj->groups) > 0): ?>
+                        <ul>
+                            <?php $__currentLoopData = $userObj->groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li>
+                                    <a href="<?php echo e(action('Users\Groups\GroupController@show', [$schoolObj->code])); ?>">
+                                        <?php echo e($groupObj->name); ?>
+
+                                    </a>
+                                    <?php if($groupObj->pivot->role): ?>
+                                        (<?php echo e(trans('users.groups.roles')[$groupObj->pivot->role]); ?>)
+                                    <?php endif; ?>
+
+                                </li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    <?php endif; ?>
                 </td>
             <?php endif; ?>
             <?php if(isset($_table_actions)): ?>

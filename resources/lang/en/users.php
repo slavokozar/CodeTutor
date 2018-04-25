@@ -54,6 +54,7 @@ return [
         ],
         'roles' => [
             'ADMIN' => 'správca',
+            'TEACHER' => 'učiteľ',
             '' => 'študent',
         ],
         'delete' => [
