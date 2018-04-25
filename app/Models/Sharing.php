@@ -11,6 +11,7 @@ namespace App\Models;
 
 use App\Models\Users\Group;
 use App\Models\Users\School;
+use Facades\App\Services\Assignments\AssignmentService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,7 +43,7 @@ class Sharing extends Model
         if($this->object_type == 'article'){
             return ArticleService::findOrFail($this->object_id);
         }else if($this->object_type == 'assignment'){
-
+            return AssignmentService::findOrFail($this->object_id);
         }else if($this->object_type == 'link'){
 
         }else if($this->object_type == 'file'){

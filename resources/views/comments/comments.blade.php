@@ -1,9 +1,10 @@
 @if(Auth::check())
     <div class="comment-wrapper">
-        <form id="comment-add" method="post" action="{{action('System\CommentController@store',[$objectObj->commentRoute(), $objectObj->code])}}">
+        <form id="comment-add" method="post" action="{{action('System\CommentController@store',[$objectObj->commentRoute, $objectObj->code])}}">
             {!! csrf_field() !!}
             <div class="avatar">
-                <img class="img-responsive" src="{{Auth::user()->avatar()}}" />
+                <img class="img-responsive" src="{{ Auth::user()->avatar() }}"/>
+                {{--<img class="img-responsive" src="{{Auth::user()->avatar()}}" />--}}
             </div>
 
             <div class="comment">

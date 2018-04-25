@@ -2,13 +2,11 @@
 
 namespace App\Models\Articles;
 
+use App\Models\Comment;
 use App\Models\Files\Attachment;
 use App\Models\Files\Image;
 use App\Models\Sharing;
-use App\Models\Users\Group;
-use App\Models\Users\School;
 use App\Models\Users\User;
-use App\Scopes\PublicScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -103,6 +101,6 @@ class Article extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment', 'object_id')->where('object_type', 'article')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
+        return $this->hasMany(Comment::class, 'object_id')->where('object_type', 'article')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
     }
 }

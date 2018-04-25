@@ -22,6 +22,8 @@ class FeedController extends Controller
 
         $activities = Sharing::whereIn('group_id', $groups->pluck('id'))->orWhereIn('school_id', $schools->pluck('id'))->paginate();
 
+
+
         return view('feed.index', compact(['userObj', 'groups', 'schools', 'activities']));
     }
 }

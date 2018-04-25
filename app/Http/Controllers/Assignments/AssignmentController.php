@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\AssignmentRequest;
 
+
+use Facades\App\Services\ShareService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 use Facades\App\Services\Users\Groups\GroupService;
 use Facades\App\Services\Users\UserService;
+use Facades\App\Services\Assignments\AssignmentService;
+use Facades\App\Services\Assignments\ProgrammingLanguageService;
+use Illuminate\Support\Facades\Session;
 
 class AssignmentController extends Controller
 {
@@ -37,7 +42,8 @@ class AssignmentController extends Controller
         $assignmentObj = AssignmentService::getOrFail($code);
 
         $content = AssignmentService::content($assignmentObj);
-        $datapub = TestService::toString($assignmentObj, 'verejne');
+        $datapub = null;
+//        $datapub = TestService::toString($assignmentObj, 'verejne');
         $comments = AssignmentService::comments($assignmentObj);
 
         return view('assignments.show', compact(['assignmentObj', 'content', 'datapub', 'comments']));
@@ -46,17 +52,22 @@ class AssignmentController extends Controller
 
     public function create()
     {
-        $groups = GroupService::all();
+        $assignmentObj = AssignmentService::blank();
+
+        Session::put('assignment_images', []);
+        Session::put('assignment_attachments', []);
+
+        $groups = UserService::managedGroups(Auth::user());
         $languages = ProgrammingLanguageService::all();
 
-        return view('assignments.create', compact(['groups', 'languages']));
+        return view('assignments.edit', compact(['assignmentObj', 'groups', 'languages']));
     }
 
     public function store(AssignmentRequest $request)
     {
-        $assignmentObj = AssignmentService::create($request->input());
+        $assignmentObj = AssignmentService::store($request->input());
 
-
+        ShareService::setSharing($assignmentObj, $request->input('share'));
 
         return redirect(action('Assignments\AssignmentController@show', [$assignmentObj->code]));
     }
@@ -65,7 +76,7 @@ class AssignmentController extends Controller
     {
         $assignmentObj = AssignmentService::getOrFail($code);
 
-        $groups = UserService::lecturingGroups(Auth::user());
+        $groups = UserService::managedGroups(Auth::user());
         $languages = ProgrammingLanguageService::all();
 
         return view('assignments.edit', compact(['assignmentObj', 'groups', 'languages']));
@@ -76,6 +87,8 @@ class AssignmentController extends Controller
         $assignmentObj = AssignmentService::getOrFail($code);
 
         $assignmentObj = AssignmentService::update($assignmentObj, $request->input());
+
+        ShareService::setSharing($assignmentObj, $request->input('share'));
 
         return redirect(action('Assignments\AssignmentController@show', [$assignmentObj->code]));
     }

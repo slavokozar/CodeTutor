@@ -67,13 +67,13 @@
         <h2>Komentáre</h2>
         <?php $objectObj = $articleObj; ?>
 
-        {{--@include('comments.comments')--}}
+        @include('comments.comments')
 
-        {{--@if(count($comments) > 0)--}}
-        {{--<p class="text-center">--}}
-        {{--<a href="{{action('CommentController@index',[$articleObj->commentRoute(), $articleObj->code])}}">všetky komentáre</a>--}}
-        {{--</p>--}}
-        {{--@endif--}}
+        @if(count($comments) > 0)
+            <p class="text-center">
+                <a href="{{action('CommentController@index',[$articleObj->commentRoute(), $articleObj->code])}}">všetky komentáre</a>
+            </p>
+        @endif
     </section>
 @endsection
 

@@ -64,13 +64,13 @@
         <h2>Komentáre</h2>
         <?php $objectObj = $articleObj; ?>
 
-        
+        <?php echo $__env->make('comments.comments', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
-        
-        
-        
-        
-        
+        <?php if(count($comments) > 0): ?>
+            <p class="text-center">
+                <a href="<?php echo e(action('CommentController@index',[$articleObj->commentRoute(), $articleObj->code])); ?>">všetky komentáre</a>
+            </p>
+        <?php endif; ?>
     </section>
 <?php $__env->stopSection(); ?>
 

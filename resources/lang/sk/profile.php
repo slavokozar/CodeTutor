@@ -20,7 +20,9 @@ return [
 
     'assignments' => [
         'link' => 'Zadania',
-        'heading' => 'Moje Zadania'
+        'heading' => 'Moje Zadania',
+        'no-assignments' => 'Nemáte žiadne zadnia.<br/>'.
+            '<i class="fa fa-4x fa-meh-o" aria-hidden="true"></i><br/>'
     ],
 
     'files' => [

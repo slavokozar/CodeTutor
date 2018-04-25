@@ -176,7 +176,7 @@ Route::post('zadania/nove', 'Assignments\AssignmentController@store');
 Route::get('zadania/{assignment}', 'Assignments\AssignmentController@show');
 
 Route::get('zadania/{assignment}/uprava', 'Assignments\AssignmentController@edit');
-Route::post('zadania/{assignment}/uprava', 'Assignments\AssignmentController@update');
+Route::put('zadania/{assignment}/uprava', 'Assignments\AssignmentController@update');
 
 Route::get('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@remove');
 Route::post('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@delete');
@@ -237,16 +237,20 @@ Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function 
 });
 
 
-///* COMMENTS */
-//Route::get('{object}/{code}/komentare', 'System\CommentController@index');
-//
-//Route::get('{object}/{code}/komentare/{comment}', 'System\CommentController@create');
-//Route::post('{object}/{code}/komentare/{comment?}', 'System\CommentController@store');
-//
-//Route::delete('komentare/{object}/{code}/{comment}', 'System\CommentController@destroy');
-//
-//Route::get('komentare/{object}/{code}/{comment}/edit', 'System\CommentController@edit');
-//Route::post('komentare/{object}/{code}/{comment}/edit', 'System\CommentController@update');
+/* COMMENTS */
+Route::get('{object}/{code}/komentare', 'System\CommentController@index');
+
+Route::get('{object}/{code}/komentare/{comment}', 'System\CommentController@create');
+Route::post('{object}/{code}/komentare/{comment?}', 'System\CommentController@store');
+
+Route::delete('komentare/{object}/{code}/{comment}', 'System\CommentController@destroy');
+
+
+Route::get('komentare/{object}/{code}/{comment}/edit', 'System\CommentController@edit');
+Route::post('komentare/{object}/{code}/{comment}/edit', 'System\CommentController@update');
+
+
+
 
 
 /* AUTH */

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Response;
 
 use Facades\App\Services\Utils\CleanString as CleanStringFacade;
 use Facades\App\Services\Utils\UniqueCode as UniqueCodeFacade;
+use Parsedown;
 
 class ArticleService
 {

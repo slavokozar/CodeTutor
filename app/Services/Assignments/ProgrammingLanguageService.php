@@ -8,7 +8,7 @@
 
 namespace App\Services\Assignments;
 
-use App\Models\ProgrammingLanguage;
+use App\Models\Assignments\ProgrammingLanguage;
 
 class ProgrammingLanguageService
 {

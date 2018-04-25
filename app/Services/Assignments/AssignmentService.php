@@ -8,16 +8,16 @@
 
 namespace App\Services\Assignments;
 
+use App\Models\Assignments\Assignment;
 use App\Models\User;
-use App\Models\Assignment;
 
 use App\_Classes\UUID;
 use App\_Classes\Parsedown;
 
 use Illuminate\Support\Facades\Auth;
 
-use Facades\App\Services\Utils\CleanString;
-use Illuminate\Support\Facades\File;
+use Facades\App\Services\Utils\CleanString as CleanStringFacade;
+use Facades\App\Services\Utils\UniqueCode as UniqueCodeFacade;
 
 class AssignmentService
 {
@@ -39,6 +39,14 @@ class AssignmentService
         return $assignmentObj;
     }
 
+    public function findOrFail($id){
+        $articleObj = Assignment::find($id);
+
+        if($articleObj == null){
+            $this->fail($id);
+        }
+        return $articleObj;
+    }
 
     public function content($articleObj){
         $parsedown = new Parsedown();
@@ -49,6 +57,10 @@ class AssignmentService
 
     public function comments($articleObj){
         return $articleObj->comments()->limit(5)->get();
+    }
+
+    public function blank(){
+        return new Assignment();
     }
 
     public function paginate($userObj, $page = 1){
@@ -75,30 +87,22 @@ class AssignmentService
         return env('TEST_PATH') . '/' . $assignmentObj->code . '/test/' . $file;
     }
 
-    public function create($data){
-        $normalized = CleanString::normalize($data['name']);
+    public function store($data){
+        $normalized = CleanStringFacade::normalize($data['name']);
 
-        do {
-            $code = new UUID;
-            $code = $code->limit(6, 4);
-            $code = $normalized . '-' . $code;
-        } while (count(Assignment::where('code', $code)->get()) > 0);
+        $code = UniqueCodeFacade::unique(Assignment::class, $normalized);
 
-        File::makeDirectory(env('TEST_PATH') . '/' . $code);
-        File::makeDirectory(env('TEST_PATH') . '/' . $code . '/test');
-        File::makeDirectory(env('TEST_PATH') . '/' . $code . '/users');
+//        File::makeDirectory(env('TEST_PATH') . '/' . $code);
+//        File::makeDirectory(env('TEST_PATH') . '/' . $code . '/test');
+//        File::makeDirectory(env('TEST_PATH') . '/' . $code . '/users');
 
         $assignmentObj = Assignment::create([
             'name' => $data['name'],
             'code' => $code,
-            'is_public' => $data['is_public'] ? true : false,
 
-            'group_id' => $data['group'],
             'author_id' => Auth::user()->id,
-            'series_id' => null,
-            'series_order' => null,
 
-            'description' => $data['description'],
+            'description' => (isset($data['no-description']) && $data['no-description']) ? substr(strip_tags($data['text']), 0,160) : $data['description'],
             'text' => $data['text'],
 
             'start_at' => date('Y-m-d H:i:s', strtotime($data['start'])),
@@ -113,6 +117,9 @@ class AssignmentService
 
 
     public function update($assignmentObj, $data){
+        dd($data);
+
+
         if ($data['name'] != $assignmentObj->name) {
             $normalized = CleanString::normalize($data['name']);
             do {
@@ -156,53 +163,47 @@ class AssignmentService
 
 
 
-    /*
-     *
-     *
-    public function userScore()
+//    public function userScore()
+//    {
+//        if($this->userSolution() == null) return 0;
+//        return $this->userSolution()->scores()->sum('points');
+//    }
+//
+//    public function maxScore()
+//    {
+//        return 22;
+//    }
+//
+//    public function userHasManualScore(){
+//        return true;
+//    }
+//
+//    public function userManualScore()
+//    {
+//        return 10;
+//    }
+//
+//    public function maxManualScore()
+//    {
+//        return 10;
+//    }
+//
+//    public function userReview()
+//    {
+//        if($this->userSolution() == null) return 0;
+//        return $this->userSolution()->reviews()->sum('points');
+//    }
+
+    public function deadline($assignmentObj)
     {
-        if($this->userSolution() == null) return 0;
-        return $this->userSolution()->scores()->sum('points');
-    }
-
-    public function maxScore()
-    {
-        return 22;
-    }
-
-    public function userHasManualScore(){
-        return true;
-    }
-
-    public function userManualScore()
-    {
-        return 10;
-    }
-
-    public function maxManualScore()
-    {
-        return 10;
-    }
-
-    public function userReview()
-    {
-        if($this->userSolution() == null) return 0;
-        return $this->userSolution()->reviews()->sum('points');
-    }
-
-
-
-
-    public function deadline()
-    {
-        $diff = abs(date("Y-m-d H:i:s") - strtotime($this->deadline_at));
+        $diff = abs(date("Y-m-d H:i:s") - strtotime($assignmentObj->deadline_at));
 
         $years = floor($diff / (365*60*60*24));
         $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
 
         $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
         $hours =  floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 )/ (60*60));
-        $minutes = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60)/ (60));
+        $minutes = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ (60));
 
         if($days > 0){
             return "<span>" . $days . "</span> dní <span>" . $hours . "</span> hodín";
@@ -211,7 +212,6 @@ class AssignmentService
         }
 
     }
-     *
-     */
+
 
 }

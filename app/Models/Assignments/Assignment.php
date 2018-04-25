@@ -2,9 +2,14 @@
 
 namespace App\Models\Assignments;
 
-use App\Models\AssignmentSolution;
+use App\Models\Assignments\AssignmentSolution;
+use App\Models\Assignments\ProgrammingLanguage;
+use App\Models\Comment;
+use App\Models\Files\Attachment;
+use App\Models\Files\Image;
+use App\Models\Sharing;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\Assignment
@@ -58,25 +63,50 @@ class Assignment extends Model
         return $this->belongsToMany(ProgrammingLanguage::class, 'assignments_programming_languages', 'assignment_id', 'programming_language_id');
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class, 'object_id')->where('object_type','assignment')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
-    }
-
-    public function commentType()
-    {
-        return 'assignment';
-    }
-
-    public function commentRoute()
-    {
-        return 'zadania';
-    }
-
-
     public function solutions()
     {
         return $this->hasMany(AssignmentSolution::class, 'assignment_id');
     }
+
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'object_id')->where('object_type', 'article');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class, 'object_id')->where('object_type', 'article');
+    }
+
+
+    // SHARING
+    public $sharingType = 'assignment';
+
+    public function sharings(){
+        return $this->hasMany(Sharing::class, 'object_id')->where('object_type', 'article');
+    }
+
+    public function sharingsGroups(){
+        return $this->sharings()->whereNull('school_id')->whereNotNull('group_id');
+    }
+
+    public function sharingsSchools(){
+        return $this->sharings()->whereNull('group_id')->whereNotNull('school_id');
+    }
+
+
+
+    // COMMENTS
+    public $commentType = 'assignment';
+    public $commentRoute = 'zadania';
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'object_id')->where('object_type', 'assignment')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
+    }
+
+
+
 
 }

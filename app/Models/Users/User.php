@@ -105,6 +105,11 @@ class User extends Authenticatable
         return $this->hasMany(Assignment::class, 'author_id');
     }
 
+
+    public function avatar(){
+        return asset('img/avatar-blank.png');
+    }
+
 //    public function files(){
 //        return $this->belongsToMany(File::class, 'user_group_user', 'group_id', 'user_id')->withPivot(['role']);
 //    }
