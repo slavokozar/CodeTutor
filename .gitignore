@@ -5,6 +5,7 @@
 /vendor
 /.idea
 /.vagrant
+/laradock
 npm-debug.log
 composer.lock
 .env
