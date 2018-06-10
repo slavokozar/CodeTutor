@@ -11,39 +11,39 @@
             <?php endif; ?>
         </div>
 
-        <div id="banner-carousel" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-            <?php if($carousel->count() > 1): ?>
-                <ol class="carousel-indicators">
-                    <?php for($i = 0; $i < 5; $i++): ?>
-                        <li data-target="#banner-carousel" data-slide-to="<?php echo e($i); ?>"
-                            <?php if($i == 0): ?>class="active"<?php endif; ?>></li>
-                    <?php endfor; ?>
-                </ol>
-            <?php endif; ?>
+        
+            
+            
+                
+                    
+                        
+                            
+                    
+                
+            
 
-        <!-- Wrapper for slides -->
-            <?php if($carousel->count() > 1): ?>
-                <div class="carousel-inner" role="listbox">
-                    <?php for($i = 0; $i < 5; $i++): ?>
-                        <?php $item = $carousel->get(0); ?>
+        
+            
+                
+                    
+                        {{--<?php $item = $carousel->get(0); ?>--}}
 
-                        <div class="item<?php echo e($i == 0 ? ' active' : ''); ?>">
-                            <h3><?php echo e($item->name); ?></h3>
+                        
+                            
 
-                            <p><?php echo e($item->description); ?></p>
-                            <?php if($item instanceof \App\Models\Article): ?>
-                                <a href="<?php echo e(action('Articles\ArticleController@show',$item->code)); ?>">viac...</a>
-                            <?php elseif($item instanceof \App\Models\Assignment): ?>
-                                <a href="<?php echo e(action('Assignments\AssignmentController@show',$item->code)); ?>">viac...</a>
-                            <?php endif; ?>
+                            
+                            
+                                
+                            
+                                
+                            
 
-                        </div>
-                    <?php endfor; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-        </div>
+                        
+                    
+                
+            
+        
+        
 
         <div class="partners">
             <a href="">

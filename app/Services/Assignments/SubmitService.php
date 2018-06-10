@@ -9,12 +9,70 @@
 namespace App\Services\Assignments;
 
 
+use App\Models\Assignments\ProgrammingLanguage;
+use Illuminate\Support\Facades\File;
+
 class SubmitService
 {
 
+    public function getTargetPath()
+    {
+        return storage_path('static-images');
+    }
 
 
-    public function files($userObj, $assignmentObj){
+    public function getLangObj($path){
+
+        $code = $this->getLangCode($path);
+
+        if($code == '') return null;
+
+        return ProgrammingLanguage::where('code', $code)->first();
+
+    }
+
+    public function getLangCode($path)
+    {
+        $lang = '';
+
+        $files = File::files($path);
+        foreach ($files as $file) {
+            $filename = pathinfo($file)['basename'];
+            if($filename == 'Main.java'){
+
+                File::makeDirectory($path . '/Main');
+                File::move($file, $path . '/Main/' . $filename );
+
+                return 'java';
+            }else{
+                $ext = pathinfo($file)['extension'];
+                if($ext == 'c'){
+                    return 'c';
+                }elseif($ext == 'cpp'){
+                    return 'c++';
+                }
+            }
+        }
+
+        $directories = File::directories($path);
+        foreach ($directories as $directory) {
+            $dirname = str_replace($path . '/', '', (string)$directory);
+
+            $files = File::files($directory);
+            foreach ($files as $file) {
+                $filename = pathinfo($file)['basename'];
+                if ($dirname == 'Main' && $filename == 'Main.java') {
+                    return 'java';
+                }
+            }
+        }
+
+        return $lang;
+    }
+
+
+    public function files($userObj, $assignmentObj)
+    {
         $assignmentPath = env('UPLOAD_ASSIGNMENT') . '/' . $assignmentObj->code . '/users/' . $userObj->code;
         return $this->filesList($assignmentPath);
     }

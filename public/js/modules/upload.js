@@ -1,3 +1,7 @@
+App = {
+    modules: {}
+};
+
 App.modules.upload = {
     init : function(){
 

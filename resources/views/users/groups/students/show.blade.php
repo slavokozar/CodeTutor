@@ -18,8 +18,8 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.edit'), 'action' => 'Users\Groups\StudentController@edit', 'params' => [$groupObj->code, $userObj->code] ],
-                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\Groups\StudentController@deleteModal', 'params' => [$groupObj->code, $userObj->code]]
+                ['label' => trans('general.edit'), 'action' => 'Users\Groups\StudentController@edit', 'params' => [$groupObj->code, $userObj->code] ],
+                ['label' => trans('general.delete'), 'modal' => true, 'action' => 'Users\Groups\StudentController@deleteModal', 'params' => [$groupObj->code, $userObj->code]]
             ]
         ])
     !!}

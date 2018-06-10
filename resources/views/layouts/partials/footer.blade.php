@@ -1,9 +1,8 @@
 <footer>
     <container>
-        <p>&copy; CodeLeague od roku 2015.</p>
+        <p>&copy; CodeTutor a CodeLeague od roku 2015.</p>
         <p>
-            <a href="mailto:codeleague@googlegroups.com" class="text-gray">codeleague@googlegroups.com</a>
+            <a href="mailto:codetutor@googlegroups.com" class="text-gray">codetutor@googlegroups.com</a>
         </p>
     </container>
-
 </footer>

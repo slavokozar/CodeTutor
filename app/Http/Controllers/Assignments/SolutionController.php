@@ -2,47 +2,105 @@
 
 namespace App\Http\Controllers\Assignments;
 
-use App\Facades\TestsServiceFacade;
+
 use App\Http\Controllers\Controller;
-use App\Models\Assignment;
-use App\Models\Group;
-use Exception;
+use App\Models\Assignments\Solution;
+use App\Models\Assignments\SolutionComment;
+use Facades\App\Services\Assignments\AssignmentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
+
 
 class SolutionController extends Controller
 {
-    public function index($code)
+
+
+
+    public function index($assignment)
     {
-        $assignmentObj = Assignment::where('code', $code)->first();
+        $assignmentObj = AssignmentService::getOrFail($assignment);
 
-        $testPath = env('TEST_PATH') . '/' . $assignmentObj->code . '/test/' . env('TEST_FILE');
+        //todo viac sql solution
+        $solutions = $assignmentObj->solutions()->orderBy('created_at','desc')->get()->unique('user_id');
 
-        if (!File::exists($testPath)) {
-            $errors = ['TestFile not found!'];
-            return view('assignments.solutions', compact(['assignmentObj', 'errors']));
+        return view('assignments.solutions.index', compact(['assignmentObj', 'solutions']));
+    }
 
+
+
+    public function show($assignment, $solution){
+
+        $assignmentObj = AssignmentService::getOrFail($assignment);
+        $solutionObj = $assignmentObj->solutions()->where('code', $solution)->firstOrFail();
+
+        $files = $solutionObj->files;
+
+        return view('assignments.solutions.show', compact(['assignmentObj', 'solutionObj', 'files']));
+    }
+
+
+    public function update($assignment, $solution, Request $request){
+
+        $assignmentObj = AssignmentService::getOrFail($assignment);
+        $solutionObj = $assignmentObj->solutions()->where('code', $solution)->firstOrFail();
+
+        $solutionObj->review = $request->input('review');
+        $solutionObj->review_points = $request->input('review_points');
+        $solutionObj->save();
+
+        return redirect(action('Assignments\SolutionController@index', [$assignmentObj->code]));
+    }
+
+    public function source($assignment, $solution, $file){
+        $assignmentObj = AssignmentService::getOrFail($assignment);
+        $solutionObj = $assignmentObj->solutions()->where('code', $solution)->firstOrFail();
+        $fileObj = $solutionObj->files()->where('code', $file)->firstOrFail();
+
+        $comments = [];
+        foreach($fileObj->comments as $commentObj){
+            $comments[$commentObj->line] = $commentObj->text;
         }
 
-        $contents = File::get($testPath);
-        $tests = json_decode($contents);
+        if($assignmentObj->solutions()->where('user_id', Auth::user()->id)->where('created_at','>',$solutionObj->created_at)->count() > 0){
+            $path = AssignmentService::pathArchive($assignmentObj, Auth::user());
+        }else{
+            $path = AssignmentService::pathSolution($assignmentObj, Auth::user());
+        }
+        //taham aktivne solution, alebo riesenie z archivu?
 
-        $tasksCount = $tests->tests[0]->output->tasksCount;
+//        return $fileObj;
+        $filepath = $path . $fileObj->dirname . ($fileObj->dirname != '/' ? '/' : '' )  . $fileObj->filename . '.' . $fileObj->ext;
 
-        $tasksMaxPoints = [];
-        $maxPoints = 0;
-        for ($i = 0; $i < $tasksCount; $i++) {
-            $linesCount = $tests->tests[0]->output->tasks[$i]->linesCount;
-            $tasksMaxPoints[$i] = 0;
-            for ($j = 0; $j < $linesCount; $j++) {
-                $tasksMaxPoints[$i] += $tests->tests[0]->output->tasks[$i]->lines[$j]->points;
+        $content = File::get($filepath);
+
+        return view('assignments.solutions.source', compact(['assignmentObj', 'solutionObj', 'fileObj', 'content', 'comments']));
+    }
+
+    public function comments($assignment, $solution, $file, Request $request){
+        $assignmentObj = AssignmentService::getOrFail($assignment);
+        $solutionObj = $assignmentObj->solutions()->where('code', $solution)->firstOrFail();
+        $fileObj = $solutionObj->files()->where('code', $file)->firstOrFail();
+
+
+        $comments = json_decode($request->get('comments'));
+
+        $fileObj->comments()->whereNotIn('line', array_keys(get_object_vars($comments)))->delete();
+
+        foreach($comments as $line => $text){
+            $commentObj = $fileObj->comments()->where('line', $line)->first();
+            if($commentObj != null){
+                $commentObj->text = $text;
+                $commentObj->save();
+            }else{
+                SolutionComment::create([
+                    'file_id' => $fileObj->id,
+                    'line' => $line,
+                    'text' => $text
+                ]);
             }
-            $maxPoints += $tasksMaxPoints[$i];
         }
 
-        $testsCount = 1;
-
-        return view('assignments.solutions.index', compact(['assignmentObj', 'testsCount', 'tasksCount', 'tasksMaxPoints', 'maxPoints']));
+        return redirect(action('Assignments\SolutionController@show', [$assignmentObj->code, $solutionObj->code]));
     }
 }

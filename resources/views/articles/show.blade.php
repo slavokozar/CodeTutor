@@ -4,7 +4,7 @@
     {!!
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-            [ 'label' => trans('articles.articles.link'), 'action' => 'Articles\ArticleController@index' ],
+            [ 'label' => trans('articles.link'), 'action' => 'Articles\ArticleController@index' ],
             [ 'label' => $articleObj->name]
         ])
     !!}
@@ -15,8 +15,8 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.edit'), 'action' => 'Articles\ArticleController@edit', 'params' => [$articleObj->code]],
-                ['label' => trans('general.buttons.delete'), 'action' => 'Articles\ArticleController@deleteModal', 'params' => [$articleObj->code], 'modal' => true]
+                ['label' => trans('general.edit'), 'action' => 'Articles\ArticleController@edit', 'params' => [$articleObj->code]],
+                ['label' => trans('general.delete'), 'action' => 'Articles\ArticleController@deleteModal', 'params' => [$articleObj->code], 'modal' => true]
             ]
         ])
      !!}
@@ -49,18 +49,18 @@
 
 
 
-    <section id="attachements">
-        @if($articleObj->images()->count() == 0)
-            <p>{{ trans('articles.labels.no-images')  }}</p>
-        @else
-            <ul>
-                @foreach($articleObj->images as $imageObj)
-                    <li>{{ $imageObj->name }}.{{ $imageObj->ext }}</li>
+    {{--<section id="attachements">--}}
+        {{--@if($articleObj->images()->count() == 0)--}}
+            {{--<p>{{ trans('articles.labels.no-images')  }}</p>--}}
+        {{--@else--}}
+            {{--<ul>--}}
+                {{--@foreach($articleObj->images as $imageObj)--}}
+                    {{--<li>{{ $imageObj->name }}.{{ $imageObj->ext }}</li>--}}
 
-                @endforeach
-            </ul>
-        @endif
-    </section>
+                {{--@endforeach--}}
+            {{--</ul>--}}
+        {{--@endif--}}
+    {{--</section>--}}
 
 
     <section id="comments">

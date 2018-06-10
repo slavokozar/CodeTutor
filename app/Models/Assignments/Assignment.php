@@ -2,8 +2,6 @@
 
 namespace App\Models\Assignments;
 
-use App\Models\Assignments\AssignmentSolution;
-use App\Models\Assignments\ProgrammingLanguage;
 use App\Models\Comment;
 use App\Models\Files\Attachment;
 use App\Models\Files\Image;
@@ -16,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property integer                                                           $id
  * @property integer                                                           $author_id
- * @property integer                                                           $article_id
+ * @property integer                                                           $assignment_id
  * @property string                                                            $input
  * @property string                                                            $tests
  * @property string                                                            $start_at
@@ -48,6 +46,7 @@ class Assignment extends Model
         'name',
         'description',
         'text',
+        'tasks',
         'start_at',
         'deadline_at'
     ];
@@ -57,34 +56,45 @@ class Assignment extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-
     public function programmingLanguages()
     {
         return $this->belongsToMany(ProgrammingLanguage::class, 'assignments_programming_languages', 'assignment_id', 'programming_language_id');
     }
 
-    public function solutions()
-    {
-        return $this->hasMany(AssignmentSolution::class, 'assignment_id');
-    }
-
-
     public function images()
     {
-        return $this->hasMany(Image::class, 'object_id')->where('object_type', 'article');
+        return $this->hasMany(Image::class, 'object_id')->where('object_type', 'assignment');
     }
 
     public function attachments()
     {
-        return $this->hasMany(Attachment::class, 'object_id')->where('object_type', 'article');
+        return $this->hasMany(Attachment::class, 'object_id')->where('object_type', 'assignment');
     }
+
+    public function datapubs()
+    {
+        return $this->hasMany(TestData::class, 'assignment_id')->where('public', true)->orderBy('number', 'asc');
+    }
+
+    public function tests()
+    {
+        return $this->hasMany(TestData::class, 'assignment_id')->where('public', false)->orderBy('number', 'asc');
+    }
+
+    public function solutions()
+    {
+        return $this->hasMany(Solution::class, 'assignment_id');
+    }
+
+
+
 
 
     // SHARING
     public $sharingType = 'assignment';
 
     public function sharings(){
-        return $this->hasMany(Sharing::class, 'object_id')->where('object_type', 'article');
+        return $this->hasMany(Sharing::class, 'object_id')->where('object_type', 'assignment');
     }
 
     public function sharingsGroups(){

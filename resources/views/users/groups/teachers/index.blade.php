@@ -16,14 +16,14 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.add'), 'action' => 'Users\Groups\TeacherController@create', 'params' => [$groupObj->code], 'modal' => true]
+                ['label' => trans('general.add'), 'action' => 'Users\Groups\TeacherController@create', 'params' => [$groupObj->code], 'modal' => true]
             ]
         ])
     !!}
 
     @php
         $_table_skip['school'] = true;
-        $_table_skip['group'] = true;
+        $_table_skip['groups'] = true;
         $_table_action = function($userObj) use ($groupObj){
             return action('Users\Groups\TeacherController@show', [$groupObj->code, $userObj->code]);
         };

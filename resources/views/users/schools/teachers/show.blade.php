@@ -17,8 +17,8 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.edit'), 'action' => 'Users\Schools\TeacherController@edit', 'params' => [$schoolObj->code, $userObj->code] ],
-                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\Schools\TeacherController@deleteModal', 'params' => [$schoolObj->code, $userObj->code]]
+                ['label' => trans('general.edit'), 'action' => 'Users\Schools\TeacherController@edit', 'params' => [$schoolObj->code, $userObj->code] ],
+                ['label' => trans('general.delete'), 'modal' => true, 'action' => 'Users\Schools\TeacherController@deleteModal', 'params' => [$schoolObj->code, $userObj->code]]
             ]
         ])
     !!}

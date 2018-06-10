@@ -21,6 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('email')->unique();
+
+            $table->string('secondary_email')->nullable();
+            $table->string('facebook_id')->nullable();
+
             $table->date('birthdate')->nullable();
 
             $table->string('role', 10)->nullable();

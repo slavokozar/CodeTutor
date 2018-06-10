@@ -16,12 +16,14 @@ class CreateAssignmentSolutionsTable extends Migration
         Schema::create('assignment_solutions', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->string('code')->unique();
+
             $table->integer('user_id')->unsigned();
             $table->integer('assignment_id')->unsigned();
 
 
             $table->string('filename');
-            $table->integer('lang_id')->unsigned();
+            $table->integer('lang_id')->unsigned()->nullable();
 
 
             $table->timestamp('scored_at')->nullable();

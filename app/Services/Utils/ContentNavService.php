@@ -40,16 +40,18 @@ class ContentNavService
             $nav .= '<ul class="nav nav-tabs">';
 
             foreach($config['right'] as $link){
-                if(isset($link['params'])){
-                    $action = action($link['action'], $link['params']);
-                }else{
-                    $action = action($link['action']);
-                }
 
+                if(isset($link['action'])){
+                    if(isset($link['params'])){
+                        $action = action($link['action'], $link['params']);
+                    }else{
+                        $action = action($link['action']);
+                    }
+                }
 
                 $nav .=
                     '<li role="presentation">'.
-                        '<a href="' . $action . '" class="btn' . ((isset($link['modal']) && $link['modal']) ? ' btn-modal':'') .  '">'.
+                        '<a href="' . (isset($action) ? $action : '#' ) . '" ' . (isset($link['id']) ? 'id="'. $link['id'] .'"' : '').' class="btn' . ((isset($link['modal']) && $link['modal']) ? ' btn-modal':'') .  '">'.
                             $link['label'].
                         '</a>'.
                     '</li>';

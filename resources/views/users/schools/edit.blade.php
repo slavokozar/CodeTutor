@@ -24,7 +24,7 @@
             <input type="hidden" name="_method" value="put">
         @endif
 
-        {!! ContentNav::submit(['label' => trans('general.buttons.save')]) !!}
+        {!! ContentNav::submit(['label' => trans('general.save')]) !!}
 
         <section id="basic">
 

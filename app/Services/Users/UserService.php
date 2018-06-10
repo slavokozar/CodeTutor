@@ -103,6 +103,11 @@ class UserService
     }
 
 
+    public function pathTemp($userObj){
+        return storage_path('temp/' . $userObj->code);
+    }
+
+
     public function managedGroups($userObj)
     {
         $publicGroups = $userObj->groups()->whereNull('school_id')

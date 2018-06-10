@@ -24,7 +24,7 @@
             <input type="hidden" name="_method" value="put">
         @endif
 
-        {!! ContentNav::submit(['label' => trans('general.buttons.save')]) !!}
+        {!! ContentNav::submit(['label' => trans('general.save')]) !!}
 
         <main role="main">
             <section id="basic">
@@ -39,6 +39,7 @@
                         </div>
                     </div>
                 @endif
+
                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                     <label class="col-md-20" for="">{{ trans('users.labels.name') }}</label>
                     <div class="col-md-40">
@@ -59,9 +60,8 @@
                                 <option value="">Global</option>
                                 @foreach($schools as $schoolObj)
                                     <option value="{{ $schoolObj->id }}"{{ old('school_id', $groupObj->school_id) == $schoolObj->id ? ' selected' : '' }}>{{$schoolObj->name}}</option>
-
+                                @endforeach
                             </select>
-                                   {{--value="{{ old('school_id', $groupObj->name) }}"/>--}}
                             @if( $errors->has('school_id') )
                                 <span class="help-block">{{ $errors->first('school_id') }}</span>
                             @endif

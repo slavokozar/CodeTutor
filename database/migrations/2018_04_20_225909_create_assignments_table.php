@@ -28,6 +28,8 @@ class CreateAssignmentsTable extends Migration
             $table->timestamp('start_at');
             $table->timestamp('deadline_at');
 
+            $table->unsignedSmallInteger('tasks')->default(1);
+
             $table->softDeletes();
             $table->timestamps();
         });

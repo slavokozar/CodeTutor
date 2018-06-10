@@ -9,22 +9,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?php echo e(action('System\PropagationController@home')); ?>">
-                <img src="<?php echo e(asset('img/codeleague-logo-white.png')); ?>" alt="CodeLeague">
+            <a class="navbar-brand" href="<?php echo e(Auth::check() ? action('FeedController@index') : action('System\PresentationController@index')); ?>">
+                <img src="<?php echo e(asset('img/codetutor-logo-white.png')); ?>" alt="CodeLeague">
             </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="/">domov</a>
-                </li>
+                <?php if( Auth::check() ): ?>
+                    <li>
+                        <a href="<?php echo e(action('System\PresentationController@index')); ?>">o CodeTutor</a>
+                    </li>
+                <?php endif; ?>
+
                 <li>
                     <a href="<?php echo e(action('Articles\ArticleController@index')); ?>">články</a>
                 </li>
                 <li>
-                    <a href="<?php echo e(action('System\PropagationController@rules')); ?>">pravidlá</a>
+
                 </li>
                 <li>
                     <a href="<?php echo e(action('Assignments\AssignmentController@index')); ?>">zadania</a>

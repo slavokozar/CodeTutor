@@ -1,10 +1,11 @@
 <?php
 
 
-/* PROPAGATION */
-Route::get('/', 'System\PropagationController@home');
-Route::get('pravidla', 'System\PropagationController@rules');
-Route::get('wanted', 'System\PropagationController@wanted');
+/* PRESENTATION */
+Route::get('/', 'System\PresentationController@index');
+Route::get('pravidla', 'System\PresentationController@rules');
+Route::get('wanted', 'System\PresentationController@wanted');
+
 
 
 /* USERS */
@@ -30,7 +31,7 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
             Route::get('/{user}', 'TeacherController@show');
             Route::get('/{user}/' . trans('routes.edit'), 'TeacherController@edit');
             Route::put('/{user}/' . trans('routes.edit'), 'TeacherController@update');
-            Route::get('/{user}/' . trans('routes.delete'), 'TeacherControllers@deleteModal');
+            Route::get('/{user}/' . trans('routes.delete'), 'TeacherController@deleteModal');
             Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
         });
 
@@ -63,7 +64,7 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
             Route::get('/' . trans('routes.create'), 'TeacherController@create');
             Route::post('/', 'TeacherController@store');
             Route::get('/{user}', 'TeacherController@show');
-            Route::get('/{user}/' . trans('routes.delete'), 'TeacherControllers@deleteModal');
+            Route::get('/{user}/' . trans('routes.delete'), 'TeacherController@deleteModal');
             Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
         });
 
@@ -106,7 +107,7 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
             Route::get('/{user}', 'TeacherController@show');
             Route::get('/{user}/' . trans('routes.edit'), 'TeacherController@edit');
             Route::put('/{user}/' . trans('routes.edit'), 'TeacherController@update');
-            Route::get('/{user}/' . trans('routes.delete'), 'TeacherControllers@deleteModal');
+            Route::get('/{user}/' . trans('routes.delete'), 'TeacherController@deleteModal');
             Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
         });
 
@@ -141,47 +142,159 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
     Route::delete('/{user}/' . trans('routes.delete'), 'UserController@destroy');
 });
 
-////Route::get(trans('users.url').'/'.trans('users.schools.url').'/{code}'.,'Users\Schools\SchoolController@show');
-//
-//
-////Route::get(trans('users.url').'/'.trans('users.schools.url'),'Users\SchoolController@index');
-//
-////Route::get(trans('users.url') . '/' . trans('users.groups.url'), 'Users\GroupController@index');
-//
 
+/* PROFILE */
 Route::group(['prefix' => trans('profile.url'), 'namespace' => 'Profile'], function () {
     Route::get('/profil/zmena-hesla', 'ProfileController@edit');
     Route::post('/profil/zmena-hesla', 'ProfileController@update');
 
-    Route::get('/' . trans('profile.articles.url'), 'ArticleController@index');
-    Route::get('/' . trans('profile.assignments.url'), 'AssignmentController@index');
-    Route::get('/' . trans('profile.files.url'), 'FileController@index');
-    Route::get('/' . trans('profile.link.url'), 'LinkController@index');
-//    Route::get('/' . trans('profile.groups.url'), 'GroupController@index');
+    Route::get('/' . trans('articles.url'), 'ArticleController@index');
+    Route::get('/' . trans('assignments.url'), 'AssignmentController@index');
+    Route::get('/' . trans('files.url'), 'FileController@index');
+    Route::get('/' . trans('links.url'), 'LinkController@index');
+    Route::get('/' . trans('groups.url'), 'GroupController@index');
 
 });
 
 
-///* GROUPS */
-////Route::resource('skupiny', 'Users\GroupController');
-////Route::get('skupiny/{skupina}/zadania', 'Users\GroupController@assignments');
-//
-//
-///* ASSIGNMENTS */
-Route::get('zadania', 'Assignments\AssignmentController@index');
+/* CONTENT */
 
-Route::get('zadania/nove', 'Assignments\AssignmentController@create');
-Route::post('zadania/nove', 'Assignments\AssignmentController@store');
+/* LINKS */
+Route::group(['prefix' => trans('links.url'), 'namespace' => 'Links'], function () {
 
-Route::get('zadania/{assignment}', 'Assignments\AssignmentController@show');
+    Route::get('/', 'LinkController@index');
+    Route::get('/' . trans('routes.create'), 'LinkController@create');
+    Route::post('/', 'LinkController@store');
+    Route::get('/{link}', 'LinkController@show');
+    Route::get('/{link}/' . trans('routes.edit'), 'LinkController@edit');
+    Route::put('/{link}/' . trans('routes.edit'), 'LinkController@update');
+    Route::get('/{link}/' . trans('routes.delete'), 'LinkController@deleteModal');
+    Route::delete('/{link}/' . trans('routes.delete'), 'LinkController@destroy');
+});
 
-Route::get('zadania/{assignment}/uprava', 'Assignments\AssignmentController@edit');
-Route::put('zadania/{assignment}/uprava', 'Assignments\AssignmentController@update');
+/* FILES */
+Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function () {
 
-Route::get('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@remove');
-Route::post('zadania/{assignment}/odstranenie', 'Assignments\AssignmentController@delete');
+    Route::get('/', 'FileController@index');
+    Route::get('/' . trans('routes.create'), 'FileController@create');
+    Route::post('/', 'FileController@store');
+    Route::get('/{file}', 'FileController@show');
+    Route::get('/{file}/' . trans('routes.edit'), 'FileController@edit');
+    Route::put('/{file}/' . trans('routes.edit'), 'FileController@update');
+    Route::get('/{file}/' . trans('routes.delete'), 'FileController@deleteModal');
+    Route::delete('/{file}/' . trans('routes.delete'), 'FileController@destroy');
+});
 
-//
+/* ARTICLES */
+Route::group(['prefix' => trans('articles.url'), 'namespace' => 'Articles'], function () {
+
+    Route::get('/', 'ArticleController@index');
+    Route::get('/' . trans('routes.create'), 'ArticleController@create');
+    Route::post('/', 'ArticleController@store');
+    Route::get('/{article}', 'ArticleController@show');
+    Route::get('/{article}/' . trans('routes.edit'), 'ArticleController@edit');
+    Route::put('/{article}/' . trans('routes.edit'), 'ArticleController@update');
+    Route::get('/{article}/' . trans('routes.delete'), 'ArticleController@deleteModal');
+    Route::delete('/{article}/' . trans('routes.delete'), 'ArticleController@destroy');
+
+    Route::get('/{article?}/' . trans('routes.images'), 'ImageController@index');
+    Route::post('/{article?}/' . trans('routes.images'), 'ImageController@store');
+
+});
+
+/* ASSIGNMENTS */
+Route::group(['prefix' => trans('assignments.url'), 'namespace' => 'Assignments'], function () {
+
+    Route::get('/', 'AssignmentController@index');
+    Route::get('/' . trans('routes.create'), 'AssignmentController@create');
+    Route::post('/', 'AssignmentController@store');
+    Route::get('/{assignment}', 'AssignmentController@show');
+    Route::get('/{assignment}/' . trans('routes.edit'), 'AssignmentController@edit');
+    Route::put('/{assignment}/' . trans('routes.edit'), 'AssignmentController@update');
+    Route::get('/{assignment}/' . trans('routes.delete'), 'AssignmentController@deleteModal');
+    Route::delete('/{assignment}/' . trans('routes.delete'), 'AssignmentController@destroy');
+
+    Route::get('/{assignment?}/' . trans('routes.images'), 'ImageController@index');
+    Route::post('/{assignment?}/' . trans('routes.images'), 'ImageController@store');
+    
+    Route::group(['prefix' => '/{assignment}/' . trans('assignments.datapub.url')], function () {
+        Route::get('/', 'DatapubController@index');
+        Route::get('/' . trans('routes.create'), 'DatapubController@create');
+        Route::post('/', 'DatapubController@store');
+        Route::get('/{number}', 'DatapubController@show');
+        Route::get('/{number}/' . trans('routes.edit'), 'DatapubController@edit');
+        Route::put('/{number}/' . trans('routes.edit'), 'DatapubController@update');
+        Route::get('/{number}/' . trans('routes.moveDown'), 'DatapubController@moveDown');
+        Route::get('/{number}/' . trans('routes.moveUp'), 'DatapubController@moveUp');
+        Route::get('/{number}/' . trans('routes.delete'), 'DatapubController@deleteModal');
+        Route::delete('/{number}/' . trans('routes.delete'), 'DatapubController@destroy');
+    });
+
+    Route::group(['prefix' => '/{assignment}/' . trans('assignments.datatest.url')], function () {
+        Route::get('/', 'DatatestController@index');
+        Route::get('/' . trans('routes.create'), 'DatatestController@create');
+        Route::post('/', 'DatatestController@store');
+        Route::get('/{number}', 'DatatestController@show');
+        Route::get('/{number}/' . trans('routes.edit'), 'DatatestController@edit');
+        Route::put('/{number}/' . trans('routes.edit'), 'DatatestController@update');
+        Route::get('/{number}/' . trans('routes.moveDown'), 'DatatestController@moveDown');
+        Route::get('/{number}/' . trans('routes.moveUp'), 'DatatestController@moveUp');
+        Route::get('/{number}/' . trans('routes.delete'), 'DatatestController@deleteModal');
+        Route::delete('/{number}/' . trans('routes.delete'), 'DatatestController@destroy');
+    });
+
+
+    Route::group(['prefix' => '/{assignment}/' . trans('assignments.submit.url')], function () {
+        Route::get('/', 'SubmitController@index');
+
+        Route::post('/' . trans('routes.upload'), 'SubmitController@upload');
+
+        Route::get('/' . trans('routes.history'), 'SubmitController@history');
+//        Route::get('/' . trans('routes.upload'), 'SubmitController@upload');
+//        Route::get('/' . trans('routes.upload'), 'SubmitController@upload');
+//        Route::get('/' . trans('routes.upload'), 'SubmitController@upload');
+
+
+
+
+
+        Route::get('/' . trans('routes.sources') . '/{file?}', 'SubmitController@source');
+//        Route::post('/', 'DatatestController@store');
+//        Route::get('/{number}', 'DatatestController@show');
+//        Route::get('/{number}/' . trans('routes.edit'), 'DatatestController@edit');
+//        Route::put('/{number}/' . trans('routes.edit'), 'DatatestController@update');
+//        Route::get('/{number}/' . trans('routes.moveDown'), 'DatatestController@moveDown');
+//        Route::get('/{number}/' . trans('routes.moveUp'), 'DatatestController@moveUp');
+//        Route::get('/{number}/' . trans('routes.delete'), 'DatatestController@deleteModal');
+//        Route::delete('/{number}/' . trans('routes.delete'), 'DatatestController@destroy');
+    });
+
+    Route::group(['prefix' => '/{assignment}/' . trans('assignments.solutions.url')], function () {
+        Route::get('/', 'SolutionController@index');
+        Route::get('/{code}', 'SolutionController@show');
+        Route::put('/{code}', 'SolutionController@update');
+        Route::get('/{code}/source/{source}', 'SolutionController@source');
+        Route::post('/{code}/source/{source}', 'SolutionController@comments');
+    });
+
+
+
+        /////* ASSIGNMENTS - tests */
+////
+////Route::get('zadania/{assignment}/testy/data/{data}/uprava/novy-test', 'Assignments\TestController@newTest');
+////Route::get('zadania/{assignment}/testy/data/{data}/uprava/nova-uloha', 'Assignments\TestController@newTask');
+////Route::get('zadania/{assignment}/testy/data/{data}/uprava/novy-riadok', 'Assignments\TestController@newLine');
+////
+////Route::post('zadania/{assignment}/testy/data/{data}/uprava', 'Assignments\TestController@update');
+////
+////Route::get('zadania/{assignment}/testy/nastavenia', 'Assignments\TestController@settings');
+////Route::post('zadania/{assignment}/testy/nastavenia', 'Assignments\TestController@postSettings');
+////
+////Route::get('zadania/{assignment}/testy/vzorove-riesenie', 'Assignments\TestController@example');
+////Route::get('zadania/{assignment}/testy/kontrola', 'Assignments\TestController@review');
+
+
+    //
 /////* ASSIGNMENTS - solutions */
 ////Route::get('zadania/{assignment}/riesenia', 'Assignments\SolutionController@index');
 ////
@@ -210,24 +323,10 @@ Route::post('zadania/{assignment}/odstranenie', 'Assignments\AssignmentControlle
 ////Route::get('zadania/{assignment}/odovzdanie/historia', 'Assignments\SubmitController@history');
 //
 
-/* ARTICLES */
-
-Route::group(['prefix' => trans('articles.url'), 'namespace' => 'Articles'], function () {
-
-    Route::get('/', 'ArticleController@index');
-    Route::get('/' . trans('routes.create'), 'ArticleController@create');
-    Route::post('/', 'ArticleController@store');
-    Route::get('/{article}', 'ArticleController@show');
-    Route::get('/{article}/' . trans('routes.edit'), 'ArticleController@edit');
-    Route::put('/{article}/' . trans('routes.edit'), 'ArticleController@update');
-    Route::get('/{article}/' . trans('routes.delete'), 'ArticleController@deleteModal');
-    Route::delete('/{article}/' . trans('routes.delete'), 'ArticleController@destroy');
-
-    Route::get('/{article?}/' . trans('routes.images'), 'ImageController@index');
-    Route::post('/{article?}/' . trans('routes.images'), 'ImageController@store');
-
 });
 
+
+/* FILES */
 Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function () {
     Route::get(trans('files.images') . '/{image}/' . trans('files.modal-thumb'), 'ImageController@modalThumb');
     Route::get(trans('files.images') . '/{image}/' . trans('files.article-thumb'), 'ImageController@articleThumb');
@@ -237,20 +336,17 @@ Route::group(['prefix' => trans('files.url'), 'namespace' => 'Files'], function 
 });
 
 
+
+
 /* COMMENTS */
 Route::get('{object}/{code}/komentare', 'System\CommentController@index');
-
 Route::get('{object}/{code}/komentare/{comment}', 'System\CommentController@create');
 Route::post('{object}/{code}/komentare/{comment?}', 'System\CommentController@store');
 
 Route::delete('komentare/{object}/{code}/{comment}', 'System\CommentController@destroy');
 
-
 Route::get('komentare/{object}/{code}/{comment}/edit', 'System\CommentController@edit');
 Route::post('komentare/{object}/{code}/{comment}/edit', 'System\CommentController@update');
-
-
-
 
 
 /* AUTH */

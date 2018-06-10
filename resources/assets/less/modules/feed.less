@@ -1,0 +1,133 @@
+@activity-border-color: #ddd;
+@activity-name-color: #585858;
+
+.activity{
+  border-bottom: .3rem solid @activity-border-color;
+  margin: 0 0 1rem 0;
+  padding: .8rem 1rem;
+  border-left: .8rem solid @brand-danger;
+  display: flex;
+
+  strong{
+    font-weight: 600;
+    color: darken(@brand-danger, 20%)
+  }
+
+  .activity-image{
+    display:flex;
+    width: 15rem;
+
+    .fa{
+      display: block;
+      margin: auto;
+      font-size:10rem;
+    }
+  }
+
+  .activity-content{
+    width: calc(100% - 15rem);
+    margin: 0;
+    padding: .8rem 1rem;
+
+    h2{
+      margin: 0 0 .6rem 0;
+      font-size: 4rem;
+      color: @activity-name-color;
+      border-bottom: .1rem solid @brand-danger;
+
+    }
+
+    .activity-info{
+      display:flex;
+      justify-content: space-between;
+
+      .activity-detail{
+
+        .activity-author{
+          font-size: 120%;
+        }
+        .activity-sharing{
+
+        }
+
+        margin-bottom: .8rem;
+      }
+    }
+
+
+
+    .activity-description{
+      .read-more{
+        color: @brand-danger;
+        font-weight: 600;
+
+        &:hover{
+          color: @brand-danger;
+          border-bottom: 1px solid @brand-danger;
+        }
+      }
+    }
+  }
+}
+
+#feed-add-content{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  & > div{
+    width: 25%;
+    text-align: center;
+    padding: 2rem 0;
+    margin: 0 .5rem 1rem .5rem;
+    background: #f5f5f5;
+
+    &:first-child{
+      margin-left: 0;
+    }
+
+    &:last-child{
+      margin-right: 0;
+    }
+
+    span.fa{
+      font-size:3rem;
+      display: block;
+      width: 100%;
+    }
+
+    .label{
+      margin: auto;
+      color: @brand-danger;
+      font-weight: 600;
+      font-size: 2rem;
+    }
+  }
+}
+
+//.assignment-right{
+//  float: right;
+//  margin: -14px 0 20px 20px;
+//}
+//
+//#assignment-info{
+//  float:right;
+//  text-align:right;
+//  padding:0 -15px;
+//  min-width:33.33333%
+//}
+//
+//.assignment-deadline,
+//.assignment-submits,
+//.assignment-points{
+//  span{
+//    color: @brand-danger;
+//    font-size: 32px;
+//    font-weight: 600;
+//  }
+//}
+//
+//.assignment-description{
+//  display: block;
+//  min-height: 100px;
+//}

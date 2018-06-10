@@ -1,7 +1,7 @@
 <?php $__env->startSection('content-main'); ?>
     <?php echo BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-            [ 'label' => trans('articles.articles.link'), 'action' => 'Articles\ArticleController@index' ],
+            [ 'label' => trans('articles.link'), 'action' => 'Articles\ArticleController@index' ],
             [ 'label' => $articleObj->name]
         ]); ?>
 
@@ -11,8 +11,8 @@
 
     <?php echo ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.edit'), 'action' => 'Articles\ArticleController@edit', 'params' => [$articleObj->code]],
-                ['label' => trans('general.buttons.delete'), 'action' => 'Articles\ArticleController@deleteModal', 'params' => [$articleObj->code], 'modal' => true]
+                ['label' => trans('general.edit'), 'action' => 'Articles\ArticleController@edit', 'params' => [$articleObj->code]],
+                ['label' => trans('general.delete'), 'action' => 'Articles\ArticleController@deleteModal', 'params' => [$articleObj->code], 'modal' => true]
             ]
         ]); ?>
 
@@ -46,18 +46,18 @@
 
 
 
-    <section id="attachements">
-        <?php if($articleObj->images()->count() == 0): ?>
-            <p><?php echo e(trans('articles.labels.no-images')); ?></p>
-        <?php else: ?>
-            <ul>
-                <?php $__currentLoopData = $articleObj->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $imageObj): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <li><?php echo e($imageObj->name); ?>.<?php echo e($imageObj->ext); ?></li>
+    
+        
+            
+        
+            
+                
+                    
 
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
-        <?php endif; ?>
-    </section>
+                
+            
+        
+    
 
 
     <section id="comments">

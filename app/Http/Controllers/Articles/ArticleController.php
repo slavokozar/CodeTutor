@@ -67,8 +67,6 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-
-
         $articleObj = ArticleService::store($request->all(), Auth::user());
 
         $images = Session::get('article_images', []);

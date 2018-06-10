@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AssignmentRequest;
 
 
+use Facades\App\Services\Files\ImageService;
 use Facades\App\Services\ShareService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -28,27 +29,10 @@ class AssignmentController extends Controller
 
     public function index()
     {
+        $assignments = AssignmentService::paginate();
 
-//        $groups = GroupService::all();
-//        $assignments = AssignmentService::paginate(Auth::user(), Input::get('page', 1));
-
-        $assignments = new Collection();
-        return view('assignments.index', compact(['groups', 'assignments']));
+        return view('assignments.index', compact(['assignments']));
     }
-
-
-    public function show($code)
-    {
-        $assignmentObj = AssignmentService::getOrFail($code);
-
-        $content = AssignmentService::content($assignmentObj);
-        $datapub = null;
-//        $datapub = TestService::toString($assignmentObj, 'verejne');
-        $comments = AssignmentService::comments($assignmentObj);
-
-        return view('assignments.show', compact(['assignmentObj', 'content', 'datapub', 'comments']));
-    }
-
 
     public function create()
     {
@@ -65,17 +49,45 @@ class AssignmentController extends Controller
 
     public function store(AssignmentRequest $request)
     {
-        $assignmentObj = AssignmentService::store($request->input());
+        $assignmentObj = AssignmentService::store($request->input(), Auth::user());
 
-        ShareService::setSharing($assignmentObj, $request->input('share'));
+        $images = Session::get('assignment_images', []);
+        foreach($images as $image){
+            $imageObj = ImageService::findOrFail($image);
+            $imageObj->object_id = $assignmentObj->id;
+            $imageObj->object_type = 'assignment';
+            $imageObj->save();
+        }
+
+        $attachments = Session::get('assignment_attachments', []);
+        foreach($attachments as $attachment){
+
+        }
+
+        ShareService::setSharing($assignmentObj, $request->input('share'), true);
 
         return redirect(action('Assignments\AssignmentController@show', [$assignmentObj->code]));
     }
 
-    public function edit($code)
+    public function show($code)
     {
         $assignmentObj = AssignmentService::getOrFail($code);
 
+        $content = AssignmentService::content($assignmentObj);
+        $datapub = null;
+//        $datapub = TestService::toString($assignmentObj, 'verejne');
+        $comments = AssignmentService::comments($assignmentObj);
+
+        return view('assignments.show', compact(['assignmentObj', 'content', 'datapub', 'comments']));
+    }
+
+
+
+
+    public function edit($code)
+    {
+        $assignmentObj = AssignmentService::getOrFail($code);
+        
         $groups = UserService::managedGroups(Auth::user());
         $languages = ProgrammingLanguageService::all();
 
@@ -88,25 +100,31 @@ class AssignmentController extends Controller
 
         $assignmentObj = AssignmentService::update($assignmentObj, $request->input());
 
-        ShareService::setSharing($assignmentObj, $request->input('share'));
+        ShareService::setSharing($assignmentObj, $request->input('share'), true);
 
         return redirect(action('Assignments\AssignmentController@show', [$assignmentObj->code]));
     }
 
 
-    public function remove($code)
+    public function deleteModal($assignment)
     {
-        $assignmentObj = AssignmentService::getOrFail($code);
+        $assignmentObj = AssignmentService::getOrFail($assignment);
 
-        return view('assignments.delete', compact(['assignmentObj']));
+        return view('assignments.delete',compact(['assignmentObj']));
     }
 
-
-    public function destroy($code)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($assignment)
     {
-        $assignmentObj = AssignmentService::getOrFail($code);
+        $assignmentObj = AssignmentService::getOrFail($assignment);
 
-        AssignmentService::delete($assignmentObj);
+        AssignmentService::destroy($assignmentObj);
 
         return redirect(action('Assignments\AssignmentController@index'));
     }

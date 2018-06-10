@@ -15,8 +15,8 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.edit'), 'action' => 'Users\UserController@edit', 'params' => [$userObj->code] ],
-                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\UserController@deleteModal', 'params' => [$userObj->code]]
+                ['label' => trans('general.edit'), 'action' => 'Users\UserController@edit', 'params' => [$userObj->code] ],
+                ['label' => trans('general.delete'), 'modal' => true, 'action' => 'Users\UserController@deleteModal', 'params' => [$userObj->code]]
             ]
         ])
     !!}

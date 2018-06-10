@@ -14,7 +14,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'CodeLeague',
+    'name' => 'CodeTutor',
 
     /*
     |--------------------------------------------------------------------------
@@ -171,7 +171,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider::class,
-//        Chumper\Zipper\ZipperServiceProvider::class,
+        Chumper\Zipper\ZipperServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -231,6 +231,8 @@ return [
         'BreadCrumb'   => Facades\App\Services\Utils\BreadCrumbService::class,
         'ContentNav'   => Facades\App\Services\Utils\ContentNavService::class,
         'DataRender'   => Facades\App\Services\Utils\DataRenderService::class,
+        'Zipper'       => Chumper\Zipper\Zipper::class,
+
     ]
 
 ];

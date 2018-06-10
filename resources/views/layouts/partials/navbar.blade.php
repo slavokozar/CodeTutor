@@ -9,22 +9,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{action('System\PropagationController@home')}}">
-                <img src="{{asset('img/codeleague-logo-white.png')}}" alt="CodeLeague">
+            <a class="navbar-brand" href="{{ Auth::check() ? action('FeedController@index') : action('System\PresentationController@index')}}">
+                <img src="{{asset('img/codetutor-logo-white.png')}}" alt="CodeLeague">
             </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="/">domov</a>
-                </li>
+                @if( Auth::check() )
+                    <li>
+                        <a href="{{action('System\PresentationController@index')}}">o CodeTutor</a>
+                    </li>
+                @endif
+
                 <li>
                     <a href="{{action('Articles\ArticleController@index')}}">články</a>
                 </li>
                 <li>
-                    <a href="{{action('System\PropagationController@rules')}}">pravidlá</a>
+{{--                    <a href="{{action('System\PropagationController@rules')}}">pravidlá</a>--}}
                 </li>
                 <li>
                     <a href="{{action('Assignments\AssignmentController@index')}}">zadania</a>
@@ -47,10 +50,12 @@
 
                             <li role="separator" class="divider"></li>
 
+                            <li><a href="{{action('Profile\LinkController@index')}}">{{ trans('profile.links.link') }}</a></li>
+                            <li><a href="{{action('Profile\FileController@index')}}">{{ trans('profile.files.link') }}</a></li>
                             <li><a href="{{action('Profile\ArticleController@index')}}">{{ trans('profile.articles.link') }}</a></li>
                             <li><a href="{{action('Profile\AssignmentController@index')}}">{{ trans('profile.assignments.link') }}</a></li>
-                            <li><a href="{{action('Profile\FileController@index')}}">{{ trans('profile.files.link') }}</a></li>
-                            <li><a href="{{action('Profile\LinkController@index')}}">{{ trans('profile.links.link') }}</a></li>
+
+
 
                             <li role="separator" class="divider"></li>
 

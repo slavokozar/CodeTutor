@@ -41,8 +41,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
-                        data-dismiss="modal"><?php echo e(trans('general.buttons.cancel')); ?></button>
-                <button type="button" class="btn btn-danger success"><?php echo e(trans('general.buttons.insert')); ?></button>
+                        data-dismiss="modal"><?php echo e(trans('general.cancel')); ?></button>
+                <button type="button" class="btn btn-danger success"><?php echo e(trans('general.insert')); ?></button>
             </div>
 
         </div>

@@ -13,7 +13,8 @@
     "laravel/tinker": "~1.0",
     "gargron/fileupload": "~1.1.1",
     "intervention/image": "^2.3",
-    "pion/laravel-chunk-upload": "^1.1"
+    "pion/laravel-chunk-upload": "^1.1",
+    "chumper/zipper": "1.0.x"
   },
   "require-dev": {
     "filp/whoops": "~2.0",

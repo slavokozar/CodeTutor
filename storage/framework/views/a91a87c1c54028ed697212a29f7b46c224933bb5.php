@@ -10,7 +10,7 @@
 
     <?php echo ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Articles\ArticleController@create']
+                ['label' => trans('general.create'), 'action' => 'Articles\ArticleController@create']
             ]
         ]); ?>
 

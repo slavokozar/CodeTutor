@@ -8,8 +8,59 @@
 
 namespace App\Models\Files;
 
+use App\Models\Users\User;
 
-class File
+use App\Models\Comment;
+use App\Models\Sharing;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class File extends Model
 {
+    use SoftDeletes;
 
+    protected $table = 'articles';
+
+    protected $fillable = [
+        'name',
+        'code',
+
+        'author_id',
+
+        'description',
+        'text',
+        'url'
+    ];
+
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
+    // SHARING
+    public $sharingType = 'file';
+
+    public function sharings(){
+        return $this->hasMany(Sharing::class, 'object_id')->where('object_type', 'article');
+    }
+
+    public function sharingsGroups(){
+        return $this->sharings()->whereNull('school_id')->whereNotNull('group_id');
+    }
+
+    public function sharingsSchools(){
+        return $this->sharings()->whereNull('group_id')->whereNotNull('school_id');
+    }
+
+
+    // COMMENTS
+    public $commentType = 'file';
+    public $commentRoute = 'subory';
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'object_id')->where('object_type', 'article')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
+    }
 }

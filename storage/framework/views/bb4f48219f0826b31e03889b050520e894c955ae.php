@@ -2,14 +2,14 @@
     <?php
         $breadcrumb = [
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-            [ 'label' => trans('articles.articles.link'), 'action' => 'Articles\ArticleController@index' ],
+            [ 'label' => trans('articles.link'), 'action' => 'Articles\ArticleController@index' ],
         ];
 
         if($articleObj->id){
             $breadcrumb[] = [ 'action' => 'Articles\ArticleController@show', 'params' => [$articleObj->code], 'label' => $articleObj->name];
-            $breadcrumb[] = [ 'label' => trans('articles.articles.edit') ];
+            $breadcrumb[] = [ 'label' => trans('articles.edit') ];
         }else{
-            $breadcrumb[] = [ 'label' => trans('articles.articles.create') ];
+            $breadcrumb[] = [ 'label' => trans('articles.create') ];
         }
     ?>
 
@@ -19,7 +19,7 @@
     <?php if($articleObj->id): ?>
         <h1><?php echo e($articleObj->name); ?></h1>
     <?php else: ?>
-        <h1><?php echo e(trans('articles.articles.create')); ?></h1>
+        <h1><?php echo e(trans('articles.create')); ?></h1>
     <?php endif; ?>
 
     <?php
@@ -41,7 +41,7 @@
             <input type="hidden" name="_method" value="<?php echo e($_form_method); ?>">
         <?php endif; ?>
 
-        <?php echo ContentNav::submit(['label' => trans('general.buttons.save')]); ?>
+        <?php echo ContentNav::submit(['label' => trans('general.save')]); ?>
 
 
         <section id="basic">

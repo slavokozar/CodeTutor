@@ -19,6 +19,10 @@ class ArticleService
         return Article::paginate(10);
     }
 
+    private function get($code){
+        return Article::where('code',$code)->first();
+    }
+
     public function getOrFail($code){
         $articleObj = $this->get($code);
 
@@ -26,10 +30,6 @@ class ArticleService
             $this->fail($code);
         }
         return $articleObj;
-    }
-
-    private function get($code){
-        return Article::where('code',$code)->first();
     }
 
     public function findOrFail($id){
@@ -87,8 +87,6 @@ class ArticleService
 
     public function update($articleObj, $data){
         if($data['name'] != $articleObj->name) {
-            $normalized = CleanString::normalize($data['name']);
-
             $normalized = CleanStringFacade::normalize($data['name']);
 
             $code = UniqueCodeFacade::unique(Article::class, $normalized);

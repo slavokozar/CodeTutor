@@ -4,50 +4,32 @@
     {!!
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-            [ 'label' => trans('articles.articles.link') ]
+            [ 'label' => trans('articles.link') ]
         ])
     !!}
 
 
-    <h1>{{ trans('articles.articles.heading') }}</h1>
+    <h1>{{ trans('articles.heading') }}</h1>
 
+    @if(Auth::check() && Auth::user()->isAuthor())
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Articles\ArticleController@create']
+                ['label' => trans('general.create'), 'action' => 'Articles\ArticleController@create']
             ]
         ])
      !!}
+    @endif
 
     <section id="activities-list">
 
         @if(count($articles) == 0)
-            <p class="text-center text-danger">{!! trans('articles.articles.no-articles') !!}</p>
+            <p class="text-center text-danger">{!! trans('articles.no-articles') !!}</p>
         @else
             @foreach($articles as $articleObj)
-                <div class="activity {{ $articleObj->is_public ? '' : 'private'}}">
-
-                    <div class="activity-image">
-                        <span class="fa fa-newspaper-o" aria-hidden="true"></span>
-                    </div>
-                    <div class="activity-content">
-                        <a href="{{action('Articles\ArticleController@show',[$articleObj->code])}}">
-                            <h2>{{$articleObj->name}}</h2>
-                        </a>
-                        <div class="activity-details">
-                            <span class="activity-author">{{ trans('activities.from-user') }} {{$articleObj->author->name}}</span>
-
-                            @if($articleObj->group != null)<span class="activity-group">{{ trans('activities.in-group') }} {{$articleObj->group->name}}</span>@endif
-                            <span class="activity-date">{{$articleObj->updated_at}}</span>
-                        </div>
-                        <p class="activity-description">
-                            {!! $articleObj->description !!}
-                            <a class="read-more" href="{{action('Articles\ArticleController@show',[$articleObj->code])}}">{{ trans('articles.articles.read-more') }}</a>
-                        </p>
-                    </div>
-                </div>
-                </div>
+                @include('articles.activity')
             @endforeach
+                {!! $articles->render() !!}
         @endif
     </section>
 

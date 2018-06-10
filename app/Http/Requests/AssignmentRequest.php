@@ -25,8 +25,9 @@ class AssignmentRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'start' => 'required|date',
-            'deadline' => 'required|date',
+            'start' => 'required',
+            'deadline' => 'required',
+            'tasks' => 'required|integer',
             'description' => 'string|max:255',
             'text' => 'required|string'
         ];

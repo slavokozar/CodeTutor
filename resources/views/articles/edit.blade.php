@@ -4,14 +4,14 @@
     @php
         $breadcrumb = [
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-            [ 'label' => trans('articles.articles.link'), 'action' => 'Articles\ArticleController@index' ],
+            [ 'label' => trans('articles.link'), 'action' => 'Articles\ArticleController@index' ],
         ];
 
         if($articleObj->id){
             $breadcrumb[] = [ 'action' => 'Articles\ArticleController@show', 'params' => [$articleObj->code], 'label' => $articleObj->name];
-            $breadcrumb[] = [ 'label' => trans('articles.articles.edit') ];
+            $breadcrumb[] = [ 'label' => trans('articles.edit') ];
         }else{
-            $breadcrumb[] = [ 'label' => trans('articles.articles.create') ];
+            $breadcrumb[] = [ 'label' => trans('articles.create') ];
         }
     @endphp
 
@@ -20,7 +20,7 @@
     @if($articleObj->id)
         <h1>{{ $articleObj->name }}</h1>
     @else
-        <h1>{{ trans('articles.articles.create') }}</h1>
+        <h1>{{ trans('articles.create') }}</h1>
     @endif
 
     @php
@@ -41,7 +41,7 @@
             <input type="hidden" name="_method" value="{{$_form_method}}">
         @endif
 
-        {!! ContentNav::submit(['label' => trans('general.buttons.save')]) !!}
+        {!! ContentNav::submit(['label' => trans('general.save')]) !!}
 
         <section id="basic">
 
@@ -207,7 +207,7 @@
                 <div class="col-md-60">
 
 
-                    <textarea id="articleContent" class="form-control" name="text" rows="10"
+                    <textarea id="articleContent" class="md-editor form-control" name="text" rows="10"
                               placeholder="{{ trans('articles.labels.text') }}">{{ old('text', $articleObj->text) }}</textarea>
                     @if( $errors->has('text') )
                         <span class="help-block">{{ $errors->first('text') }}</span>
@@ -216,25 +216,21 @@
             </div>
 
 
+
         </section>
     </form>
 
 @endsection
 
 @section('scripts')
-    <script src="{{asset('js/simplemde.min.js')}}"></script>
-    <script src="{{asset('js/jquery.iframe-transport.js')}}"></script>
-    <script src="{{asset('js/jquery.fileupload.js')}}"></script>
-
     <script>
         var $content = $("#articleContent");
         var $noDescCheck = $('#articleNoDescription');
         var $descText = $('#articleDescription');
         var descLength = 10;
 
-        var imagesModalUrl = '{{action('Articles\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])}}'
+        var imagesModalUrl = '{{action('Assignments\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])}}'
         var imageModalThumb = '{{ action('Files\ImageController@modalThumb', '?') }}';
         var imageArticleThumb = '{{ action('Files\ImageController@articleThumb', '?') }}';
     </script>
-    <script src="{{asset('js/modules/md-editor.js')}}"></script>
 @endsection

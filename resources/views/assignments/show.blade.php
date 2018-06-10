@@ -4,25 +4,33 @@
     {!!
         BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-            [ 'label' => trans('articles.assignments.link'), 'action' => 'Assignments\AssignmentController@index' ],
+            [ 'label' => trans('assignments.link'), 'action' => 'Assignments\AssignmentController@index' ],
             [ 'label' => $assignmentObj->name]
         ])
     !!}
 
     <h1>{{ $assignmentObj->name }}</h1>
 
-    {!!
-    ContentNav::render([
-        'left' => [
-            ['label' => trans('assignments.submit.link'), 'action' => 'Assignments\AssignmentController@index', 'params' => [$assignmentObj->code] ],
-             //['label' => trans('assignments.teachers.link'), 'action' => 'Assignments\AssignmentController@index', 'params' => [$assignmentObj->code] ],
-        ],
-        'right' => [
-            ['label' => trans('general.buttons.edit'), 'action' => 'Assignments\AssignmentController@edit', 'params' => [$assignmentObj->code] ],
-            ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Assignments\AssignmentController@create', 'params' => [$assignmentObj->code]]
-        ]
-    ])
- !!}
+    @php
+
+        $navigation = [
+            'left' => [
+                ['label' => trans('assignments.submit.link'), 'action' => 'Assignments\SubmitController@index', 'params' => [$assignmentObj->code] ],
+            ],
+            'right' => [
+                ['label' => trans('assignments.datapub.link'), 'action' => 'Assignments\DatapubController@index', 'params' => [$assignmentObj->code] ],
+                ['label' => trans('assignments.datatest.link'), 'action' => 'Assignments\DatatestController@index', 'params' => [$assignmentObj->code] ],
+                ['label' => trans('general.edit'), 'action' => 'Assignments\AssignmentController@edit', 'params' => [$assignmentObj->code] ],
+                ['label' => trans('general.delete'), 'modal' => true, 'action' => 'Assignments\AssignmentController@deleteModal', 'params' => [$assignmentObj->code]]
+            ]
+        ];
+
+        if(Auth::check() && Auth::user()->isAuthor()){
+            $navigation['left'][] = ['label' => trans('assignments.solutions.link'), 'action' => 'Assignments\SolutionController@index', 'params' => [$assignmentObj->code] ];
+        }
+    @endphp
+
+    {!! ContentNav::render($navigation) !!}
 
 
 
@@ -70,7 +78,7 @@
                 </div>
 
             </div>
-            <div class="col-lg-30 text-right text-danger" >
+            <div class="col-lg-30 text-right text-danger">
                 @include('assignments.partials.info')
             </div>
         </div>
@@ -81,25 +89,25 @@
         {!! $content !!}
     </section>
     {{--<section id="datapub">--}}
-        {{--<h2>Vzorové vstupy a výstupy</h2>--}}
+    {{--<h2>Vzorové vstupy a výstupy</h2>--}}
 
-            {{--@if($datapub == null)--}}
-                {{--<p class="text-center text-danger">--}}
-                    {{--K tomuto zadaniu zatiaľ neexistujú verejná dáta.<br/>--}}
-                    {{--<i class="fa fa-4x fa-meh-o" aria-hidden="true"></i>--}}
-                {{--</p>--}}
-            {{--@else--}}
-                {{--@for($i = 0; $i < count($datapub); $i++)--}}
-                    {{--<div class="data">--}}
-                            {{--<h3>Data {{$i + 1}}</h3>--}}
-                            {{--<h4>Vstup</h4>--}}
-                            {{--<pre>{{$datapub[$i]->input}}</pre>--}}
+    {{--@if($datapub == null)--}}
+    {{--<p class="text-center text-danger">--}}
+    {{--K tomuto zadaniu zatiaľ neexistujú verejná dáta.<br/>--}}
+    {{--<i class="fa fa-4x fa-meh-o" aria-hidden="true"></i>--}}
+    {{--</p>--}}
+    {{--@else--}}
+    {{--@for($i = 0; $i < min(count($datapub), 3); $i++)--}}
+    {{--<div class="data">--}}
+    {{--<h3>Data {{$i + 1}}</h3>--}}
+    {{--<h4>Vstup</h4>--}}
+    {{--<pre>{{$datapub[$i]->input}}</pre>--}}
 
-                            {{--<h4>Výstup</h4>--}}
-                            {{--<pre>{{$datapub[$i]->output}}</pre>--}}
-                    {{--</div>--}}
-                {{--@endfor--}}
-            {{--@endif--}}
+    {{--<h4>Výstup</h4>--}}
+    {{--<pre>{{$datapub[$i]->output}}</pre>--}}
+    {{--</div>--}}
+    {{--@endfor--}}
+    {{--@endif--}}
     {{--</section>--}}
     <section id="comments">
         <h2>Komentáre</h2>
@@ -109,7 +117,8 @@
 
         @if(count($comments) > 0)
             <p class="text-center">
-                <a href="{{action('System\CommentController@index',[$assignmentObj->commentRoute, $assignmentObj->code])}}">všetky komentáre</a>
+                <a href="{{action('System\CommentController@index',[$assignmentObj->commentRoute, $assignmentObj->code])}}">všetky
+                    komentáre</a>
             </p>
         @endif
     </section>

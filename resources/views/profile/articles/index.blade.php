@@ -9,12 +9,12 @@
         ])
     !!}
 
-    <h1>{{ trans('profile.articles.link') }}</h1>
+    <h1>{{ trans('profile.articles.heading') }}</h1>
 
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Articles\ArticleController@create']
+                ['label' => trans('general.create'), 'action' => 'Articles\ArticleController@create']
             ]
         ])
      !!}

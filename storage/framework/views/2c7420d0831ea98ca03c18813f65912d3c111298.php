@@ -1,7 +1,7 @@
 <?php $__env->startSection('content-main'); ?>
     <?php echo BreadCrumb::render([
             [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
-            [ 'label' => trans('articles.assignments.link'), 'action' => 'Assignments\AssignmentController@index' ],
+            [ 'label' => trans('assignments.link'), 'action' => 'Assignments\AssignmentController@index' ],
             [ 'label' => $assignmentObj->name]
         ]); ?>
 
@@ -10,12 +10,13 @@
 
     <?php echo ContentNav::render([
         'left' => [
-            ['label' => trans('assignments.submit.link'), 'action' => 'Assignments\AssignmentController@index', 'params' => [$assignmentObj->code] ],
-             //['label' => trans('assignments.teachers.link'), 'action' => 'Assignments\AssignmentController@index', 'params' => [$assignmentObj->code] ],
+            ['label' => trans('assignments.submit.link'), 'action' => 'Assignments\SubmitController@index', 'params' => [$assignmentObj->code] ],
         ],
         'right' => [
-            ['label' => trans('general.buttons.edit'), 'action' => 'Assignments\AssignmentController@edit', 'params' => [$assignmentObj->code] ],
-            ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Assignments\AssignmentController@create', 'params' => [$assignmentObj->code]]
+            ['label' => trans('assignments.datapub.link'), 'action' => 'Assignments\DatapubController@index', 'params' => [$assignmentObj->code] ],
+            ['label' => trans('assignments.datatest.link'), 'action' => 'Assignments\DatatestController@index', 'params' => [$assignmentObj->code] ],
+            ['label' => trans('general.edit'), 'action' => 'Assignments\AssignmentController@edit', 'params' => [$assignmentObj->code] ],
+            ['label' => trans('general.delete'), 'modal' => true, 'action' => 'Assignments\AssignmentController@deleteModal', 'params' => [$assignmentObj->code]]
         ]
     ]); ?>
 

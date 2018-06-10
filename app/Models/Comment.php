@@ -52,12 +52,4 @@ class Comment extends Model
     public function canModify($user){
         return ($this->author_id == $user->id || Auth::user()->isAdmin);
     }
-
-    public function canReply($user){
-//        if($this->reply_to_id != null){
-//            return false;
-//        }
-        return true;
-        return ($this->author_id != $user->id);
-    }
 }
