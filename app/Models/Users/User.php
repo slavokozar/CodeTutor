@@ -2,6 +2,8 @@
 
 namespace App\Models\Users;
 
+use App\Classes\GroupRoles;
+use App\Classes\SchoolRoles;
 use App\Classes\UserRoles;
 
 use App\Models\Links\Link;
@@ -15,6 +17,7 @@ use App\Notifications\ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -130,15 +133,19 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return ($this->email == 'slavo.kozar@gmail.com' || $this->email == 'kamil.triscik@gmail.com');
+        return ($this->email == 'slavo.kozar@gmail.com' || $this->email == 'berezovsky@fel.cvut.cz');
     }
 
-    public function isAuthor()
+    public function isAuthor($object = null)
     {
+        if($object != null){
+            return $object->author_id == Auth::user()->id;
+        }
+
         return (
             $this->role == UserRoles::admin
-            || $this->schools()->wherePivotIn([SchoolRoles::admin, SchoolRoles::teacher])->count() > 0
-            || $this->groups()->wherePivotIn([GroupRoles::admin, GroupRoles::teacher])->count() > 0
+            || $this->schools()->wherePivotIn('role', [SchoolRoles::admin, SchoolRoles::teacher])->count() > 0
+            || $this->groups()->wherePivotIn('role', [GroupRoles::admin, GroupRoles::teacher])->count() > 0
         );
     }
 

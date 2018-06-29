@@ -25,8 +25,8 @@ class CreateAssignmentsTable extends Migration
             $table->text('text');
 
             $table->timestamp('checked_at')->nullable();
-            $table->timestamp('start_at');
-            $table->timestamp('deadline_at');
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('deadline_at')->nullable();
 
             $table->unsignedSmallInteger('tasks')->default(1);
 

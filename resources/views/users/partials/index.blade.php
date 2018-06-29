@@ -76,7 +76,7 @@
                         <ul>
                             @foreach($userObj->groups as $groupObj)
                                 <li>
-                                    <a href="{{ action('Users\Groups\GroupController@show', [$schoolObj->code]) }}">
+                                    <a href="{{ action('Users\Groups\GroupController@show', [$groupObj->code]) }}">
                                         {{$groupObj->name}}
                                     </a>
                                     @if($groupObj->pivot->role)

@@ -39,8 +39,8 @@
                     <td>
                         <a href="{{ action('Assignments\SolutionController@show',[$assignmentObj->code, $solutionObj->code]) }}">{{ date('d. m. Y H:i:s', strtotime($solutionObj->created_at)) }}</a>
                     </td>
-                    <td>{{ $assignmentService::userTestScore($assignmentObj, Auth::user()) }}</td>
-                    <td>{{ $assignmentService::userReviewScore($assignmentObj, Auth::user()) }}</td>
+                    <td>{{ $assignmentService::userTestScore($assignmentObj, $solutionObj->user) }}</td>
+                    <td>{{ $assignmentService::userReviewScore($assignmentObj, $solutionObj->user) }}</td>
                     </a>
                 </tr>
             @endforeach

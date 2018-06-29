@@ -121,7 +121,7 @@ class SubmitController extends Controller
                 }
 
                 $langObj = SubmitService::getLangObj($pathUserTemp);
-                //todo detect language
+
 
 //                return $langObj;
 

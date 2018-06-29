@@ -63,9 +63,9 @@ class SolutionController extends Controller
         }
 
         if($assignmentObj->solutions()->where('user_id', Auth::user()->id)->where('created_at','>',$solutionObj->created_at)->count() > 0){
-            $path = AssignmentService::pathArchive($assignmentObj, Auth::user());
+            $path = AssignmentService::pathArchive($assignmentObj, $solutionObj->user);
         }else{
-            $path = AssignmentService::pathSolution($assignmentObj, Auth::user());
+            $path = AssignmentService::pathSolution($assignmentObj, $solutionObj->user);
         }
         //taham aktivne solution, alebo riesenie z archivu?
 

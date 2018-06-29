@@ -18,7 +18,7 @@
 
     <h1>{{  $fileObj->filename . '.' . $fileObj->ext }}</h1>
 
-    @if(Auth::check() and Auth::user()->isAuthor())
+    @if((Auth::check() and Auth::user()->isAuthor($assignmentObj)))
         <form action="{{ action('Assignments\SolutionController@comments', [$assignmentObj->code, $solutionObj->code, $fileObj->code]) }}" method="post">
             {!! csrf_field() !!}
             <input id="form-comments" type="hidden" name="comments" value="">
@@ -44,18 +44,25 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Okomentovať riadok</h4>
+                    <h4 class="modal-title">Komentár</h4>
                 </div>
                 <div class="modal-body">
-                            <textarea id="comment-text" class="form-control" rows="3"
-                                      placeholder="Komentár..." {{ (!Auth::check() or !Auth::user()->isAuthor()) ? 'disabled' : '' }}></textarea>
+                    @if((Auth::check() and Auth::user()->isAuthor($assignmentObj)))
+                        <textarea id="comment-text" class="form-control" rows="3"
+                                  placeholder="Komentár..." {{ (!Auth::check() or !Auth::user()->isAuthor($assignmentObj)) ? 'disabled' : '' }}></textarea>
+                    @else
+                         <p id="comment-text"></p>
+                    @endif
+
                 </div>
+                @if((Auth::check() and Auth::user()->isAuthor($assignmentObj)))
                 <div class="modal-footer">
                     <button id="comment-cancel" type="button"
                             class="btn btn-default">{{ trans('general.cancel') }}</button>
                     <button id="comment-save" type="button"
                             class="btn btn-danger">{{ trans('general.save') }}</button>
                 </div>
+                @endif
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -69,8 +76,10 @@
 
         var actualButton = null;
         var actualLine = null;
-        var comments = JSON.parse('{!! json_encode($comments) !!}');
-        console.log(comments);
+        var comments = JSON.parse('{!! json_encode($comments) !!}', true);
+        if(comments.length == 0){
+            comments = {};
+        }
 
         function waitForHighlight() {
             setTimeout(function () {
@@ -106,14 +115,24 @@
                 actualButton = $(this).closest('.source-comment');
 
                 var className = $(e.target).closest('.line').attr('class').match(/number([0-9]*)/);
+
+                console.log(className);
                 if (!className || className.length == 0) {
                     return null;
                 }
 
                 actualLine = parseInt(className[0].replace('number', ''));
 
-                $('#comment-text').val(comments[actualLine]);
-                $('#reviewModal').modal('show');
+                console.log(actualLine);
+
+                if($('#comment-text').prop("tagName") == 'TEXTAREA'){
+                    $('#comment-text').val(comments[actualLine]);
+                    $('#reviewModal').modal('show');
+                }else if(comments[actualLine] !== undefined && comments[actualLine].length > 0){
+                    $('#comment-text').text(comments[actualLine]);
+                    $('#reviewModal').modal('show');
+                }
+
             })
         }
 
@@ -131,8 +150,10 @@
             } else {
                 comments[actualLine] = text;
                 actualButton.addClass('active')
-
             }
+
+            console.log(comments);
+            console.log()
 
             $('#reviewModal').modal('hide');
             $('#comment-text').val('');

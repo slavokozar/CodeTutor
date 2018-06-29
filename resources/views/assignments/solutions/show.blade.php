@@ -19,37 +19,58 @@
 
     <section id="submit-files">
 
-        <form action="{{ action('Assignments\SolutionController@update', [$assignmentObj->code, $solutionObj->code]) }}" method="post">
-            {!! ContentNav::submit(['label' => trans('general.save')]) !!}
-            <h3 style="margin-top: -3rem;">Manuálne hodnotenie</h3>
-            {!! csrf_field() !!}
-            <input type="hidden" name="_method" value="PUT">
-            <div class="form-group">
-                <label class="col-md-20" for="assignmentName">Pridelené body (0 - {{ $assignmentService::maxReviewScore($assignmentObj, Auth::user()) }}):</label>
+        @if(Auth::check() and Auth::user()->isAuthor($assignmentObj))
+            <form action="{{ action('Assignments\SolutionController@update', [$assignmentObj->code, $solutionObj->code]) }}"
+                  method="post">
+                {!! ContentNav::submit(['label' => trans('general.save')]) !!}
+                <h3 style="margin-top: -3rem;">Manuálne hodnotenie</h3>
+                {!! csrf_field() !!}
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <label class="col-md-20" for="assignmentName">Pridelené body (0
+                        - {{ $assignmentService::maxReviewScore($assignmentObj, $solutionObj->user) }}):</label>
+                    <div class="col-md-40">
+                        <input type="number" class="form-control" name="review_points" min="1"
+                               max="{{ $assignmentService::maxReviewScore($assignmentObj, $solutionObj->user) }}"
+                               value="{{ old('review_points', $solutionObj->review_points) }}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-20" for="assignmentName">Komentár k hodnoteniu:</label>
+                    <div class="col-md-40">
+                        <textarea rows="4" class="form-control"
+                                  name="review">{{ old('review_points', $solutionObj->review) }}</textarea>
+                    </div>
+                </div>
+
+            </form>
+        @else
+            <div class="row">
+                <label class="col-md-20" for="assignmentName">Pridelené body (0
+                    - {{ $assignmentService::maxReviewScore($assignmentObj, $solutionObj->user) }}):</label>
                 <div class="col-md-40">
-                    <input type="number" class="form-control" name="review_points" min="1" max="{{ $assignmentService::maxReviewScore($assignmentObj, Auth::user()) }}"
-                           value="{{ old('review_points', $solutionObj->review_points) }}"/>
+                    <strong>{{ $solutionObj->review_points }}</strong>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-md-20" for="assignmentName">Komentár k hodnoteniu:</label>
                 <div class="col-md-40">
-                    <textarea rows="4" class="form-control" name="review">{{ old('review_points', $solutionObj->review) }}</textarea>
+                        <p>{{ $solutionObj->review }}</p>
                 </div>
             </div>
-
-        </form>
+        @endif
         <h3>Odovdané súbory</h3>
         <ul>
             @foreach($solutionObj->files()->orderBy('dirname', 'asc')->get() as $fileObj)
                 <li>
                     <a href="{{ action('Assignments\SolutionController@source', [$assignmentObj->code, $solutionObj->code, $fileObj->code]) }}">
-                    {{ $fileObj->dirname . ( $fileObj->dirname != '/' ? '/' : '' ) . $fileObj->filename . '.' . $fileObj->ext }}
+                        {{ $fileObj->dirname . ( $fileObj->dirname != '/' ? '/' : '' ) . $fileObj->filename . '.' . $fileObj->ext }}
                     </a>
 
                     @php $comments = $fileObj->comments()->count() @endphp
                     @if($comments > 0)
-                        <span class="text-danger" style="margin-left: 20px">{{ $comments }} <i class="fa fa-comment" aria-hidden="true"></i> </span>
+                        <span class="text-danger" style="margin-left: 20px">{{ $comments }} <i class="fa fa-comment"
+                                                                                               aria-hidden="true"></i> </span>
                     @endif
                 </li>
             @endforeach
