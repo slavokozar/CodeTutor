@@ -229,7 +229,7 @@
         var $descText = $('#articleDescription');
         var descLength = 10;
 
-        var imagesModalUrl = '{{action('Assignments\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])}}'
+        var imagesModalUrl = '{{action('Articles\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])}}'
         var imageModalThumb = '{{ action('Files\ImageController@modalThumb', '?') }}';
         var imageArticleThumb = '{{ action('Files\ImageController@articleThumb', '?') }}';
     </script>

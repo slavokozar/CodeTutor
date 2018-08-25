@@ -8441,7 +8441,31 @@
                     title: "Clean block"
                 },
                 "separator-2": {name: "separator-2"},
-                link: {name: "link", action: k, className: "fa fa-link", title: "Create Link", "default": !0},
+                link: {name: "link", action: function(editor){
+                        var t = editor.codemirror, n = l(t), r = editor.options, i = "";
+                        E(t, n.image, ["<a href='' class='btn btn-primary'>","</span>"], i)
+                    }, className: "fa fa-link", title: "Create Link", "default": !0},
+                attachment: {name: "attachment", action: function(editor){
+                    console.log('attachment');
+                        modal({
+                            url: editor.options.imagesModalUrl,
+                            init: editor.options.imagesModalInit,
+                            success: {
+                                callback: function(){
+                                    var t = editor.codemirror, n = l(t), r = editor.options, i = "";
+
+                                    var selected = document.querySelectorAll('#images-row .images-square.selected');
+                                    selected.forEach(function(element){
+
+                                        E(t, n.image, ["![", "](\"" + element.getAttribute('data-image')+ ")\n\n    "], i)
+                                    })
+
+                                }
+                            }
+
+                        })
+
+                    }, className: "fa fa-file-o", title: "Insert Attachment", "default": !0},
                 image: {name: "image", action: function(editor){
                     modal({
                         url: editor.options.imagesModalUrl,

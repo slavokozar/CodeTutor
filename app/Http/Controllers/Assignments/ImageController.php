@@ -29,7 +29,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
-class ImageController extends Controller
+class   ImageController extends Controller
 {
 
     public function index($assignment){
@@ -51,11 +51,15 @@ class ImageController extends Controller
 
     public function store($assignment = 'null', Request $request )
     {
+
+        return $assignment;
+
         if($assignment == 'null'){
             $assignmentObj = null;
         }else{
             $assignmentObj = AssignmentService::getOrFail($assignment);
         }
+
 
 
         try {

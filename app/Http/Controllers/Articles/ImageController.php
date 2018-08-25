@@ -60,13 +60,12 @@ class ImageController extends Controller
             $articleObj = ArticleService::getOrFail($article);
         }
 
-
         try {
             $fileObj = null;
 
             $factory = new FileUploadFactory(new PathResolver\Simple(ImageService::getTargetPath()),
                 new FileSystem\Simple(), [
-                    new SizeValidator("100M"),
+                    new SizeValidator("100000"),
                 ]
             );
 
@@ -84,6 +83,7 @@ class ImageController extends Controller
                 header($header . ': ' . $value);
             }
 
+            return 'ferko';
 
             if ($files[0]->completed) {
                 $pathinfo = pathinfo($files[0]->name);

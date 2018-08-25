@@ -242,7 +242,7 @@
         var $descText = $('#articleDescription');
         var descLength = 10;
 
-        var imagesModalUrl = '<?php echo e(action('Assignments\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])); ?>'
+        var imagesModalUrl = '<?php echo e(action('Articles\ImageController@index', [$articleObj->id == null ? 'null' : $articleObj->code])); ?>'
         var imageModalThumb = '<?php echo e(action('Files\ImageController@modalThumb', '?')); ?>';
         var imageArticleThumb = '<?php echo e(action('Files\ImageController@articleThumb', '?')); ?>';
     </script>
