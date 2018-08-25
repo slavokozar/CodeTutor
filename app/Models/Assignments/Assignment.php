@@ -2,16 +2,19 @@
 
 namespace App\Models\Assignments;
 
-use App\Models\AssignmentSolution;
+use App\Models\Comment;
+use App\Models\Files\Attachment;
+use App\Models\Files\Image;
+use App\Models\Sharing;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\Assignment
  *
  * @property integer                                                           $id
  * @property integer                                                           $author_id
- * @property integer                                                           $article_id
+ * @property integer                                                           $assignment_id
  * @property string                                                            $input
  * @property string                                                            $tests
  * @property string                                                            $start_at
@@ -43,6 +46,7 @@ class Assignment extends Model
         'name',
         'description',
         'text',
+        'tasks',
         'start_at',
         'deadline_at'
     ];
@@ -52,31 +56,67 @@ class Assignment extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-
     public function programmingLanguages()
     {
         return $this->belongsToMany(ProgrammingLanguage::class, 'assignments_programming_languages', 'assignment_id', 'programming_language_id');
     }
 
-    public function comments()
+    public function images()
     {
-        return $this->hasMany(Comment::class, 'object_id')->where('object_type','assignment')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
+        return $this->hasMany(Image::class, 'object_id')->where('object_type', 'assignment');
     }
 
-    public function commentType()
+    public function attachments()
     {
-        return 'assignment';
+        return $this->hasMany(Attachment::class, 'object_id')->where('object_type', 'assignment');
     }
 
-    public function commentRoute()
+    public function datapubs()
     {
-        return 'zadania';
+        return $this->hasMany(TestData::class, 'assignment_id')->where('public', true)->orderBy('number', 'asc');
     }
 
+    public function tests()
+    {
+        return $this->hasMany(TestData::class, 'assignment_id')->where('public', false)->orderBy('number', 'asc');
+    }
 
     public function solutions()
     {
-        return $this->hasMany(AssignmentSolution::class, 'assignment_id');
+        return $this->hasMany(Solution::class, 'assignment_id');
     }
+
+
+
+
+
+    // SHARING
+    public $sharingType = 'assignment';
+
+    public function sharings(){
+        return $this->hasMany(Sharing::class, 'object_id')->where('object_type', 'assignment');
+    }
+
+    public function sharingsGroups(){
+        return $this->sharings()->whereNull('school_id')->whereNotNull('group_id');
+    }
+
+    public function sharingsSchools(){
+        return $this->sharings()->whereNull('group_id')->whereNotNull('school_id');
+    }
+
+
+
+    // COMMENTS
+    public $commentType = 'assignment';
+    public $commentRoute = 'zadania';
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'object_id')->where('object_type', 'assignment')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
+    }
+
+
+
 
 }

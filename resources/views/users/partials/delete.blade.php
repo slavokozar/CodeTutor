@@ -19,8 +19,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
-                            data-dismiss="modal">{{ trans('general.buttons.cancel') }}</button>
-                    <button type="submit" class="btn btn-danger">{{ trans('general.buttons.delete') }}</button>
+                            data-dismiss="modal">{{ trans('general.cancel') }}</button>
+                    <button type="submit" class="btn btn-danger">{{ trans('general.delete') }}</button>
                 </div>
             </form>
         </div>

@@ -14,7 +14,7 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Users\Groups\GroupController@create']
+                ['label' => trans('general.create'), 'action' => 'Users\Groups\GroupController@create']
             ]
         ])
      !!}

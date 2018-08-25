@@ -2,13 +2,11 @@
 
 namespace App\Models\Articles;
 
+use App\Models\Comment;
 use App\Models\Files\Attachment;
 use App\Models\Files\Image;
 use App\Models\Sharing;
-use App\Models\Users\Group;
-use App\Models\Users\School;
 use App\Models\Users\User;
-use App\Scopes\PublicScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -27,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $updated_at
  * @property-read \App\Models\User $author
  * @property-read \App\Models\Series $series
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ArticleTag[] $tags
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tag[] $tags
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Article whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Article whereCode($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Article whereAuthorId($value)
@@ -52,6 +50,7 @@ class Article extends Model
         'is_public',
 
         'author_id',
+
         'series_id',
         'series_order',
 
@@ -65,10 +64,15 @@ class Article extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-//    public function tags()
-//    {
+    public function tags()
+    {
 //        return $this->hasMany('App\Models\ArticleTag', 'article_tag_article', 'article_id', 'tag_id');
-//    }
+    }
+
+    public function series()
+    {
+//        return $this->hasMany('App\Models\ArticleTag', 'article_tag_article', 'article_id', 'tag_id');
+    }
 
     public function images()
     {
@@ -103,6 +107,6 @@ class Article extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment', 'object_id')->where('object_type', 'article')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
+        return $this->hasMany(Comment::class, 'object_id')->where('object_type', 'article')->whereNull('reply_to_id')->orderBy('created_at', 'DESC');
     }
 }

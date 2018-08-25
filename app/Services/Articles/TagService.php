@@ -2,7 +2,7 @@
 namespace App\Services\Articles;
 
 use App\Models\Article;
-use App\Models\ArticleTag;
+use App\Models\Tag;
 
 /**
  * Created by PhpStorm.
@@ -13,6 +13,6 @@ use App\Models\ArticleTag;
 class TagService
 {
     public function all(){
-        return ArticleTag::all();
+        return Tag::all();
     }
 }

@@ -24,7 +24,7 @@ class CreateArticlesTable extends Migration
             $table->integer('series_order')->unsigned()->nullable();
 
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->text('text');
 
             $table->softDeletes();

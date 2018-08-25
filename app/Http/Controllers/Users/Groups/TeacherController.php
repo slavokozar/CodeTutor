@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Users\Groups;
 
+use App\Classes\GroupRoles;
 use App\Http\Controllers\Controller;
 
 use Facades\App\Services\Users\Groups\GroupService;
@@ -55,7 +56,7 @@ class TeacherController extends Controller
     {
         $groupObj = GroupService::getOrFail($group);
 
-        UserGroupService::attachIds($request->input('users'), $groupObj);
+        UserGroupService::attachIds($request->input('users'), $groupObj, GroupRoles::teacher);
 
         return redirect(action('Users\Groups\TeacherController@index', [$groupObj->code]));
     }

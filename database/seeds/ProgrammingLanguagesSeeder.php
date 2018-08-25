@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\ProgrammingLanguage;
+use App\Models\Assignments\ProgrammingLanguage;
 use Illuminate\Database\Seeder;
 
 class ProgrammingLanguagesSeeder extends Seeder

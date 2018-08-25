@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?php echo e(action('System\PropagationController@home')); ?>">
+            <a class="navbar-brand" href="<?php echo e(action('System\PresentationController@index')); ?>">
                 <img src="<?php echo e(asset('img/codeleague-logo-white.png')); ?>" alt="CodeLeague">
             </a>
         </div>

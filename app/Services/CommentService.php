@@ -2,9 +2,9 @@
 namespace App\Services;
 
 
+use App\Models\Articles\Article;
+use App\Models\Assignments\Assignment;
 use App\Models\Comment;
-use App\Models\Article;
-use App\Models\Assignment;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -46,9 +46,9 @@ class CommentService
     public function create($objectObj, $replyToObj, $data){
         $commentObj = Comment::create([
             'author_id' => Auth::user()->id,
-            'object_type' => $objectObj->commentType(),
+            'object_type' => $objectObj->commentType,
             'object_id' => $objectObj->id,
-            'reply_to_id' => $replyToObj->id,
+            'reply_to_id' => $replyToObj ? $replyToObj->id : null,
             'text' => $data['comment']
         ]);
 

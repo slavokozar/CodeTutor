@@ -13,5 +13,8 @@
     "gulp-sourcemaps": "*",
     "gulp-util": "*",
     "gulp-watch": "*"
+  },
+  "dependencies": {
+    "gulp-uglify": "^3.0.0"
   }
 }

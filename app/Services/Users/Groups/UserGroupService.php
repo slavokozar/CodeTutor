@@ -9,6 +9,9 @@
 namespace App\Services\Users\Groups;
 
 use App\Classes\GroupRoles;
+use App\Notifications\addedToGroupAsStudentNotification;
+use App\Notifications\addedToGroupAsTeacherNotification;
+use App\Notifications\removedFromGroupAsStudentNotification;
 use Facades\App\Services\Users\UserService;
 
 class UserGroupService
@@ -18,7 +21,11 @@ class UserGroupService
     {
         $userObj->groups()->attach($groupObj, ['role' => $role]);
 
-        //todo notification
+        if($role == GroupRoles::student)
+            $userObj->notify( new addedToGroupAsStudentNotification($groupObj));
+        elseif($role == GroupRoles::teacher)
+            $userObj->notify( new addedToGroupAsTeacherNotification($groupObj));
+
         flash(trans('users.students.add-notification', ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
     }
 
@@ -34,7 +41,9 @@ class UserGroupService
     {
         $userObj->groups()->detach($groupObj);
 
-        //todo notification
+        $userObj->notify( new removedFromGroupAsStudentNotification($groupObj));
+
+
         flash(trans('users.students.remove-notification', ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
     }
 

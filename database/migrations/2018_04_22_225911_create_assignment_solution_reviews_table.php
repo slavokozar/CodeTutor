@@ -15,7 +15,6 @@ class CreateAssignmentSolutionReviewsTable extends Migration
     {
         Schema::create('assignment_solution_reviews', function (Blueprint $table) {
             $table->increments('id');
-
             $table->integer('author_id')->unsigned();
             $table->integer('solution_id')->unsigned();
 

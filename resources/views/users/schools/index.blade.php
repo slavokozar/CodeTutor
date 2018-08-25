@@ -14,7 +14,7 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Users\Schools\SchoolController@create']
+                ['label' => trans('general.create'), 'action' => 'Users\Schools\SchoolController@create']
             ]
         ])
     !!}

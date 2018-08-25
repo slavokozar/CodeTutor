@@ -21,8 +21,8 @@
 
             ],
             'right' => [
-                ['label' => trans('general.buttons.edit'), 'action' => 'Users\Groups\GroupController@edit', 'params' => [$groupObj->code] ],
-                ['label' => trans('general.buttons.delete'), 'modal' => true, 'action' => 'Users\Groups\GroupController@create', 'params' => [$groupObj->code]]
+                ['label' => trans('general.edit'), 'action' => 'Users\Groups\GroupController@edit', 'params' => [$groupObj->code] ],
+                ['label' => trans('general.delete'), 'modal' => true, 'action' => 'Users\Groups\GroupController@create', 'params' => [$groupObj->code]]
             ]
         ])
      !!}

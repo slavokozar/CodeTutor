@@ -10,6 +10,8 @@ namespace App\Services;
 
 use App\Models\Sharing;
 
+use App\Notifications\newSharedArticleNotification;
+use App\Notifications\newSharedAssignmentNotification;
 use Facades\App\Services\Users\Schools\SchoolService;
 use Facades\App\Services\Users\Groups\GroupService;
 
@@ -102,6 +104,12 @@ class ShareService
         ]);
 
         if ($notifications) {
+            foreach($groupObj->users as $userObj){
+                if($object->sharingType == 'article')
+                    $userObj->notify(new newSharedArticleNotification($object));
+                elseif($object->sharingType == 'assignment')
+                    $userObj->notify(new newSharedAssignmentNotification($object));
+            }
             //todo notification
         }
     }

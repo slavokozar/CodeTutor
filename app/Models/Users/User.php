@@ -2,15 +2,23 @@
 
 namespace App\Models\Users;
 
+use App\Classes\GroupRoles;
+use App\Classes\SchoolRoles;
+use App\Classes\UserRoles;
+
+use App\Models\Links\Link;
+use App\Models\Files\File;
 use App\Models\Articles\Article;
 use App\Models\Assignments\Assignment;
+use App\Models\Assignments\Solution;
 
 use App\Notifications\ResetPassword;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Notifications\Notifiable;
-use phpDocumentor\Reflection\DocBlock\Tags\Link;
+use Illuminate\Support\Facades\Auth;
+
 
 /**
  * App\Models\User
@@ -47,7 +55,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-
         'title',
         'name',
         'surname',
@@ -85,6 +92,11 @@ class User extends Authenticatable
         return $this->title . ' ' . $this->name . ' ' . $this->surname;
     }
 
+    public function avatar(){
+        return asset('img/avatar-blank.png');
+    }
+
+
 
     public function groups()
     {
@@ -97,6 +109,14 @@ class User extends Authenticatable
     }
 
 
+    public function links(){
+        return $this->hasMany(Link::class, 'author_id');
+    }
+
+    public function files(){
+        return $this->hasMany(File::class, 'author_id');
+    }
+
     public function articles(){
         return $this->hasMany(Article::class, 'author_id');
     }
@@ -105,34 +125,30 @@ class User extends Authenticatable
         return $this->hasMany(Assignment::class, 'author_id');
     }
 
-//    public function files(){
-//        return $this->belongsToMany(File::class, 'user_group_user', 'group_id', 'user_id')->withPivot(['role']);
-//    }
-//
-//    public function links(){
-//        return $this->belongsToMany(Link::class, 'user_group_user', 'group_id', 'user_id')->withPivot(['role']);
-//    }
+    public function solutions()
+    {
+        return $this->hasMany(Solution::class, 'user_id');
+    }
 
-
-//    public function isGroupLecturer($groupId){
-//        return $this->groups()->find($groupId)->pivot->lecturer;
-//    }
-
-//    public function solutions()
-//    {
-//        return $this->hasMany('App\Models\AssignmentSolution', 'user_id');
-//    }
 
     public function isAdmin()
     {
-
-        return ($this->email == 'slavo.kozar@gmail.com' || $this->email == 'kamil.triscik@gmail.com');
+        return ($this->email == 'slavo.kozar@gmail.com' || $this->email == 'berezovsky@fel.cvut.cz');
     }
 
-    public function isArticleAuthor()
+    public function isAuthor($object = null)
     {
-        return $this->isAdmin();
+        if($object != null){
+            return $object->author_id == Auth::user()->id;
+        }
+
+        return (
+            $this->role == UserRoles::admin
+            || $this->schools()->wherePivotIn('role', [SchoolRoles::admin, SchoolRoles::teacher])->count() > 0
+            || $this->groups()->wherePivotIn('role', [GroupRoles::admin, GroupRoles::teacher])->count() > 0
+        );
     }
+
 //
 //    public function isAssignmentAuthor()
 //    {

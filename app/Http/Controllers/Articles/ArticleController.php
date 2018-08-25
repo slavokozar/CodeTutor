@@ -67,8 +67,6 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-
-
         $articleObj = ArticleService::store($request->all(), Auth::user());
 
         $images = Session::get('article_images', []);
@@ -100,8 +98,8 @@ class ArticleController extends Controller
     {
         $articleObj = ArticleService::getOrFail($article);
 
-//        $content = ArticleService::content($articleObj);
-//        $comments = ArticleService::comments($articleObj);
+        $content = ArticleService::content($articleObj);
+        $comments = ArticleService::comments($articleObj);
 
         return view('articles.show',compact(['articleObj','content','comments']));
     }

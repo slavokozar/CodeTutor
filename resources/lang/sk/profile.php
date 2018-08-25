@@ -9,7 +9,19 @@ return [
         'link' => 'Nastavenie hesla',
     ],
 
+    'links' => [
+        'link' => 'Odkazy',
+        'heading' => 'Moje odkazy',
+        'no-lines' => 'Nemáte žiadne odkazy.<br/>'.
+            '<i class="fa fa-4x fa-meh-o" aria-hidden="true"></i><br/>'
+    ],
 
+    'files' => [
+        'link' => 'Súbory',
+        'heading' => 'Moje súbory',
+        'no-files' => 'Nemáte žiadne súbory.<br/>'.
+            '<i class="fa fa-4x fa-meh-o" aria-hidden="true"></i><br/>'
+    ],
 
     'articles' => [
         'link' => 'Články',
@@ -20,18 +32,12 @@ return [
 
     'assignments' => [
         'link' => 'Zadania',
-        'heading' => 'Moje Zadania'
+        'heading' => 'Moje Zadania',
+        'no-assignments' => 'Nemáte žiadne zadnia.<br/>'.
+            '<i class="fa fa-4x fa-meh-o" aria-hidden="true"></i><br/>'
     ],
 
-    'files' => [
-        'link' => 'Zdieľané súbory',
-        'heading' => 'Moje Zdieľané Súbory'
-    ],
 
-    'links' => [
-        'link' => 'Zdieľané odkazy',
-        'heading' => 'Moje Zdieľané Odkazy'
-    ],
 
 
 

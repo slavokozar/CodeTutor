@@ -16,7 +16,7 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Users\Schools\TeacherController@create', 'params' => [$schoolObj->code]]
+                ['label' => trans('general.create'), 'action' => 'Users\Schools\TeacherController@create', 'params' => [$schoolObj->code]]
             ]
         ])
     !!}

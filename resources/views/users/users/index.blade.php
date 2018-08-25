@@ -17,7 +17,7 @@
                 ['label' => trans('users.groups.heading'), 'action' => 'Users\Groups\GroupController@index']
             ],
             'right' => [
-                ['label' => trans('general.buttons.create'), 'action' => 'Users\UserController@create']
+                ['label' => trans('general.create'), 'action' => 'Users\UserController@create']
             ]
         ])
      !!}
