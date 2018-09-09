@@ -61,8 +61,11 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
 
         Route::group(['prefix' => '/{group}/' . trans('users.teachers.url')], function () {
             Route::get('/', 'TeacherController@index');
+            Route::get('/' . trans('routes.add'), 'TeacherController@add');
+            Route::post('/' . trans('routes.add'), 'TeacherController@attach');
             Route::get('/' . trans('routes.create'), 'TeacherController@create');
             Route::post('/', 'TeacherController@store');
+            Route::post('/' . trans('routes.global'), 'TeacherController@global');
             Route::get('/{user}', 'TeacherController@show');
             Route::get('/{user}/' . trans('routes.delete'), 'TeacherController@deleteModal');
             Route::delete('/{user}/' . trans('routes.delete'), 'TeacherController@destroy');
@@ -70,6 +73,8 @@ Route::group(['prefix' => trans('users.url'), 'namespace' => 'Users'], function 
 
         Route::group(['prefix' => '/{group}/' . trans('users.students.url')], function () {
             Route::get('/', 'StudentController@index');
+            Route::get('/' . trans('routes.add'), 'StudentController@add');
+            Route::post('/' . trans('routes.add'), 'StudentController@attach');
             Route::get('/' . trans('routes.create'), 'StudentController@create');
             Route::post('/', 'StudentController@store');
             Route::get('/{user}', 'StudentController@show');

@@ -11,9 +11,12 @@ namespace App\Http\Controllers\Users\Groups;
 use App\Classes\GroupRoles;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\Users\UserRequest;
+use App\Models\Users\User;
 use Facades\App\Services\Users\Groups\GroupService;
 use Facades\App\Services\Users\Groups\TeacherService;
 use Facades\App\Services\Users\Groups\UserGroupService;
+use Facades\App\Services\Users\UserService;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -32,6 +35,27 @@ class TeacherController extends Controller
     }
 
     /**
+     * Show the modal for attaching resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function add($group)
+    {
+        $groupObj = GroupService::getOrFail($group);
+        $users = TeacherService::potential($groupObj);
+
+        return view('users.groups.teachers.add', compact(['groupObj', 'users']));
+    }
+
+    public function attach($group, Request $request){
+        $groupObj = GroupService::getOrFail($group);
+
+        UserGroupService::attachIds($request->input('users', []), $groupObj, GroupRoles::teacher);
+
+        return redirect(action('Users\Groups\TeacherController@index', [$groupObj->code]));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -40,9 +64,7 @@ class TeacherController extends Controller
     {
         $groupObj = GroupService::getOrFail($group);
 
-        $users = TeacherService::potential($groupObj);
-
-        return view('users.groups.teachers.create', compact(['groupObj', 'users']));
+        return view('users.groups.teachers.create', compact(['groupObj']));
     }
 
     /**
@@ -52,11 +74,12 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $group)
+    public function store($group, UserRequest $request)
     {
         $groupObj = GroupService::getOrFail($group);
 
-        UserGroupService::attachIds($request->input('users'), $groupObj, GroupRoles::teacher);
+        $userObj = UserService::create($request->all());
+        UserGroupService::attach($userObj, $groupObj, GroupRoles::teacher);
 
         return redirect(action('Users\Groups\TeacherController@index', [$groupObj->code]));
     }
@@ -78,6 +101,23 @@ class TeacherController extends Controller
         })->get();
 
         return view('users.groups.teachers.show', compact(['groupObj', 'userObj', 'groups']));
+    }
+
+    public function global($group, Request $request)
+    {
+        $groupObj = GroupService::getOrFail($group);
+
+        return $request->all();
+        $action = $request->input('action');
+        $values = $request->input('values');
+
+        return $values;
+
+        if ($action === 'delete') {
+            UserGroupService::detachIds($values, $groupObj, GroupRoles::teacher);
+        }
+
+        return redirect()->action('User\Groups\TeacherController@index', [$groupObj->code]);
     }
 
     /**

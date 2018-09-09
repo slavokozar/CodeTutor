@@ -1,32 +1,29 @@
-<div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <form action="{{ action('Users\Groups\StudentController@store',[$groupObj->code]) }}" method="post">
-                {!! csrf_field() !!}
+@extends('layouts.main')
 
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">{{ trans('users.students.add') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p class="text-center">{!! trans('users.groups.add-students', ['group' => $groupObj->name] ) !!}</p>
-                    <div class="form-group">
-                        <label for="">{{ trans('users.students.link') }}</label>
-                        <select name="users[]" id="" class="form-control js-select" multiple>
-                            @foreach($users as $userObj)
-                                <option value="{{ $userObj->id }}">{{ $userObj->title }} {{ $userObj->name }} {{ $userObj->surname }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">{{ trans('general.cancel') }}</button>
-                    <button type="submit" class="btn btn-danger">{{ trans('general.add') }}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@section('content-main')
+    @php
+        $breadcrumb = [
+            [ 'url' => '/', 'label' => '<i class="fa fa-home" aria-hidden="true"></i>' ],
+             [ 'action' => 'Users\UserController@index', 'label' => trans('users.users.link') ],
+
+             [ 'action' => 'Users\Groups\GroupController@index', 'label' => trans('users.groups.link') ],
+             [ 'action' => 'Users\Groups\GroupController@show', 'params' => [$groupObj->code], 'label' => $groupObj->name ],
+             [ 'label' => trans('users.students.create') ],
+        ];
+    @endphp
+
+    {!! BreadCrumb::render($breadcrumb)!!}
+
+    <h1>{{ trans('users.students.create') }}</h1>
+
+    @php
+        $_form_action = 'Users\Schools\StudentController@store';
+        $_form_params = [$groupObj->code];
+        $_form_method = 'post';
+
+        $userObj = new \App\Models\Users\User();
+    @endphp
+
+    @include('users.partials.edit')
+
+@endsection

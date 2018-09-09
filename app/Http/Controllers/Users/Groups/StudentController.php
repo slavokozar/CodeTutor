@@ -8,11 +8,13 @@
 
 namespace App\Http\Controllers\Users\Groups;
 
+use App\Classes\GroupRoles;
 use App\Http\Controllers\Controller;
 
 use Facades\App\Services\Users\Groups\GroupService;
 use Facades\App\Services\Users\Groups\StudentService;
 use Facades\App\Services\Users\Groups\UserGroupService;
+use Facades\App\Services\Users\UserService;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -31,6 +33,27 @@ class StudentController extends Controller
     }
 
     /**
+    * Show the modal for attaching resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function add($group)
+    {
+        $groupObj = GroupService::getOrFail($group);
+        $users = StudentService::potential($groupObj);
+
+        return view('users.groups.students.add', compact(['groupObj', 'users']));
+    }
+
+    public function attach($group, Request $request){
+        $groupObj = GroupService::getOrFail($group);
+
+        UserGroupService::attachIds($request->input('users', []), $groupObj, GroupRoles::student);
+
+        return redirect(action('Users\Groups\StudentController@index', [$groupObj->code]));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -39,9 +62,7 @@ class StudentController extends Controller
     {
         $groupObj = GroupService::getOrFail($group);
 
-        $users = StudentService::potential($groupObj);
-
-        return view('users.groups.students.create', compact(['groupObj', 'users']));
+        return view('users.groups.students.create', compact(['groupObj']));
     }
 
     /**
@@ -55,7 +76,8 @@ class StudentController extends Controller
     {
         $groupObj = GroupService::getOrFail($group);
 
-        UserGroupService::attachIds($request->input('users'), $groupObj);
+        $userObj = UserService::create($request->all());
+        GroupService::attach($userObj, $groupObj, GroupRoles::student);
 
         return redirect(action('Users\Groups\StudentController@index', [$groupObj->code]));
     }

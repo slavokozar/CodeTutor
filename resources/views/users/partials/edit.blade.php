@@ -4,7 +4,7 @@
         <input type="hidden" name="_method" value="{{$_form_method}}">
     @endif
 
-    {!! ContentNav::submit(['label' => trans('general.save')]) !!}
+    {!! ContentNav::submit(['label' => $userObj->id ? trans('general.save') : trans('general.create')]) !!}
 
     <section id="basic">
 

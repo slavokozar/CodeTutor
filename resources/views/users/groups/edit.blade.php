@@ -24,7 +24,7 @@
             <input type="hidden" name="_method" value="put">
         @endif
 
-        {!! ContentNav::submit(['label' => trans('general.save')]) !!}
+        {!! ContentNav::submit(['label' => $groupObj->id ? trans('general.save') : trans('general.create')]) !!}
 
         <main role="main">
             <section id="basic">

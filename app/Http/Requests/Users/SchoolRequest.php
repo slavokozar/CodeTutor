@@ -30,9 +30,9 @@ class SchoolRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|string|min:2',
-            'address' => 'required|string',
-            'url' => 'nullable|string',
+            'name' => 'required|string|min:2|max:255',
+            'address' => 'nullable|string',
+            'url' => 'nullable|string|max:255',
         ];
 
         return $rules;

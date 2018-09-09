@@ -16,7 +16,7 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.add'), 'action' => 'Users\Groups\TeacherController@create', 'params' => [$groupObj->code], 'modal' => true]
+                ['label' => trans('general.add'), 'action' => 'Users\Groups\TeacherController@add', 'params' => [$groupObj->code], 'modal' => true]
             ]
         ])
     !!}
@@ -33,15 +33,36 @@
                 'action' => function($userObj) use ($groupObj){
                     return action('Users\Groups\TeacherController@deleteModal', [$groupObj->code, $userObj->code]);
                 },
-                'label' => trans('general.remove'),
-                'icon' => 'fa-trash',
+                'label' => trans('general.detach'),
+                'icon' => 'fa-times',
                 'modal' => true
             ]
         ]
     @endphp
 
     @if(count($users) > 0)
-        @include('users.partials.index')
+
+        <form method="post" action="{{ action('Users\Groups\TeacherController@global', [$groupObj->code]) }}">
+            {!! csrf_field() !!}
+
+            <div id="global-actions">
+                <div class="inner">
+                    <label>
+                        {{ trans('general.global-actions') }}
+                    </label>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-danger" type="submit" name="action" value="delete">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            {{ trans('general.detach') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            @include('users.partials.index')
+
+        </form>
+
     @else
         <p class="text-center text-warning">
             <i class="fa fa-5x fa-frown-o" aria-hidden="true"></i>

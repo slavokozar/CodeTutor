@@ -18,8 +18,8 @@ class CreateSchoolsTable extends Migration
             $table->string('name');
             $table->string('code')->unique();
 
-            $table->text('address');
-            $table->string('url');
+            $table->text('address')->nullable();
+            $table->string('url')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

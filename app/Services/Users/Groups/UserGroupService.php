@@ -9,49 +9,81 @@
 namespace App\Services\Users\Groups;
 
 use App\Classes\GroupRoles;
+use App\Models\Users\User;
 use App\Notifications\addedToGroupAsStudentNotification;
 use App\Notifications\addedToGroupAsTeacherNotification;
 use App\Notifications\removedFromGroupAsStudentNotification;
+use App\Notifications\removedFromGroupAsTeacherNotification;
 use Facades\App\Services\Users\UserService;
 
 class UserGroupService
 {
 
-    public function attach($userObj, $groupObj, $role = GroupRoles::student)
+    public function attach($userObj, $groupObj, $role = GroupRoles::student, $notification = true)
     {
         $userObj->groups()->attach($groupObj, ['role' => $role]);
 
         if($role == GroupRoles::student)
             $userObj->notify( new addedToGroupAsStudentNotification($groupObj));
+            if($notification)
+                flash(trans_choice('users.students.add-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
         elseif($role == GroupRoles::teacher)
             $userObj->notify( new addedToGroupAsTeacherNotification($groupObj));
-
-        flash(trans('users.students.add-notification', ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
+            if($notification)
+                flash(trans_choice('users.teachers.add-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
     }
 
     public function attachIds($users, $groupObj, $role = GroupRoles::student)
     {
-        foreach ($users as $user) {
-            $this->attach(UserService::findOrFail($user), $groupObj, $role);
+        $users = User::whereIn('id', $users)->get();
+
+        foreach($users as $userObj){
+            $this->attach($userObj, $groupObj, $role, false);
         }
+
+        $names = $users->map(function ($item, $key) {
+            return $item->fullName();
+        });
+
+        $names = join(', ', $names->toArray());
+
+        flash(trans_choice('users.students.add-notification', $users->count(), ['name' => $names, 'group' => $groupObj->name]))->success();
     }
 
 
-    public function detach($userObj, $groupObj)
+    public function detach($userObj, $groupObj, $notification = true)
     {
+        $role = $userObj->groups()->find($groupObj->id)->pivot->role;
+
         $userObj->groups()->detach($groupObj);
 
-        $userObj->notify( new removedFromGroupAsStudentNotification($groupObj));
+        if($role == GroupRoles::student)
+            $userObj->notify( new removedFromGroupAsStudentNotification($groupObj));
+            if($notification)
+                flash(trans_choice('users.students.remove-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
 
+        elseif($role == GroupRoles::teacher)
+            $userObj->notify( new removedFromGroupAsTeacherNotification($groupObj));
+            if($notification)
+                flash(trans_choice('users.teachers.remove-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
 
-        flash(trans('users.students.remove-notification', ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
     }
 
     public function detachIds($users, $groupObj, $role = GroupRoles::student)
     {
-        foreach ($users as $user) {
-            $this->detach(UserService::findOrFail($user), $groupObj, $role);
+        $users = User::whereIn('id', $users)->get();
+
+        foreach($users as $userObj){
+            $this->detach($userObj, $groupObj, false);
         }
+
+        $names = $users->map(function ($item, $key) {
+            return $item->fullName();
+        });
+
+        $names = join(', ', $names->toArray());
+
+        flash(trans_choice('users.students.remove-notification', $users->count(), ['name' => $names, 'group' => $groupObj->name]))->success();
     }
 
 }

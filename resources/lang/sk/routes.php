@@ -1,6 +1,7 @@
 <?php
 return [
     'create' => 'vytvorenie',
+    'add' => 'pridanie',
     'edit' => 'uprava',
     'delete' => 'vymazanie',
     'images' => 'obrazky',
@@ -8,5 +9,5 @@ return [
     'moveDown' => 'posun-dolu',
     'upload' => 'upload',
     'history' => 'historia',
-
+    'global' => 'global'
 ];

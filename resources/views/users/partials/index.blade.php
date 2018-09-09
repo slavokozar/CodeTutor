@@ -1,15 +1,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th>#</th>
-        @if(!isset($_table_skip['name']))
-            <th>{{ trans('users.labels.name') }}</th>
-        @endif
+        <th>
+            <input type="checkbox" id="check_all"/>
+            {{ trans('users.labels.name') }}
+        </th>
+
         @if(!isset($_table_skip['email']))
-            <th>{{ trans('users.labels.email') }}</th>
+            <th>
+                {{ trans('users.labels.email') }}
+                <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
+            </th>
         @endif
         @if(!isset($_table_skip['roles']))
-            <th>{{ trans('users.labels.roles') }}</th>
+            <th>
+                {{ trans('users.labels.roles') }}
+                <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
+            </th>
         @endif
         @if(!isset($_table_skip['school']))
             <th>{{ trans('users.labels.school') }}</th>
@@ -18,7 +25,9 @@
             <th>{{ trans('users.labels.groups') }}</th>
         @endif
         @if(isset($_table_actions))
-            <th>&nbsp;</th>
+            <th>
+
+            </th>
         @endif
     </tr>
     </thead>
@@ -26,21 +35,13 @@
     @foreach($users as $userObj)
         <tr>
             <th scope="row">
+                <input type="checkbox" class="check-values" name="values[]" value="{{ $userObj->id }}"/>
                 @if(isset($_table_action))
-                    <a href="{{ $_table_action($userObj) }}">{{$userObj->code}}</a>
+                    <a href="{{ $_table_action($userObj) }}">{{$userObj->title}} {{$userObj->name}} {{$userObj->surname}}</a>
                 @else
-                    {{$userObj->code}}
+                    {{$userObj->title}} {{$userObj->name}} {{$userObj->surname}}
                 @endif
             </th>
-            <td>
-                @if(!isset($_table_skip['name']))
-                    @if(isset($_table_action))
-                        <a href="{{ $_table_action($userObj) }}">{{$userObj->title}} {{$userObj->name}} {{$userObj->surname}}</a>
-                    @else
-                        {{$userObj->title}} {{$userObj->name}} {{$userObj->surname}}
-                    @endif
-                @endif
-            </td>
             @if(!isset($_table_skip['email']))
                 <td>{{$userObj->email}}</td>
             @endif
@@ -90,10 +91,11 @@
                 </td>
             @endif
             @if(isset($_table_actions))
-                <td>
+                <td class="text-right">
                     @foreach($_table_actions as $action)
-                        <a href="{{ $action['action']($userObj) }}" {!! $action['modal'] ? 'class="btn-modal"' : '' !!}>
+                        <a class="btn btn-danger btn-sm" href="{{ $action['action']($userObj) }}" {!! $action['modal'] ? 'class="btn-modal"' : '' !!}>
                             <i class="fa {{ $action['icon'] }}" aria-hidden="true"></i>
+                            {{ $action['label'] }}
                         </a>
                     @endforeach
                 </td>

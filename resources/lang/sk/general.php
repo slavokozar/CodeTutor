@@ -6,9 +6,11 @@ return [
     'create' => 'Vytvoriť',
     'add' => 'Pridať',
     'cancel' => 'Zrušiť',
-    'remove' => 'Odobrať',
+    'detach' => 'Odobrať',
     'insert' => 'Vloziť',
     'back-to' => 'Späť na ',
+    'basic-info' => 'Základné informácie',
+    'global-actions' => 'Hromadné akcie',
 
     'headings' => [
         'edit' => 'Úprava',

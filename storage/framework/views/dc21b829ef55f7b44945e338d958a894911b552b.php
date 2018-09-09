@@ -16,7 +16,7 @@
                     <p class="text-center text-danger">
                         <i class="fa fa-5x fa-exclamation-triangle" aria-hidden="true"></i>
                     </p>
-                    <p class="text-center text-danger"><?php echo trans('users.students.remove-message', ['name' => $userObj->name, 'group' => $groupObj->name] ); ?></p>
+                    <p class="text-center text-danger"><?php echo trans('users.students.remove-confirm', ['name' => $userObj->name, 'group' => $groupObj->name] ); ?></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"

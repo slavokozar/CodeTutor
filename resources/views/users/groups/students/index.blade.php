@@ -17,7 +17,7 @@
     {!!
         ContentNav::render([
             'right' => [
-                ['label' => trans('general.add'), 'action' => 'Users\Groups\StudentController@create', 'params' => [$groupObj->code], 'modal' => true]
+                ['label' => trans('general.add'), 'action' => 'Users\Groups\StudentController@add', 'params' => [$groupObj->code], 'modal' => true]
             ]
         ])
     !!}
