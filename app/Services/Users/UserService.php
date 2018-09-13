@@ -19,6 +19,11 @@ class UserService
 {
     public function all()
     {
+        // superadmin moze vidiet vsetko
+
+        // spravca / ucitel skoly vidi svoje skoly
+
+        // spravca skupiny mimo skoly vidi svoju skupinu
 
         //todo scope
 
@@ -133,6 +138,13 @@ class UserService
         }
 
         return $managedGroups;
+    }
+
+    public function scopeVisible($query)
+    {
+        $user = Auth::user();
+
+        return $query->where('active', 1);
     }
 
 }

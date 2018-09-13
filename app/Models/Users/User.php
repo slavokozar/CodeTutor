@@ -14,6 +14,8 @@ use App\Models\Assignments\Solution;
 
 use App\Notifications\ResetPassword;
 
+use App\Scopes\UserVisibilityScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Notifications\Notifiable;
@@ -97,7 +99,6 @@ class User extends Authenticatable
     }
 
 
-
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'user_group_user', 'group_id', 'user_id')->withPivot(['role']);
@@ -149,19 +150,10 @@ class User extends Authenticatable
         );
     }
 
-//
-//    public function isAssignmentAuthor()
-//    {
-//        return $this->isAdmin();
-//    }
+    protected static function boot()
+    {
+        parent::boot();
 
-//    public function avatar(){
-//        if($this->email == 'slavo.kozar@gmail.com'){
-//            return asset('img/avatar-slavo.png');
-//        }else{
-//            return asset('img/avatar-blank.png');
-//        }
-//
-//
-//    }
+        static::addGlobalScope(new UserVisibilityScope(Auth::user()));
+    }
 }

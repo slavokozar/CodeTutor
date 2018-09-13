@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Users\UserRequest;
 
+use App\Models\Users\School;
+use App\Models\Users\User;
 use Facades\App\Services\Users\UserService;
 use Facades\App\Services\Users\Groups\GroupService;
 use Facades\App\Services\Users\Schools\SchoolService;
@@ -25,6 +27,10 @@ class UserController extends Controller
      */
     public function index()
     {
+//        return School::first()->users()->withoutGlobalScope('role')->get();
+
+        return User::all();
+
         $users = UserService::paginate();
 
         return view('users.users.index', compact(['users']));
