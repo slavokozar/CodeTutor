@@ -33,7 +33,7 @@
                     <a href="{{action('Assignments\AssignmentController@index')}}">zadania</a>
                 </li>
 
-                @if(Auth::check() && Auth::user()->isAdmin())
+                @if(Gate::allows('users-view'))
                     <li>
                         <a class="btn " href="{{action('Users\UserController@index')}}">užívatelia</a>
                     </li>

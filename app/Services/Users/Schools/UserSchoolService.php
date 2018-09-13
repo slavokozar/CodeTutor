@@ -12,6 +12,18 @@ use App\Classes\SchoolRoles;
 
 class UserSchoolService
 {
+
+    public function isAttached($userObj, $schoolObj, $role = null)
+    {
+        $schools = $userObj->groups()->where('id', $schoolObj->id);
+        if(is_array($role)){
+            $schools->wherePivotIn('role', $role);
+        }elseif($role !== null){
+            $schools->wherePivot('role', $role);
+        }
+        return $schools->count() > 0;
+    }
+
     public function attach($userObj, $schoolObj, $role = SchoolRoles::student){
         $userObj->schools()->attach($schoolObj, ['role' => $role]);
 

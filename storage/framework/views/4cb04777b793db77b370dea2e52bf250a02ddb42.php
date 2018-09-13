@@ -33,7 +33,7 @@
                     <a href="<?php echo e(action('Assignments\AssignmentController@index')); ?>">zadania</a>
                 </li>
 
-                <?php if(Auth::check() && Auth::user()->isAdmin()): ?>
+                <?php if(Gate::allows('users-view')): ?>
                     <li>
                         <a class="btn " href="<?php echo e(action('Users\UserController@index')); ?>">užívatelia</a>
                     </li>

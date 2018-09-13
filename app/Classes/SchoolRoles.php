@@ -14,6 +14,5 @@ abstract class SchoolRoles
 
     const admin = 'ADMIN';
     const teacher = 'TEACHER';
-
     const student = null;
 }
