@@ -19,6 +19,17 @@ use Facades\App\Services\Users\UserService;
 class UserGroupService
 {
 
+    public function isAttached($userObj, $groupObj, $role = null)
+    {
+        $groups = $userObj->groups()->where('id', $groupObj->id);
+        if(is_array($role)){
+            $groups->wherePivotIn('role', $role);
+        } elseif($role !== null){
+            $groups->wherePivot('role', $role);
+        }
+        return $groups->count() > 0;
+    }
+
     public function attach($userObj, $groupObj, $role = GroupRoles::student, $notification = true)
     {
         $userObj->groups()->attach($groupObj, ['role' => $role]);

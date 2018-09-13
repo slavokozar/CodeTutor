@@ -30,29 +30,35 @@ class UserSeeder extends Seeder
             'birthdate' => '1993-03-24',
             'code' => 'a001',
             'role' => UserRoles::admin,
-            'password' => bcrypt('asdf')
+            'password' => bcrypt('secret')
         ]);
 
-        $kamil = User::create([
-            'name' => 'Kamil',
-            'surname' => ' Triščík',
-            'email' => 'kamil.triscik@gmail.com',
+        $admin = User::create([
+            'name' => 'Admin',
+            'surname' => 'Skoly',
+            'email' => 'admin@codetutor.com',
             'birthdate' => '1993-01-28',
             'code' => 'a002',
-            'role' => UserRoles::admin,
             'password' => bcrypt('secret')
         ]);
 
-        $lukas = User::create([
-            'name' => 'Lukáš',
-            'surname' => 'Figura',
-            'email' => 'figurluk@gmail.com',
+        $ucitel = User::create([
+            'name' => 'Ucitel',
+            'surname' => 'Skoly',
+            'email' => 'ucitel@codetutor.com',
             'birthdate' => '1994-06-24',
             'code' => 'a003',
-            'role' => UserRoles::admin,
             'password' => bcrypt('secret')
         ]);
 
+        $student = User::create([
+            'name' => 'Student',
+            'surname' => 'Skoly',
+            'email' => 'student@codetutor.com',
+            'birthdate' => '1994-06-24',
+            'code' => 'a004',
+            'password' => bcrypt('secret')
+        ]);
 
         $codeleague = Group::create([
             'name' => 'CodeLeague',
@@ -61,10 +67,7 @@ class UserSeeder extends Seeder
             'is_public' => true
         ]);
 
-        $slavo->groups()->attach($codeleague, ['role' => GroupRoles::admin]);
-        $kamil->groups()->attach($codeleague, ['role' => GroupRoles::admin]);
-        $lukas->groups()->attach($codeleague, ['role' => GroupRoles::admin]);
-
+        $slavo->groups()->attach($codeleague, ['role' => GroupRoles::teacher]);
 
         $faker = Faker::create();
 
@@ -77,7 +80,13 @@ class UserSeeder extends Seeder
                 'url' => $faker->url
             ]);
 
-            $slavo->schools()->attach($school, ['role' => SchoolRoles::admin]);
+            if($i == 0){
+                $admin->schools()->attach($school, ['role' => SchoolRoles::admin]);
+            }elseif($i == 1){
+                $ucitel->schools()->attach($school, ['role' => SchoolRoles::teacher]);
+                $student->schools()->attach($school);
+            }
+
 
             // create teachers
             for($j = 0; $j < 2; $j++){

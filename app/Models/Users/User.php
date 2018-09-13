@@ -133,7 +133,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return ($this->email == 'slavo.kozar@gmail.com' || $this->email == 'berezovsky@fel.cvut.cz');
+        return ($this->role == UserRoles::admin);
     }
 
     public function isAuthor($object = null)
@@ -145,7 +145,7 @@ class User extends Authenticatable
         return (
             $this->role == UserRoles::admin
             || $this->schools()->wherePivotIn('role', [SchoolRoles::admin, SchoolRoles::teacher])->count() > 0
-            || $this->groups()->wherePivotIn('role', [GroupRoles::admin, GroupRoles::teacher])->count() > 0
+            || $this->groups()->wherePivotIn('role', [GroupRoles::teacher])->count() > 0
         );
     }
 

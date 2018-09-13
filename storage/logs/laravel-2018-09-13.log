@@ -1,0 +1,17 @@
+[2018-09-13 00:01:05] local.ERROR: Parse error: syntax error, unexpected '}' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Parse error: syntax error, unexpected '}' at /home/slavo/Code/codetutor/app/Providers/AppServiceProvider.php:37)
+[stacktrace]
+#0 /home/slavo/Code/codetutor/vendor/composer/ClassLoader.php(322): Composer\\Autoload\\includeFile('/home/slavo/Cod...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Providers\\\\A...')
+#2 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(635): spl_autoload_call('App\\\\Providers\\\\A...')
+#3 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(582): Illuminate\\Foundation\\Application->resolveProvider('App\\\\Providers\\\\A...')
+#4 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/ProviderRepository.php(75): Illuminate\\Foundation\\Application->register('App\\\\Providers\\\\A...')
+#5 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(561): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#6 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/RegisterProviders.php(17): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#7 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(213): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#8 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(162): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#9 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(146): Illuminate\\Foundation\\Http\\Kernel->bootstrap()
+#10 /home/slavo/Code/codetutor/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(116): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#11 /home/slavo/Code/codetutor/public/index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#12 /home/slavo/.config/composer/vendor/cpriego/valet-linux/server.php(204): require('/home/slavo/Cod...')
+#13 {main}
+"} 

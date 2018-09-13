@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Classes\GroupRoles;
+use App\Classes\SchoolRoles;
 use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +26,14 @@ class AppServiceProvider extends ServiceProvider
                 list($controller, $action) = explode('@', $controller);
                 $view->with(compact('_controller', '_action'));
             }
+        });
+
+        Gate::define('users-view', function ($userObj) {
+
+
+            return $userObj->groups()->wherePivot('role', GroupRoles::teacher)->count() > 0 ||
+                $userObj->schools()->wherePivotIn('role', [SchoolRoles::admin, SchoolRoles::teacher])->count() > 0;
+
         });
     }
 
