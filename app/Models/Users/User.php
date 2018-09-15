@@ -93,7 +93,6 @@ class User extends Authenticatable
         $this->notify(new ResetPassword($token));
     }
 
-
     public function fullName(){
         return $this->title . ' ' . $this->name . ' ' . $this->surname;
     }
@@ -154,10 +153,34 @@ class User extends Authenticatable
         );
     }
 
-    protected static function boot()
+    public function scopeVisible($query)
     {
-        parent::boot();
+        $userObj = Auth::user();
 
-        static::addGlobalScope(new UserVisibilityScope(Auth::user()));
+        // admin can see anybody
+        if (Auth::check() && !$userObj->isAdmin()) {
+
+            // schools, in which logged user has admin or teacher role
+            $schools = $userObj->schools()->wherePivotIn('role', [SchoolRoles::ADMIN, SchoolRoles::TEACHER])->pluck(School::TABLE_NAME . '.id');
+
+            // groups, in which logged user has teacher role
+            $groups = $userObj->groups()->wherePivot('role', GroupRoles::TEACHER)->pluck(Group::TABLE_NAME . '.id');
+
+            return $query->where(function($query) use ($schools, $groups){
+                if($schools->count() > 0)
+
+                    $query->whereHas('schools', function ($query) use ($schools) {
+                        $query->where(School::TABLE_NAME . '.id', $schools);
+                    });
+
+                if($groups->count() > 0)
+                    $query->orWhereHas('groups', function ($query) use ($groups) {
+                        $query->whereIn(Group::TABLE_NAME . '.id', $groups);
+                    });
+
+            });
+        }
+
+        return $query;
     }
 }

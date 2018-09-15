@@ -9,6 +9,7 @@ use App\Models\Files\File;
 use App\Models\Links\Link;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\School
@@ -55,20 +56,25 @@ class School extends Model
     }
 
 
-    public function sharedArticle(){
-        return $this->belongsToMany(Article::class, 'article_school_sharing', 'school_id', 'article_id');
-    }
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query)
+    {
+        $userObj = Auth::user();
 
-    public function sharedAssignment(){
-        return $this->belongsToMany(Assignment::class, 'assignment_school_sharing', 'school_id', 'assignment_id');
-    }
+        // admin can see any group
+        if ($userObj !== null && !$userObj->isAdmin()) {
+            return $query->whereHas('users', function($query) use ($userObj){
+                $query
+                    ->where(User::TABLE_NAME . '.id', $userObj->id)
+                    ->wherePivotIn('role', [SchoolRoles::ADMIN, SchoolRoles::TEACHER]);
+            });
+        }
 
-    public function sharedFiles(){
-        return $this->belongsToMany(File::class, 'file_school_sharing', 'school_id', 'file_id');
+        return $query;
     }
-
-    public function sharedLinks(){
-        return $this->belongsToMany(Link::class, 'link_school_sharing', 'school_id', 'link_id');
-    }
-
 }

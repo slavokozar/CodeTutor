@@ -14,15 +14,13 @@
             $left[] = ['label' => trans('users.schools.heading'), 'action' => 'Users\Schools\SchoolController@index'];
 
         if(Gate::allows('groups-view'))
-            $left[] = ['label' => trans('users.groups.heading'), 'action' => 'Users\Groups\GroupController@index']
+            $left[] = ['label' => trans('users.groups.heading'), 'action' => 'Users\Groups\GroupController@index'];
+
+        $right = [];
+        $right[] = ['label' => trans('general.create'), 'action' => 'Users\UserController@create'];
     ?>
 
-    <?php echo ContentNav::render([
-            'left' => $left,
-            'right' => [
-                ['label' => trans('general.create'), 'action' => 'Users\UserController@create']
-            ]
-        ]); ?>
+    <?php echo ContentNav::render(['left' => $left,'right' => $right]);; ?>
 
        
     <?php

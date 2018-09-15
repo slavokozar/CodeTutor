@@ -27,6 +27,6 @@ class GroupsMiddleware
             return $next($request);
         }
 
-        return action('Users\UserController@index');
+        return redirect(action('Users\UserController@index'));
     }
 }

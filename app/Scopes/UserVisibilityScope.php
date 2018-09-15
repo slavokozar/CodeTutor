@@ -30,13 +30,13 @@ class UserVisibilityScope implements Scope
     {
         $userObj = Auth::user();
 
-        // admin vidi vsetko - netreba ziadne constrainy
+        // admin can see anybody
         if (Auth::check() && !$userObj->isAdmin()) {
 
-            // skoly, v ktorych ma prihlaseny uzivatel rolu spravcu, alebo ucitela
+            // schools, in which logged user has admin or teacher role
             $schools = $userObj->schools()->wherePivotIn('role', [SchoolRoles::ADMIN, SchoolRoles::TEACHER])->pluck(School::TABLE_NAME . '.id');
 
-            // skupiny, v ktorych ma prihlaseny uzivatel rolu ucitela
+            // groups, in which logged user has teacher role
             $groups = $userObj->groups()->wherePivot('role', GroupRoles::TEACHER)->pluck(Group::TABLE_NAME . '.id');
 
             $builder->where(function($query) use ($schools, $groups){

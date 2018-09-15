@@ -12,12 +12,13 @@ use App\Classes\GroupRoles;
 use App\Classes\SchoolRoles;
 use App\Models\Users\Group;
 use App\Models\Users\School;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
 
-class UserVisibilityScope implements Scope
+class GroupVisibilityScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -30,27 +31,13 @@ class UserVisibilityScope implements Scope
     {
         $userObj = Auth::user();
 
-        // admin can see anybody
-        if (Auth::check() && !$userObj->isAdmin()) {
+        // admin can see any group
+        if (!$userObj->isAdmin()) {
 
-            // schools, in which logged user has admin or teacher role
-            $schools = $userObj->schools()->wherePivotIn('role', [SchoolRoles::ADMIN, SchoolRoles::TEACHER])->pluck(School::TABLE_NAME . '.id');
+//            $builder->where(User::TABLE_NAME . '.id', 4);
 
-            // groups, in which logged user has teacher role
-            $groups = $userObj->groups()->wherePivot('role', GroupRoles::TEACHER)->pluck(Group::TABLE_NAME . '.id');
-
-            $builder->where(function($query) use ($schools, $groups){
-                if($schools->count() > 0)
-
-                    $query->whereHas('schools', function ($query) use ($schools) {
-                        $query->where(School::TABLE_NAME . '.id', $schools);
-                    });
-
-                if($groups->count() > 0)
-                    $query->orWhereHas('groups', function ($query) use ($groups) {
-                        $query->whereIn(Group::TABLE_NAME . '.id', $groups);
-                    });
-
+            $builder->whereHas('users', function($query) use ($userObj){
+                $query->where(User::TABLE_NAME . '.id', $userObj->id);
             });
         }
     }

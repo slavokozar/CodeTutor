@@ -8,8 +8,10 @@ use App\Models\Articles\Article;
 use App\Models\Assignments\Assignment;
 use App\Models\Files\File;
 use App\Models\Links\Link;
+use App\Scopes\GroupVisibilityScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\Group
@@ -38,36 +40,39 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'user_group_user', 'user_id', 'group_id')->withPivot(['role']);
     }
 
-    public function teachers()
-    {
-        return $this->users()->wherePivot('role',GroupRoles::TEACHER);
-    }
-
-    public function students()
-    {
-        return $this->users()->wherePivot('role', GroupRoles::STUDENT);
-    }
+//    public function teachers()
+//    {
+//        return $this->users()->wherePivot('role',GroupRoles::TEACHER);
+//    }
+//
+//    public function students()
+//    {
+//        return $this->users()->wherePivot('role', GroupRoles::STUDENT);
+//    }
 
     public function school(){
         return $this->belongsTo(School::class, 'school_id');
     }
 
-    
-    public function sharedArticle(){
-        return $this->belongsToMany(Article::class, 'article_group_sharing', 'group_id', 'article_id');
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query)
+    {
+        $userObj = Auth::user();
+
+        // admin can see any group
+        if ($userObj !== null && !$userObj->isAdmin()) {
+            return $query->whereHas('users', function($query) use ($userObj){
+                $query
+                    ->where(User::TABLE_NAME . '.id', $userObj->id)
+                    ->wherePivot('role', SchoolRoles::TEACHER);
+            });
+        }
+
+        return $query;
     }
-
-    public function sharedAssignment(){
-        return $this->belongsToMany(Assignment::class, 'assignment_group_sharing', 'group_id', 'assignment_id');
-    }
-
-    public function sharedFiles(){
-        return $this->belongsToMany(File::class, 'file_group_sharing', 'group_id', 'file_id');
-    }
-
-    public function sharedLinks(){
-        return $this->belongsToMany(Link::class, 'link_group_sharing', 'group_id', 'link_id');
-    }
-
-
 }

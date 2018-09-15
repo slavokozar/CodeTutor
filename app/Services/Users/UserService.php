@@ -9,7 +9,6 @@
 namespace App\Services\Users;
 
 use App\Classes\GroupRoles;
-use App\Classes\SchoolRoles;
 use App\Models\Users\User;
 
 use Facades\App\Services\Users\UserEmailService as UserEmailServiceFacade;
@@ -27,12 +26,12 @@ class UserService
 
         //todo scope
 
-        return User::all();
+        return User::visible()->all();
     }
 
     public function paginate()
     {
-        return User::paginate(10);
+        return User::visible()->paginate(10);
     }
 
     public function getOrFail($code)
