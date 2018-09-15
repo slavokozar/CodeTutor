@@ -12,7 +12,7 @@ namespace App\Classes;
 abstract class SchoolRoles
 {
 
-    const admin = 'ADMIN';
-    const teacher = 'TEACHER';
-    const student = null;
+    const ADMIN = 'ADMIN';
+    const TEACHER = 'TEACHER';
+    const STUDENT = null;
 }

@@ -30,9 +30,9 @@ class GroupService
         }
     }
 
-    private function get($code)
+    public function get($code)
     {
-        return Group::where('code', $code)->firstOrFail();
+        return Group::where('code', $code)->first();
     }
 
     public function findOrFail($id)

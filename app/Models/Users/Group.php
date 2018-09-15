@@ -23,7 +23,9 @@ class Group extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'user_groups';
+    const TABLE_NAME = 'user_groups';
+
+    protected $table = Group::TABLE_NAME;
 
     protected $fillable = [
         'name',
@@ -38,12 +40,12 @@ class Group extends Model
 
     public function teachers()
     {
-        return $this->users()->wherePivot('role',GroupRoles::teacher);
+        return $this->users()->wherePivot('role',GroupRoles::TEACHER);
     }
 
     public function students()
     {
-        return $this->users()->wherePivot('role', GroupRoles::student);
+        return $this->users()->wherePivot('role', GroupRoles::STUDENT);
     }
 
     public function school(){

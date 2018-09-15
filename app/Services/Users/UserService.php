@@ -116,7 +116,7 @@ class UserService
     public function managedGroups($userObj)
     {
         $publicGroups = $userObj->groups()->whereNull('school_id')
-            ->wherePivotIn('role', [GroupRoles::teacher, GroupRoles::admin])
+            ->wherePivotIn('role', [GroupRoles::TEACHER, GroupRoles::admin])
             ->get();
 
         $managedGroups = [
@@ -126,7 +126,7 @@ class UserService
 
         foreach ($userObj->schools as $schoolObj) {
             $groups = $userObj->groups()->where('school_id', $schoolObj->id)
-                ->wherePivotIn('role', [GroupRoles::teacher, GroupRoles::admin])
+                ->wherePivotIn('role', [GroupRoles::TEACHER, GroupRoles::admin])
                 ->get();
 
             if (count($groups) > 0) {

@@ -2,15 +2,11 @@
 
 namespace App\Policies;
 
-<<<<<<< HEAD
-use App\Models\Users\User;
-=======
 use App\Classes\SchoolRoles;
 use App\Models\Users\Group;
 use App\Models\Users\User;
 use App\Services\Users\Schools\UserSchoolService;
 use Facades\App\Services\Users\Groups\UserGroupService;
->>>>>>> 00d23ef7000dc4e3f9508d00ccaeb7448797846f
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GroupPolicy
@@ -26,8 +22,6 @@ class GroupPolicy
     {
         //
     }
-<<<<<<< HEAD
-=======
 
     public function before($user, $ability)
     {
@@ -69,5 +63,4 @@ class GroupPolicy
             return UserSchoolService::isAttached($userObj, $schoolObj, SchoolRoles::ADMIN);
         }
     }
->>>>>>> 00d23ef7000dc4e3f9508d00ccaeb7448797846f
 }

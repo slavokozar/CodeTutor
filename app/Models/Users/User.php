@@ -51,6 +51,10 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const TABLE_NAME = 'users';
+
+    protected $table = User::TABLE_NAME;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -134,7 +138,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return ($this->role == UserRoles::admin);
+        return ($this->role == UserRoles::ADMIN);
     }
 
     public function isAuthor($object = null)
@@ -144,9 +148,9 @@ class User extends Authenticatable
         }
 
         return (
-            $this->role == UserRoles::admin
-            || $this->schools()->wherePivotIn('role', [SchoolRoles::admin, SchoolRoles::teacher])->count() > 0
-            || $this->groups()->wherePivotIn('role', [GroupRoles::teacher])->count() > 0
+            $this->role == UserRoles::ADMIN
+            || $this->schools()->wherePivotIn('role', [SchoolRoles::ADMIN, SchoolRoles::TEACHER])->count() > 0
+            || $this->groups()->wherePivotIn('role', [GroupRoles::TEACHER])->count() > 0
         );
     }
 

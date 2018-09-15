@@ -2,7 +2,7 @@
 
 
 /* PRESENTATION */
-Route::get('/', 'System\PresentationController@index');
+Route::get('about', 'System\PresentationController@index');
 Route::get('pravidla', 'System\PresentationController@rules');
 Route::get('wanted', 'System\PresentationController@wanted');
 
@@ -359,4 +359,5 @@ Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
 
-Route::get('feed', 'FeedController@index');
+
+Route::get('/', 'HomeController@index');

@@ -59,7 +59,7 @@ class AdminService
     public function create($schoolObj, $data){
         $userObj = UserServiceFacade::create($data);
 
-        $schoolObj->users()->attach($userObj, ['role' => SchoolRoles::admin]);
+        $schoolObj->users()->attach($userObj, ['role' => SchoolRoles::ADMIN]);
 
         return $userObj;
     }

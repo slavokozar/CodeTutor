@@ -4,7 +4,7 @@
             <h1>Buď cool... programuj!</h1>
 
             <?php if(Auth::check()): ?>
-                <a href="<?php echo e(action('FeedController@index')); ?>"
+                <a href="<?php echo e(action('HomeController@index')); ?>"
                    class="btn btn-lg btn-danger">začni s nami</a>
             <?php else: ?>
                 <a href="/login" class="btn btn-lg btn-danger">začni s nami</a>

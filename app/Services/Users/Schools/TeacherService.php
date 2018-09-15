@@ -59,7 +59,7 @@ class TeacherService
     public function create($schoolObj, $data){
         $userObj = UserServiceFacade::create($data);
 
-        $schoolObj->users()->attach($userObj, ['role' => SchoolRoles::teacher]);
+        $schoolObj->users()->attach($userObj, ['role' => SchoolRoles::TEACHER]);
 
         return $userObj;
     }

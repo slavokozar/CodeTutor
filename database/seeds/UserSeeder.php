@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'email' => 'slavo.kozar@gmail.com',
             'birthdate' => '1993-03-24',
             'code' => 'a001',
-            'role' => UserRoles::admin,
+            'role' => UserRoles::ADMIN,
             'password' => bcrypt('secret')
         ]);
 
@@ -51,12 +51,21 @@ class UserSeeder extends Seeder
             'password' => bcrypt('secret')
         ]);
 
+        $autor = User::Create([
+            'name' => 'Autor',
+            'surname' => 'CodeLeague',
+            'email' => 'autor@codetutor.com',
+            'birthdate' => '1994-06-24',
+            'code' => 'a004',
+            'password' => bcrypt('secret')
+        ]);
+
         $student = User::create([
             'name' => 'Student',
             'surname' => 'Skoly',
             'email' => 'student@codetutor.com',
             'birthdate' => '1994-06-24',
-            'code' => 'a004',
+            'code' => 'a005',
             'password' => bcrypt('secret')
         ]);
 
@@ -67,7 +76,15 @@ class UserSeeder extends Seeder
             'is_public' => true
         ]);
 
-        $slavo->groups()->attach($codeleague, ['role' => GroupRoles::teacher]);
+        Group::create([
+            'name' => 'IV.B',
+            'code' => 'ivb',
+            'school_id' => null,
+            'is_public' => true
+        ]);
+
+        $slavo->groups()->attach($codeleague, ['role' => GroupRoles::TEACHER]);
+        $autor->groups()->attach($codeleague, ['role' => GroupRoles::TEACHER]);
 
         $faker = Faker::create();
 
@@ -81,9 +98,9 @@ class UserSeeder extends Seeder
             ]);
 
             if($i == 0){
-                $admin->schools()->attach($school, ['role' => SchoolRoles::admin]);
+                $admin->schools()->attach($school, ['role' => SchoolRoles::ADMIN]);
             }elseif($i == 1){
-                $ucitel->schools()->attach($school, ['role' => SchoolRoles::teacher]);
+                $ucitel->schools()->attach($school, ['role' => SchoolRoles::TEACHER]);
                 $student->schools()->attach($school);
             }
 
@@ -100,7 +117,7 @@ class UserSeeder extends Seeder
                     'birthdate' => $faker->date
                 ]);
 
-                $teacher->schools()->attach($school, ['role' => SchoolRoles::teacher]);
+                $teacher->schools()->attach($school, ['role' => SchoolRoles::TEACHER]);
             }
 
 
@@ -115,7 +132,7 @@ class UserSeeder extends Seeder
                     'birthdate' => $faker->date
                 ]);
 
-                $student->schools()->attach($school, ['role' => SchoolRoles::student]);
+                $student->schools()->attach($school, ['role' => SchoolRoles::STUDENT]);
             }
 
             // create students
@@ -127,7 +144,7 @@ class UserSeeder extends Seeder
                     'is_public' => false
                 ]);
 
-                $slavo->groups()->attach($group, ['role' => GroupRoles::teacher]);
+                $slavo->groups()->attach($group, ['role' => GroupRoles::TEACHER]);
             }
 
 

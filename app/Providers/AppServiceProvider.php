@@ -29,11 +29,18 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('users-view', function ($userObj) {
+            return $userObj->groups()->wherePivot('role', GroupRoles::TEACHER)->count() > 0 ||
+                $userObj->schools()->wherePivotIn('role', [SchoolRoles::ADMIN, SchoolRoles::TEACHER])->count() > 0;
+        });
 
+        Gate::define('schools-view', function ($userObj) {
+            return $userObj->schools()->wherePivotIn('role', [SchoolRoles::ADMIN, SchoolRoles::TEACHER])->count() > 0;
+        });
 
-            return $userObj->groups()->wherePivot('role', GroupRoles::teacher)->count() > 0 ||
-                $userObj->schools()->wherePivotIn('role', [SchoolRoles::admin, SchoolRoles::teacher])->count() > 0;
-
+        Gate::define('groups-view', function ($userObj) {
+            return
+                Gate::allows('schools-view') ||
+                $userObj->groups()->wherePivot('role', SchoolRoles::TEACHER)->count() > 0;
         });
     }
 

@@ -50,7 +50,7 @@ class TeacherController extends Controller
     public function attach($group, Request $request){
         $groupObj = GroupService::getOrFail($group);
 
-        UserGroupService::attachIds($request->input('users', []), $groupObj, GroupRoles::teacher);
+        UserGroupService::attachIds($request->input('users', []), $groupObj, GroupRoles::TEACHER);
 
         return redirect(action('Users\Groups\TeacherController@index', [$groupObj->code]));
     }
@@ -79,7 +79,7 @@ class TeacherController extends Controller
         $groupObj = GroupService::getOrFail($group);
 
         $userObj = UserService::create($request->all());
-        UserGroupService::attach($userObj, $groupObj, GroupRoles::teacher);
+        UserGroupService::attach($userObj, $groupObj, GroupRoles::TEACHER);
 
         return redirect(action('Users\Groups\TeacherController@index', [$groupObj->code]));
     }
@@ -114,7 +114,7 @@ class TeacherController extends Controller
         return $values;
 
         if ($action === 'delete') {
-            UserGroupService::detachIds($values, $groupObj, GroupRoles::teacher);
+            UserGroupService::detachIds($values, $groupObj, GroupRoles::TEACHER);
         }
 
         return redirect()->action('User\Groups\TeacherController@index', [$groupObj->code]);

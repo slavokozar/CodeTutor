@@ -7,11 +7,18 @@
 
     <h1><?php echo e(trans('users.users.heading')); ?></h1>
 
+    <?php
+        $left = [];
+
+        if(Gate::allows('schools-view'))
+            $left[] = ['label' => trans('users.schools.heading'), 'action' => 'Users\Schools\SchoolController@index'];
+
+        if(Gate::allows('groups-view'))
+            $left[] = ['label' => trans('users.groups.heading'), 'action' => 'Users\Groups\GroupController@index']
+    ?>
+
     <?php echo ContentNav::render([
-            'left' => [
-                ['label' => trans('users.schools.heading'), 'action' => 'Users\Schools\SchoolController@index'],
-                ['label' => trans('users.groups.heading'), 'action' => 'Users\Groups\GroupController@index']
-            ],
+            'left' => $left,
             'right' => [
                 ['label' => trans('general.create'), 'action' => 'Users\UserController@create']
             ]

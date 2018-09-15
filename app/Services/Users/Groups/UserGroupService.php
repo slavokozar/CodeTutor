@@ -30,21 +30,21 @@ class UserGroupService
         return $groups->count() > 0;
     }
 
-    public function attach($userObj, $groupObj, $role = GroupRoles::student, $notification = true)
+    public function attach($userObj, $groupObj, $role = GroupRoles::STUDENT, $notification = true)
     {
         $userObj->groups()->attach($groupObj, ['role' => $role]);
 
-        if($role == GroupRoles::student)
+        if($role == GroupRoles::STUDENT)
             $userObj->notify( new addedToGroupAsStudentNotification($groupObj));
             if($notification)
                 flash(trans_choice('users.students.add-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
-        elseif($role == GroupRoles::teacher)
+        elseif($role == GroupRoles::TEACHER)
             $userObj->notify( new addedToGroupAsTeacherNotification($groupObj));
             if($notification)
                 flash(trans_choice('users.teachers.add-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
     }
 
-    public function attachIds($users, $groupObj, $role = GroupRoles::student)
+    public function attachIds($users, $groupObj, $role = GroupRoles::STUDENT)
     {
         $users = User::whereIn('id', $users)->get();
 
@@ -68,19 +68,19 @@ class UserGroupService
 
         $userObj->groups()->detach($groupObj);
 
-        if($role == GroupRoles::student)
+        if($role == GroupRoles::STUDENT)
             $userObj->notify( new removedFromGroupAsStudentNotification($groupObj));
             if($notification)
                 flash(trans_choice('users.students.remove-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
 
-        elseif($role == GroupRoles::teacher)
+        elseif($role == GroupRoles::TEACHER)
             $userObj->notify( new removedFromGroupAsTeacherNotification($groupObj));
             if($notification)
                 flash(trans_choice('users.teachers.remove-notification', 1, ['name' => $userObj->name, 'group' => $groupObj->name]))->success();
 
     }
 
-    public function detachIds($users, $groupObj, $role = GroupRoles::student)
+    public function detachIds($users, $groupObj, $role = GroupRoles::STUDENT)
     {
         $users = User::whereIn('id', $users)->get();
 

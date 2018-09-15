@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Users\GroupsMiddleware;
+use App\Http\Middleware\Users\GroupsViewMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -53,5 +55,8 @@ class Kernel extends HttpKernel
         'guest'      => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'   => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'assignmentAuthor' => \App\Http\Middleware\AssignmentAuthorMiddleware::class,
+
+        'groups' => GroupsMiddleware::class,
+        'groups-view' => GroupsViewMiddleware::class
     ];
 }

@@ -48,7 +48,7 @@ class StudentController extends Controller
     public function attach($group, Request $request){
         $groupObj = GroupService::getOrFail($group);
 
-        UserGroupService::attachIds($request->input('users', []), $groupObj, GroupRoles::student);
+        UserGroupService::attachIds($request->input('users', []), $groupObj, GroupRoles::STUDENT);
 
         return redirect(action('Users\Groups\StudentController@index', [$groupObj->code]));
     }
@@ -77,7 +77,7 @@ class StudentController extends Controller
         $groupObj = GroupService::getOrFail($group);
 
         $userObj = UserService::create($request->all());
-        GroupService::attach($userObj, $groupObj, GroupRoles::student);
+        GroupService::attach($userObj, $groupObj, GroupRoles::STUDENT);
 
         return redirect(action('Users\Groups\StudentController@index', [$groupObj->code]));
     }

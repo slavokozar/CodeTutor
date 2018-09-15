@@ -19,7 +19,9 @@ class School extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'schools';
+    const TABLE_NAME = 'schools';
+
+    protected $table = School::TABLE_NAME;
 
     protected $fillable = [
         'name',
@@ -35,17 +37,17 @@ class School extends Model
 
     public function admins()
     {
-        return $this->users()->wherePivot('role',SchoolRoles::admin);
+        return $this->users()->wherePivot('role',SchoolRoles::ADMIN);
     }
 
     public function teachers()
     {
-        return $this->users()->wherePivot('role',SchoolRoles::teacher);
+        return $this->users()->wherePivot('role',SchoolRoles::TEACHER);
     }
 
     public function students()
     {
-        return $this->users()->wherePivot('role', SchoolRoles::student);
+        return $this->users()->wherePivot('role', SchoolRoles::STUDENT);
     }
 
     public function groups(){

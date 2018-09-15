@@ -27,10 +27,6 @@ class UserController extends Controller
      */
     public function index()
     {
-//        return School::first()->users()->withoutGlobalScope('role')->get();
-
-        return User::all();
-
         $users = UserService::paginate();
 
         return view('users.users.index', compact(['users']));

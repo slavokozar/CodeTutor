@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?php echo e(Auth::check() ? action('FeedController@index') : action('System\PresentationController@index')); ?>">
+            <a class="navbar-brand" href="<?php echo e(Auth::check() ? action('HomeController@index') : action('System\PresentationController@index')); ?>">
                 <img src="<?php echo e(asset('img/codetutor-logo-white.png')); ?>" alt="CodeLeague">
             </a>
         </div>

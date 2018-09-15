@@ -11,6 +11,6 @@ namespace App\Classes;
 
 abstract class GroupRoles
 {
-    const teacher = 'TEACHER';
-    const student = null;
+    const TEACHER = 'TEACHER';
+    const STUDENT = null;
 }

@@ -12,6 +12,6 @@ namespace App\Classes;
 abstract class UserRoles
 {
 
-    const admin = 'ADMIN';
+    const ADMIN = 'ADMIN';
 
 }

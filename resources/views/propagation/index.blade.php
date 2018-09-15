@@ -7,7 +7,7 @@
             <h1>Buď cool... programuj!</h1>
 
             @if(Auth::check())
-                <a href="{{action('FeedController@index')}}"
+                <a href="{{action('HomeController@index')}}"
                    class="btn btn-lg btn-danger">začni s nami</a>
             @else
                 <a href="/login" class="btn btn-lg btn-danger">začni s nami</a>

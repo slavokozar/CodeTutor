@@ -24,7 +24,7 @@ class UserSchoolService
         return $schools->count() > 0;
     }
 
-    public function attach($userObj, $schoolObj, $role = SchoolRoles::student){
+    public function attach($userObj, $schoolObj, $role = SchoolRoles::STUDENT){
         $userObj->schools()->attach($schoolObj, ['role' => $role]);
 
         //todo notification

@@ -6,7 +6,7 @@ use App\Models\Sharing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class FeedController extends Controller
+class HomeController extends Controller
 {
     public function __construct()
     {

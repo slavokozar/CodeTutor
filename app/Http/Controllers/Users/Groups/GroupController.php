@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('groups');
+        $this->middleware('groups-view')->only('show');
+    }
+
     /**
      * Display a listing of the resource.
      *
